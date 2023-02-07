@@ -1,0 +1,41 @@
+@import "../variables.scss";
+
+.profile-container {
+  border-radius: $spacing;
+  overflow-y: hidden;
+  .bg {
+    height: 130px;
+    background: url("../../assets/img/flag-on-uniform.png");
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .details-container {
+    background: rgba(lightgreen, 0.3);
+    height: 140px;
+    .details {
+      text-align: center;
+      position: relative;
+      top: -70px;
+      .img-container {
+        img {
+          width: 120px;
+          height: 120px;
+          object-fit: cover;
+          border-radius: 50%;
+          border: 3px solid darkgreen;
+          object-position: top;
+        }
+      }
+      em:first-of-type {
+        font-size: 21px;
+        font-weight: bold;
+        line-height: 30px;
+      }
+      a {
+        display: block;
+        cursor: pointer;
+      }
+    }
+  }
+}
