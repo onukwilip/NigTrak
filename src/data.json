@@ -95,417 +95,658 @@
   ],
   "users": [
     {
-      "_id": "63e25b33e74985a507cfcc5b",
-      "name": "Sondra Cole",
+      "_id": "63e3bb6c2726e1c50f2e0c52",
+      "name": "Juliet Mullen",
       "gender": "female",
-      "email": "sondracole@kraggle.com",
-      "phoneNumber": "+234 (873) 579-2567",
-      "joined": "Tue Jun 29 1982 16:35:45 GMT+0100 (West Africa Standard Time)",
-      "address": "917 Butler Street, Gasquet, Delaware, 4098",
+      "email": "julietmullen@exovent.com",
+      "phoneNumber": "+234 (989) 455-3262",
+      "joined": "Fri Aug 29 2003 01:07:15 GMT+0100 (West Africa Standard Time)",
+      "address": "409 Dictum Court, Konterra, Alaska, 7644",
       "location": {
-        "lat": -63.969942,
-        "lng": -93.136963
+        "lat": 11.269295,
+        "lng": 14.521409
       },
       "rank": "Major General",
       "rankNumber": 6,
-      "station": "Awka Barracks",
-      "state": "Ogun state",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b33971f91aea3b305cb"]
-    },
-    {
-      "_id": "63e25b33192dfbe1551895ba",
-      "name": "Merritt Barber",
-      "gender": "male",
-      "email": "merrittbarber@kraggle.com",
-      "phoneNumber": "+234 (974) 517-3682",
-      "joined": "Fri Mar 10 1978 05:38:42 GMT+0100 (West Africa Standard Time)",
-      "address": "743 Visitation Place, Forestburg, Arkansas, 283",
-      "location": {
-        "lat": 34.483187,
-        "lng": -128.27231
-      },
-      "rank": "Major General",
-      "rankNumber": 2,
-      "station": "Benin Barracks",
-      "state": "Lagos state",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": [
-        "#63e25b33497679527f8c20ff",
-        "#63e25b335a8dd20133e792e9",
-        "#63e25b3385c68d93b7b49b5c",
-        "#63e25b331d68f5b472c2b4ad"
-      ]
-    },
-    {
-      "_id": "63e25b3302400a4d9a760d31",
-      "name": "Frieda Ferrell",
-      "gender": "female",
-      "email": "friedaferrell@kraggle.com",
-      "phoneNumber": "+234 (844) 572-3140",
-      "joined": "Fri Jun 27 2014 04:04:25 GMT+0100 (West Africa Standard Time)",
-      "address": "413 Fairview Place, Loretto, Mississippi, 129",
-      "location": {
-        "lat": -45.486095,
-        "lng": -172.415434
-      },
-      "rank": "Coloniel",
-      "rankNumber": 5,
-      "station": "Benin Barracks",
-      "state": "Lagos state",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b33cff47ac724543705", "#63e25b3375bc1047da5db379"]
-    },
-    {
-      "_id": "63e25b33a8204812abd4dac1",
-      "name": "Jacklyn Kline",
-      "gender": "female",
-      "email": "jacklynkline@kraggle.com",
-      "phoneNumber": "+234 (932) 546-2129",
-      "joined": "Tue Aug 20 2013 10:11:45 GMT+0100 (West Africa Standard Time)",
-      "address": "552 Prospect Avenue, Wiscon, New Hampshire, 2243",
-      "location": {
-        "lat": -79.730516,
-        "lng": -162.28295
-      },
-      "rank": "General",
-      "rankNumber": 3,
-      "station": "AkwaIbom barracks",
-      "state": "FCT",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b33b7edf13c37758b17"]
-    },
-    {
-      "_id": "63e25b333aa3241786a18d4b",
-      "name": "Margie Acosta",
-      "gender": "female",
-      "email": "margieacosta@kraggle.com",
-      "phoneNumber": "+234 (981) 401-2619",
-      "joined": "Mon May 03 2010 01:07:12 GMT+0100 (West Africa Standard Time)",
-      "address": "390 Anna Court, Hall, Missouri, 1567",
-      "location": {
-        "lat": -18.549534,
-        "lng": 49.513488
-      },
-      "rank": "Officer",
-      "rankNumber": 3,
-      "station": "AkwaIbom barracks",
-      "state": "Edo state",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b3365d624bfe3aa75a0", "#63e25b33598a931e7426aff2"]
-    },
-    {
-      "_id": "63e25b330c7ff84ee1059d7e",
-      "name": "Short Munoz",
-      "gender": "male",
-      "email": "shortmunoz@kraggle.com",
-      "phoneNumber": "+234 (821) 574-3364",
-      "joined": "Sat Oct 10 2015 03:58:09 GMT+0100 (West Africa Standard Time)",
-      "address": "165 Gerald Court, Roeville, Georgia, 5222",
-      "location": {
-        "lat": -69.76813,
-        "lng": 7.803816
-      },
-      "rank": "Officer",
-      "rankNumber": 4,
-      "station": "Benin Barracks",
-      "state": "FCT",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b3343db6856b6fddf27", "#63e25b33c9abaa50d0251a1f"]
-    },
-    {
-      "_id": "63e25b3356c0409fb7c63740",
-      "name": "Dora Burnett",
-      "gender": "female",
-      "email": "doraburnett@kraggle.com",
-      "phoneNumber": "+234 (947) 547-2638",
-      "joined": "Fri Oct 22 1993 00:33:30 GMT+0100 (West Africa Standard Time)",
-      "address": "352 Albee Square, Fedora, Federated States Of Micronesia, 282",
-      "location": {
-        "lat": -43.75979,
-        "lng": -89.233918
-      },
-      "rank": "Leutenant Coloniel",
-      "rankNumber": 1,
-      "station": "Awka Barracks",
+      "station": "Abeokuta Barracks",
       "state": "Anambra state",
       "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": [
-        "#63e25b33ec94775a69d64814",
-        "#63e25b3314220a9a06bf2a3d",
-        "#63e25b332d3cfecd8f47831c",
-        "#63e25b33ee64505f4cae4440"
-      ]
+      "devices": ["#63e3bb6c728cc1319a363c23"]
     },
     {
-      "_id": "63e25b332e4aaa2d8d60574a",
-      "name": "Francine Odonnell",
-      "gender": "female",
-      "email": "francineodonnell@kraggle.com",
-      "phoneNumber": "+234 (848) 497-2398",
-      "joined": "Tue May 01 2012 19:47:44 GMT+0100 (West Africa Standard Time)",
-      "address": "447 Garden Street, Springdale, Puerto Rico, 7551",
+      "_id": "63e3bb6cc5482c1efc9a30f8",
+      "name": "England Reed",
+      "gender": "male",
+      "email": "englandreed@exovent.com",
+      "phoneNumber": "+234 (955) 559-2282",
+      "joined": "Sat Dec 01 2001 08:14:31 GMT+0100 (West Africa Standard Time)",
+      "address": "764 Emerald Street, Oceola, Alabama, 7367",
       "location": {
-        "lat": 71.328463,
-        "lng": -55.701221
+        "lat": 13.652739,
+        "lng": 9.336323
       },
       "rank": "Sergent",
-      "rankNumber": 5,
-      "station": "Benin Barracks",
-      "state": "Edo state",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": [
-        "#63e25b33a57c8a23ee2530e7",
-        "#63e25b336eb269da7b5db0f6",
-        "#63e25b33cec3c0ac0b102b58",
-        "#63e25b33a481c814e62038dc"
-      ]
-    },
-    {
-      "_id": "63e25b33d7219d36c0131ce9",
-      "name": "Josefa Summers",
-      "gender": "female",
-      "email": "josefasummers@kraggle.com",
-      "phoneNumber": "+234 (980) 522-3125",
-      "joined": "Mon Jul 28 2014 18:26:43 GMT+0100 (West Africa Standard Time)",
-      "address": "507 Boerum Street, Hobucken, New Mexico, 1419",
-      "location": {
-        "lat": 89.97094,
-        "lng": 24.626253
-      },
-      "rank": "General",
-      "rankNumber": 5,
-      "station": "AkwaIbom barracks",
+      "rankNumber": 6,
+      "station": "Awka Barracks",
       "state": "Lagos state",
       "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b33a593a3a64ce7c17b", "#63e25b33fe3d6e3c133e51af"]
+      "devices": ["#63e3bb6cdca82951a99d4d37"]
     },
     {
-      "_id": "63e25b333f5582a82a2356ea",
-      "name": "Hood Mckenzie",
-      "gender": "male",
-      "email": "hoodmckenzie@kraggle.com",
-      "phoneNumber": "+234 (864) 524-2461",
-      "joined": "Sun Apr 10 2005 04:46:17 GMT+0100 (West Africa Standard Time)",
-      "address": "105 Prospect Place, Winston, Northern Mariana Islands, 6106",
+      "_id": "63e3bb6ce2fb3db059d053e5",
+      "name": "Mable Stark",
+      "gender": "female",
+      "email": "mablestark@exovent.com",
+      "phoneNumber": "+234 (913) 589-2359",
+      "joined": "Fri May 29 1981 03:34:10 GMT+0100 (West Africa Standard Time)",
+      "address": "892 Dwight Street, Stonybrook, Virginia, 8454",
       "location": {
-        "lat": -74.132985,
-        "lng": 154.358742
-      },
-      "rank": "Leutenant Coloniel",
-      "rankNumber": 7,
-      "station": "AkwaIbom barracks",
-      "state": "Ogun state",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": [
-        "#63e25b33686818df7e648443",
-        "#63e25b334e7163152106d6ca",
-        "#63e25b339b669800427942ff"
-      ]
-    },
-    {
-      "_id": "63e25b33f7fe9b4673dab8b4",
-      "name": "Bryan Mitchell",
-      "gender": "male",
-      "email": "bryanmitchell@kraggle.com",
-      "phoneNumber": "+234 (908) 457-3167",
-      "joined": "Mon Aug 03 1970 14:25:18 GMT+0100 (West Africa Standard Time)",
-      "address": "724 Harrison Avenue, Abiquiu, Connecticut, 2277",
-      "location": {
-        "lat": 76.261284,
-        "lng": -111.332365
+        "lat": 7.897289,
+        "lng": 4.375237
       },
       "rank": "Sergent",
-      "rankNumber": 4,
-      "station": "AkwaIbom barracks",
-      "state": "Ogun state",
+      "rankNumber": 3,
+      "station": "Abuja Barracks",
+      "state": "Edo state",
       "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b331f6a780d24da1a0f"]
+      "devices": ["#63e3bb6c9afc1a2e80153bc6"]
     },
     {
-      "_id": "63e25b33b03a7b7f61bb8f4e",
-      "name": "Livingston Morin",
-      "gender": "male",
-      "email": "livingstonmorin@kraggle.com",
-      "phoneNumber": "+234 (866) 522-3612",
-      "joined": "Fri Feb 16 1979 03:30:58 GMT+0100 (West Africa Standard Time)",
-      "address": "359 Sackett Street, Greensburg, Virgin Islands, 2995",
+      "_id": "63e3bb6ceedc91f4b5c52cb8",
+      "name": "Kathryn Murray",
+      "gender": "female",
+      "email": "kathrynmurray@exovent.com",
+      "phoneNumber": "+234 (959) 539-2011",
+      "joined": "Sat Oct 12 2002 18:45:46 GMT+0100 (West Africa Standard Time)",
+      "address": "238 Lafayette Avenue, Deercroft, New Hampshire, 2490",
       "location": {
-        "lat": -78.230724,
-        "lng": 86.609126
+        "lat": 4.968272,
+        "lng": 8.066074
       },
-      "rank": "Leutenant Coloniel",
-      "rankNumber": 3,
+      "rank": "Major General",
+      "rankNumber": 7,
+      "station": "Abeokuta Barracks",
+      "state": "Ogun state",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": ["#63e3bb6cf917e572e84f8ac8", "#63e3bb6c61f18ac99cecb431"]
+    },
+    {
+      "_id": "63e3bb6c5e298bfca708e7e5",
+      "name": "Golden Cohen",
+      "gender": "male",
+      "email": "goldencohen@exovent.com",
+      "phoneNumber": "+234 (946) 425-2354",
+      "joined": "Fri May 12 1978 07:29:36 GMT+0100 (West Africa Standard Time)",
+      "address": "429 Melrose Street, Singer, South Carolina, 6381",
+      "location": {
+        "lat": 8.6376,
+        "lng": 14.513025
+      },
+      "rank": "Officer",
+      "rankNumber": 5,
       "station": "Abeokuta Barracks",
       "state": "FCT",
       "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b33fe4b74ea4adfdb23", "#63e25b33be0b05a8d4a26b79"]
+      "devices": ["#63e3bb6ca68eaa5b01825367", "#63e3bb6c6fc34b6a77194b40"]
     },
     {
-      "_id": "63e25b33d45f32603a1af565",
-      "name": "Battle Fuentes",
-      "gender": "male",
-      "email": "battlefuentes@kraggle.com",
-      "phoneNumber": "+234 (974) 469-3271",
-      "joined": "Wed Oct 12 1994 22:10:10 GMT+0100 (West Africa Standard Time)",
-      "address": "657 Poly Place, Crown, Idaho, 9867",
+      "_id": "63e3bb6c6a4fae0be3cb904d",
+      "name": "Lois Curtis",
+      "gender": "female",
+      "email": "loiscurtis@exovent.com",
+      "phoneNumber": "+234 (990) 567-3427",
+      "joined": "Fri Dec 24 1976 00:44:29 GMT+0100 (West Africa Standard Time)",
+      "address": "629 Buffalo Avenue, Brandermill, Northern Mariana Islands, 6608",
       "location": {
-        "lat": -25.540505,
-        "lng": -156.758737
+        "lat": 6.11821,
+        "lng": 14.729407
       },
       "rank": "General",
-      "rankNumber": 6,
-      "station": "AkwaIbom barracks",
-      "state": "AkwaIbom state",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b3359f1660bd1b3ca66"]
-    },
-    {
-      "_id": "63e25b332f728b6c0d96dfc8",
-      "name": "Lowe Mcfarland",
-      "gender": "male",
-      "email": "lowemcfarland@kraggle.com",
-      "phoneNumber": "+234 (876) 581-2534",
-      "joined": "Thu Nov 04 1999 21:31:27 GMT+0100 (West Africa Standard Time)",
-      "address": "448 Lafayette Avenue, Yettem, Nebraska, 3403",
-      "location": {
-        "lat": 48.764984,
-        "lng": 25.320482
-      },
-      "rank": "Coloniel",
-      "rankNumber": 2,
-      "station": "Lagos barracks",
-      "state": "Anambra state",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b3322631486c7f1573e", "#63e25b339186afcaa7312a91"]
-    },
-    {
-      "_id": "63e25b3324afecf330b21275",
-      "name": "Johanna Morgan",
-      "gender": "female",
-      "email": "johannamorgan@kraggle.com",
-      "phoneNumber": "+234 (915) 499-2990",
-      "joined": "Wed Nov 11 2015 21:17:36 GMT+0100 (West Africa Standard Time)",
-      "address": "312 Friel Place, Tyhee, Marshall Islands, 9077",
-      "location": {
-        "lat": -26.711872,
-        "lng": 2.097453
-      },
-      "rank": "Coloniel",
-      "rankNumber": 1,
-      "station": "AkwaIbom barracks",
-      "state": "AkwaIbom state",
+      "rankNumber": 4,
+      "station": "Benin Barracks",
+      "state": "Ogun state",
       "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
       "devices": [
-        "#63e25b339d0463fab8b7626d",
-        "#63e25b3334864dd79eedaa9d",
-        "#63e25b3396062d32c8fb719b"
+        "#63e3bb6ce6f526edb56c20e5",
+        "#63e3bb6cfa6335adec0d71f0",
+        "#63e3bb6c3b81ad491d1b30d6"
       ]
     },
     {
-      "_id": "63e25b33bbab583c5b9be3f1",
-      "name": "Liza Sandoval",
+      "_id": "63e3bb6cfe38db1eeaf78074",
+      "name": "Bettye Macias",
       "gender": "female",
-      "email": "lizasandoval@kraggle.com",
-      "phoneNumber": "+234 (954) 474-3033",
-      "joined": "Sat Dec 09 1989 18:57:08 GMT+0100 (West Africa Standard Time)",
-      "address": "704 Clifford Place, Wheaton, Kansas, 6376",
+      "email": "bettyemacias@exovent.com",
+      "phoneNumber": "+234 (972) 549-2876",
+      "joined": "Sat May 18 2002 09:00:25 GMT+0100 (West Africa Standard Time)",
+      "address": "793 Metropolitan Avenue, Gila, Minnesota, 2399",
       "location": {
-        "lat": 54.960647,
-        "lng": 173.48509
+        "lat": 12.103892,
+        "lng": 4.213512
+      },
+      "rank": "Major General",
+      "rankNumber": 3,
+      "station": "AkwaIbom barracks",
+      "state": "Edo state",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": [
+        "#63e3bb6cfeed7b248ed50f6f",
+        "#63e3bb6c4cd8791d149a4a99",
+        "#63e3bb6cc38107bb634afea3"
+      ]
+    },
+    {
+      "_id": "63e3bb6ce89a560a109ab72c",
+      "name": "Stefanie Morton",
+      "gender": "female",
+      "email": "stefaniemorton@exovent.com",
+      "phoneNumber": "+234 (865) 460-2401",
+      "joined": "Sat Jul 13 1996 20:27:13 GMT+0100 (West Africa Standard Time)",
+      "address": "995 Guernsey Street, Sutton, Texas, 9403",
+      "location": {
+        "lat": 4.283444,
+        "lng": 6.560981
+      },
+      "rank": "Sergent",
+      "rankNumber": 6,
+      "station": "Benin Barracks",
+      "state": "FCT",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": [
+        "#63e3bb6c3714c9ef512e93d0",
+        "#63e3bb6cb2f0204a0b13a513",
+        "#63e3bb6c08b73ee3bb3ad26c",
+        "#63e3bb6c5313956b626cb472"
+      ]
+    },
+    {
+      "_id": "63e3bb6cb2ad73a28032a4a0",
+      "name": "Calhoun Hobbs",
+      "gender": "male",
+      "email": "calhounhobbs@exovent.com",
+      "phoneNumber": "+234 (838) 404-2910",
+      "joined": "Sun Jul 16 1989 09:39:28 GMT+0100 (West Africa Standard Time)",
+      "address": "716 Delmonico Place, Cawood, North Carolina, 4215",
+      "location": {
+        "lat": 4.413618,
+        "lng": 6.925279
+      },
+      "rank": "Sergent",
+      "rankNumber": 1,
+      "station": "Lagos barracks",
+      "state": "AkwaIbom state",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": ["#63e3bb6c9c84b330eae90602"]
+    },
+    {
+      "_id": "63e3bb6ce4307436d0d9c3e5",
+      "name": "Imogene Elliott",
+      "gender": "female",
+      "email": "imogeneelliott@exovent.com",
+      "phoneNumber": "+234 (901) 594-3496",
+      "joined": "Sat Dec 28 2002 04:03:16 GMT+0100 (West Africa Standard Time)",
+      "address": "176 Ingraham Street, Conway, New York, 6157",
+      "location": {
+        "lat": 12.639642,
+        "lng": 7.667847
+      },
+      "rank": "Sergent",
+      "rankNumber": 1,
+      "station": "Abuja Barracks",
+      "state": "FCT",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": ["#63e3bb6cc2c6f6b34a323d78", "#63e3bb6cf473b9fbfe981cf2"]
+    },
+    {
+      "_id": "63e3bb6c01a6a6329a8d2d0e",
+      "name": "Violet Bradley",
+      "gender": "female",
+      "email": "violetbradley@exovent.com",
+      "phoneNumber": "+234 (839) 445-2968",
+      "joined": "Tue Mar 20 2012 14:27:33 GMT+0100 (West Africa Standard Time)",
+      "address": "419 Anchorage Place, Why, South Dakota, 9229",
+      "location": {
+        "lat": 7.483468,
+        "lng": 4.263537
+      },
+      "rank": "Coloniel",
+      "rankNumber": 2,
+      "station": "AkwaIbom barracks",
+      "state": "Edo state",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": ["#63e3bb6c72992a6cd3ce669d", "#63e3bb6c186d4655cc55316a"]
+    },
+    {
+      "_id": "63e3bb6c9f4021301dab2bfa",
+      "name": "Middleton Kaufman",
+      "gender": "male",
+      "email": "middletonkaufman@exovent.com",
+      "phoneNumber": "+234 (899) 459-3549",
+      "joined": "Tue Apr 27 1982 14:53:37 GMT+0100 (West Africa Standard Time)",
+      "address": "607 Grace Court, Hiwasse, Rhode Island, 5736",
+      "location": {
+        "lat": 8.474054,
+        "lng": 6.165407
+      },
+      "rank": "Officer",
+      "rankNumber": 5,
+      "station": "Lagos barracks",
+      "state": "Lagos state",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": [
+        "#63e3bb6cb2e235585bf8daa8",
+        "#63e3bb6c10c000c1f7e9b22d",
+        "#63e3bb6ce6040f5ec7d46d0b"
+      ]
+    },
+    {
+      "_id": "63e3bb6cd33d7d9050a680e6",
+      "name": "Rosa Brooks",
+      "gender": "female",
+      "email": "rosabrooks@exovent.com",
+      "phoneNumber": "+234 (985) 542-3412",
+      "joined": "Mon Nov 21 1977 07:49:31 GMT+0100 (West Africa Standard Time)",
+      "address": "334 Norwood Avenue, Whitestone, Michigan, 1099",
+      "location": {
+        "lat": 8.995495,
+        "lng": 14.740575
+      },
+      "rank": "Sergent",
+      "rankNumber": 4,
+      "station": "Benin Barracks",
+      "state": "Ogun state",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": ["#63e3bb6c87118bf8cd690702", "#63e3bb6c0c1c58355daf102a"]
+    },
+    {
+      "_id": "63e3bb6cb0b5f5e02ef0106b",
+      "name": "Casey Leon",
+      "gender": "female",
+      "email": "caseyleon@exovent.com",
+      "phoneNumber": "+234 (943) 517-3793",
+      "joined": "Sat Apr 21 1984 07:00:42 GMT+0100 (West Africa Standard Time)",
+      "address": "180 Seigel Street, Coloma, Maryland, 3875",
+      "location": {
+        "lat": 9.397099,
+        "lng": 7.229902
+      },
+      "rank": "Major General",
+      "rankNumber": 6,
+      "station": "Abuja Barracks",
+      "state": "Anambra state",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": ["#63e3bb6ce799f868facab268"]
+    },
+    {
+      "_id": "63e3bb6cd35564c20929ad9a",
+      "name": "Richard Barber",
+      "gender": "male",
+      "email": "richardbarber@exovent.com",
+      "phoneNumber": "+234 (931) 419-2433",
+      "joined": "Thu Oct 11 2018 22:37:51 GMT+0100 (West Africa Standard Time)",
+      "address": "991 Seaview Court, Sharon, Ohio, 2022",
+      "location": {
+        "lat": 4.933637,
+        "lng": 11.043703
+      },
+      "rank": "Leutenant Coloniel",
+      "rankNumber": 6,
+      "station": "Abeokuta Barracks",
+      "state": "FCT",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": ["#63e3bb6c7f30fa6057052c91"]
+    },
+    {
+      "_id": "63e3bb6c314d1748eb18ced1",
+      "name": "Chan French",
+      "gender": "male",
+      "email": "chanfrench@exovent.com",
+      "phoneNumber": "+234 (890) 489-3173",
+      "joined": "Fri Nov 21 1986 14:48:46 GMT+0100 (West Africa Standard Time)",
+      "address": "997 Wolf Place, Gibsonia, American Samoa, 2050",
+      "location": {
+        "lat": 7.855326,
+        "lng": 9.924969
+      },
+      "rank": "Leutenant Coloniel",
+      "rankNumber": 5,
+      "station": "Benin Barracks",
+      "state": "Lagos state",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": [
+        "#63e3bb6c79e952b96eb8adf1",
+        "#63e3bb6c8c2d57ccde141683",
+        "#63e3bb6c1a3ac3d50894cf5a",
+        "#63e3bb6ce7ca70e079835dd7"
+      ]
+    },
+    {
+      "_id": "63e3bb6cac90920d6b196abb",
+      "name": "Brittany Beach",
+      "gender": "female",
+      "email": "brittanybeach@exovent.com",
+      "phoneNumber": "+234 (858) 419-2571",
+      "joined": "Mon Feb 08 1993 00:16:51 GMT+0100 (West Africa Standard Time)",
+      "address": "274 Freeman Street, Mapletown, Colorado, 8997",
+      "location": {
+        "lat": 12.002911,
+        "lng": 12.738204
+      },
+      "rank": "Major General",
+      "rankNumber": 5,
+      "station": "Abuja Barracks",
+      "state": "Edo state",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": [
+        "#63e3bb6c5a8061c06fd6c78d",
+        "#63e3bb6c3e796ab45017e849",
+        "#63e3bb6cfb1b4e03136cc3f4",
+        "#63e3bb6ce213787b39bd20bd"
+      ]
+    },
+    {
+      "_id": "63e3bb6c102d8c96b856536b",
+      "name": "Mcfarland Foley",
+      "gender": "male",
+      "email": "mcfarlandfoley@exovent.com",
+      "phoneNumber": "+234 (933) 500-3017",
+      "joined": "Thu Apr 11 2002 06:42:57 GMT+0100 (West Africa Standard Time)",
+      "address": "640 Estate Road, Turah, Georgia, 4106",
+      "location": {
+        "lat": 8.153,
+        "lng": 10.369772
       },
       "rank": "Sergent",
       "rankNumber": 6,
       "station": "Abuja Barracks",
-      "state": "Edo state",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": [
-        "#63e25b33c07248f684591af2",
-        "#63e25b3362344c75c7b1054f",
-        "#63e25b3394eea4a1d6835032",
-        "#63e25b334e607e4c21547360"
-      ]
-    },
-    {
-      "_id": "63e25b33bd05bcc8458fac18",
-      "name": "Dominique Lowery",
-      "gender": "female",
-      "email": "dominiquelowery@kraggle.com",
-      "phoneNumber": "+234 (919) 553-2596",
-      "joined": "Sun Oct 24 2010 04:42:50 GMT+0100 (West Africa Standard Time)",
-      "address": "108 Hunterfly Place, Southmont, New York, 5911",
-      "location": {
-        "lat": -77.173817,
-        "lng": -104.068136
-      },
-      "rank": "Major General",
-      "rankNumber": 2,
-      "station": "Benin Barracks",
-      "state": "Edo state",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b33314ec23f99499e0e", "#63e25b33c3d8855b9e8be247"]
-    },
-    {
-      "_id": "63e25b331b37381b6ef11114",
-      "name": "Concetta Long",
-      "gender": "female",
-      "email": "concettalong@kraggle.com",
-      "phoneNumber": "+234 (934) 421-3531",
-      "joined": "Wed Jan 25 1984 16:14:28 GMT+0100 (West Africa Standard Time)",
-      "address": "708 Cranberry Street, Salunga, Iowa, 1548",
-      "location": {
-        "lat": 62.062547,
-        "lng": 165.013534
-      },
-      "rank": "General",
-      "rankNumber": 3,
-      "station": "AkwaIbom barracks",
-      "state": "Anambra state",
-      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b338d0c87c085a48fc2"]
-    },
-    {
-      "_id": "63e25b335e09033aca18f022",
-      "name": "Jessie Doyle",
-      "gender": "female",
-      "email": "jessiedoyle@kraggle.com",
-      "phoneNumber": "+234 (879) 477-3823",
-      "joined": "Fri Jan 02 2009 21:44:28 GMT+0100 (West Africa Standard Time)",
-      "address": "629 Linden Street, Genoa, North Dakota, 9387",
-      "location": {
-        "lat": 80.134305,
-        "lng": 24.218396
-      },
-      "rank": "Major General",
-      "rankNumber": 3,
-      "station": "Abuja Barracks",
       "state": "FCT",
       "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      "devices": ["#63e3bb6c4a9864ba3d9d4c03", "#63e3bb6cc8b243cbb4f20dea"]
+    },
+    {
+      "_id": "63e3bb6c9eecda197c62e6fc",
+      "name": "Tamera Herring",
+      "gender": "female",
+      "email": "tameraherring@exovent.com",
+      "phoneNumber": "+234 (854) 560-2035",
+      "joined": "Sun Dec 23 1990 19:43:02 GMT+0100 (West Africa Standard Time)",
+      "address": "871 Rutherford Place, Orovada, Puerto Rico, 1678",
+      "location": {
+        "lat": 7.840475,
+        "lng": 7.990898
+      },
+      "rank": "Officer",
+      "rankNumber": 7,
+      "station": "Awka Barracks",
+      "state": "Anambra state",
+      "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
       "devices": [
-        "#63e25b33139e8b085c674933",
-        "#63e25b330ca8ba5515f1e974",
-        "#63e25b33ec05bc3a1166617c",
-        "#63e25b336b9cdf3191378184"
+        "#63e3bb6c726ec1fad2a0b13a",
+        "#63e3bb6c284fedaee70434b7",
+        "#63e3bb6c83a67211fa317ec6",
+        "#63e3bb6cc7221af2890c258d"
       ]
     },
     {
-      "_id": "63e25b3361f1f7a438eca3c9",
-      "name": "Audrey Roth",
-      "gender": "female",
-      "email": "audreyroth@kraggle.com",
-      "phoneNumber": "+234 (864) 428-2491",
-      "joined": "Tue May 26 1981 22:25:33 GMT+0100 (West Africa Standard Time)",
-      "address": "116 Bay Parkway, Century, Maine, 4790",
+      "_id": "63e3bb6cd016e87122c1a5f0",
+      "name": "Dunn Powers",
+      "gender": "male",
+      "email": "dunnpowers@exovent.com",
+      "phoneNumber": "+234 (970) 477-2495",
+      "joined": "Fri Jun 05 1981 01:34:50 GMT+0100 (West Africa Standard Time)",
+      "address": "449 Amherst Street, Edenburg, Illinois, 2983",
       "location": {
-        "lat": 18.356457,
-        "lng": 50.957734
+        "lat": 5.950929,
+        "lng": 9.543344
       },
-      "rank": "Leutenant Coloniel",
-      "rankNumber": 2,
-      "station": "Abuja Barracks",
+      "rank": "Sergent",
+      "rankNumber": 3,
+      "station": "Abeokuta Barracks",
       "state": "Ogun state",
       "image": "https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-      "devices": ["#63e25b33642e5d86c5b6a2f5", "#63e25b33a52336c815eecec3"]
+      "devices": ["#63e3bb6c6af8a2bb629a0c36", "#63e3bb6c49aa21634d1b5478"]
+    }
+  ],
+  "devices": [
+    {
+      "_id": "#63e3b841c34873063ee13611",
+      "deviceHolderName": "Walters Ramsey",
+      "deviceHolderId": "63e3b8411d576fa5226114da",
+      "registered": "Mon Apr 15 1991 12:36:37 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 11.479354,
+        "lng": 9.604967
+      },
+      "station": "AkwaIbom barracks",
+      "state": "Lagos state"
+    },
+    {
+      "_id": "#63e3b841be1f797c6d225818",
+      "deviceHolderName": "Nichole Benton",
+      "deviceHolderId": "63e3b84103f0e765fd724689",
+      "registered": "Thu Apr 21 2005 08:14:30 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 5.802788,
+        "lng": 7.800632
+      },
+      "station": "Awka Barracks",
+      "state": "Edo state"
+    },
+    {
+      "_id": "#63e3b84106de3095c59740d7",
+      "deviceHolderName": "Rich Ortega",
+      "deviceHolderId": "63e3b841c165c66f3a6adfe6",
+      "registered": "Wed Oct 29 2008 22:12:55 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 7.304585,
+        "lng": 5.323829
+      },
+      "station": "Abeokuta Barracks",
+      "state": "Ogun state"
+    },
+    {
+      "_id": "#63e3b841e8fbf488bdd49432",
+      "deviceHolderName": "Hopper Wilkins",
+      "deviceHolderId": "63e3b8415696cf15c2613dcc",
+      "registered": "Sun Sep 18 1988 17:26:10 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 8.11787,
+        "lng": 13.837446
+      },
+      "station": "Awka Barracks",
+      "state": "FCT"
+    },
+    {
+      "_id": "#63e3b84105f1aa0b223687d8",
+      "deviceHolderName": "Charles Cannon",
+      "deviceHolderId": "63e3b84197a4e428a6b097f6",
+      "registered": "Sat Sep 20 1986 09:23:36 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 7.650938,
+        "lng": 11.009494
+      },
+      "station": "Abeokuta Barracks",
+      "state": "Anambra state"
+    },
+    {
+      "_id": "#63e3b84153f045f7e17ff77e",
+      "deviceHolderName": "Shelia Sweeney",
+      "deviceHolderId": "63e3b841e16a89439d0eece8",
+      "registered": "Mon May 03 2021 15:59:09 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 4.773023,
+        "lng": 8.138985
+      },
+      "station": "Lagos barracks",
+      "state": "AkwaIbom state"
+    },
+    {
+      "_id": "#63e3b8418fd711d265d7f765",
+      "deviceHolderName": "Forbes Mclaughlin",
+      "deviceHolderId": "63e3b84117353f6b9ce6c7ed",
+      "registered": "Thu Dec 31 1970 07:11:45 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 7.876519,
+        "lng": 6.653363
+      },
+      "station": "Abuja Barracks",
+      "state": "AkwaIbom state"
+    },
+    {
+      "_id": "#63e3b841f0a5fcbef40a16a6",
+      "deviceHolderName": "Robertson Mcfadden",
+      "deviceHolderId": "63e3b8414a7775e2ef7411ee",
+      "registered": "Thu Jan 08 1970 06:21:57 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 13.271316,
+        "lng": 9.378872
+      },
+      "station": "Abuja Barracks",
+      "state": "Edo state"
+    },
+    {
+      "_id": "#63e3b8415de1e89338b1c1c2",
+      "deviceHolderName": "Ball Massey",
+      "deviceHolderId": "63e3b84123a3c0e96a4b5aef",
+      "registered": "Sun Dec 28 1986 19:30:30 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 11.592087,
+        "lng": 14.439309
+      },
+      "station": "Awka Barracks",
+      "state": "FCT"
+    },
+    {
+      "_id": "#63e3b8418bff4fefe6cd81ff",
+      "deviceHolderName": "Justine Hernandez",
+      "deviceHolderId": "63e3b841e7ebebad1a8f550b",
+      "registered": "Fri May 19 2017 23:37:48 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 7.26403,
+        "lng": 6.700862
+      },
+      "station": "Awka Barracks",
+      "state": "Edo state"
+    },
+    {
+      "_id": "#63e3b8418315d0f788d0208f",
+      "deviceHolderName": "Earlene Gillespie",
+      "deviceHolderId": "63e3b841591199117c0e586b",
+      "registered": "Mon Oct 25 2004 04:32:56 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 10.876248,
+        "lng": 4.664863
+      },
+      "station": "Abeokuta Barracks",
+      "state": "Edo state"
+    },
+    {
+      "_id": "#63e3b8410ee8db45a6d31171",
+      "deviceHolderName": "Jessica Duffy",
+      "deviceHolderId": "63e3b841f8aa73fd754e5cf5",
+      "registered": "Sun Dec 25 1983 18:02:49 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 8.990885,
+        "lng": 6.521587
+      },
+      "station": "Abuja Barracks",
+      "state": "Ogun state"
+    },
+    {
+      "_id": "#63e3b8413d2b0852bd8aa546",
+      "deviceHolderName": "Gay Contreras",
+      "deviceHolderId": "63e3b841897c9ae8de08a0a8",
+      "registered": "Thu Oct 04 1973 08:22:44 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 5.005976,
+        "lng": 4.487388
+      },
+      "station": "Lagos barracks",
+      "state": "FCT"
+    },
+    {
+      "_id": "#63e3b84190cf52eba8325eca",
+      "deviceHolderName": "Franklin Mckinney",
+      "deviceHolderId": "63e3b841e1d05e60df994483",
+      "registered": "Tue Oct 02 2012 02:09:16 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 10.595468,
+        "lng": 12.498352
+      },
+      "station": "Abeokuta Barracks",
+      "state": "FCT"
+    },
+    {
+      "_id": "#63e3b8414f624d47856ceb74",
+      "deviceHolderName": "Addie Lott",
+      "deviceHolderId": "63e3b841906dff984f1fc67c",
+      "registered": "Mon Sep 19 2005 10:08:52 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 5.31724,
+        "lng": 9.432075
+      },
+      "station": "Abuja Barracks",
+      "state": "Lagos state"
+    },
+    {
+      "_id": "#63e3b841d2458135993d3a3d",
+      "deviceHolderName": "Molina Espinoza",
+      "deviceHolderId": "63e3b84132af027773786013",
+      "registered": "Fri Jan 16 1987 09:38:22 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 8.433265,
+        "lng": 5.312364
+      },
+      "station": "Lagos barracks",
+      "state": "Edo state"
+    },
+    {
+      "_id": "#63e3b8416324330ff92ccfab",
+      "deviceHolderName": "Lucia Neal",
+      "deviceHolderId": "63e3b841e5fd48588ad49d2c",
+      "registered": "Fri Dec 11 1992 06:38:34 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 5.592284,
+        "lng": 8.502932
+      },
+      "station": "Abuja Barracks",
+      "state": "Lagos state"
+    },
+    {
+      "_id": "#63e3b841c9e73884752d9d2a",
+      "deviceHolderName": "Jeannie Rose",
+      "deviceHolderId": "63e3b84126a5abaf63d8d285",
+      "registered": "Wed Nov 05 2008 12:26:27 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 5.2662,
+        "lng": 9.905736
+      },
+      "station": "Benin Barracks",
+      "state": "Anambra state"
+    },
+    {
+      "_id": "#63e3b8411d4d50be63f246dd",
+      "deviceHolderName": "Gloria Valdez",
+      "deviceHolderId": "63e3b8411975d5c94fc5e2a4",
+      "registered": "Tue Apr 15 2003 12:27:28 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 10.110084,
+        "lng": 11.177689
+      },
+      "station": "AkwaIbom barracks",
+      "state": "AkwaIbom state"
+    },
+    {
+      "_id": "#63e3b841a7e646753cde6dda",
+      "deviceHolderName": "Cara Hutchinson",
+      "deviceHolderId": "63e3b84188a8f8268b0f8cd6",
+      "registered": "Tue Mar 10 2015 22:01:18 GMT+0100 (West Africa Standard Time)",
+      "location": {
+        "lat": 10.758235,
+        "lng": 12.952542
+      },
+      "station": "Benin Barracks",
+      "state": "FCT"
     }
   ]
 }
