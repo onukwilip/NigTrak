@@ -1,0 +1,39 @@
+.profile-container {
+  border-radius: 1rem;
+  overflow-y: hidden;
+}
+.profile-container .bg {
+  height: 130px;
+  background: url("../../assets/img/flag-on-uniform.png");
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.profile-container .details-container {
+  background: rgba(144, 238, 144, 0.3);
+  height: 140px;
+}
+.profile-container .details-container .details {
+  text-align: center;
+  position: relative;
+  top: -70px;
+}
+.profile-container .details-container .details .img-container img {
+  width: 120px;
+  height: 120px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid darkgreen;
+  -o-object-position: top;
+     object-position: top;
+}
+.profile-container .details-container .details em:first-of-type {
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 30px;
+}
+.profile-container .details-container .details a {
+  display: block;
+  cursor: pointer;
+}/*# sourceMappingURL=ProfileContainer.module.css.map */

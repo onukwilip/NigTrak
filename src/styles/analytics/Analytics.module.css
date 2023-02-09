@@ -1,0 +1,130 @@
+.analytics {
+  height: 100%;
+}
+.analytics .dashboard {
+  background: rgba(0, 128, 0, 0.2);
+  padding: 1rem;
+  padding-bottom: 5rem;
+  width: 100%;
+}
+.analytics .mobile-dashboard {
+  display: none;
+}
+.analytics .below {
+  max-height: 45vh;
+}
+.analytics .below .container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1rem;
+  flex-direction: row;
+  overflow-y: hidden;
+  position: relative;
+  top: -60px;
+}
+.analytics .below .card-container {
+  padding: 10px;
+  flex: 1.3;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: auto;
+  gap: 1rem;
+  width: 100%;
+  align-items: center;
+  justify-items: center;
+}
+.analytics .below .card-container .card {
+  width: 100%;
+  background-color: white;
+  max-width: 1000px;
+}
+.analytics .below .doughnut-chart {
+  background-color: #fff;
+  width: 100%;
+  flex: 0.5;
+  padding: 1rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  max-height: 50vh;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-direction: row;
+}
+
+.card {
+  padding: 1.8rem;
+  border-radius: 7px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  flex-direction: row;
+}
+.card .body {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+  flex-direction: row;
+}
+.card .body i.icon {
+  font-size: 30px;
+  color: darkgreen;
+}
+.card .body .desc {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  flex-direction: column;
+}
+.card .body .desc em {
+  display: block;
+  color: rgba(0, 0, 0, 0.5);
+}
+.card .body .desc em:last-of-type {
+  font-size: 20px;
+  color: darkgreen;
+}
+.card .next {
+  padding: 15px;
+  border-radius: 50%;
+}
+.card .next:hover {
+  background-color: rgba(144, 238, 144, 0.5);
+  cursor: pointer;
+}
+
+@media (max-width: 891px) {
+  .analytics .below .container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .analytics .below .doughnut-chart {
+    max-height: auto;
+    width: auto;
+  }
+}
+@media (max-width: 791px) {
+  .analytics .dashboard {
+    display: none;
+  }
+  .analytics .mobile-dashboard {
+    display: block;
+  }
+  .analytics .below .container {
+    top: 0;
+  }
+}
+@media (max-width: 451px) {
+  .analytics .below .card-container {
+    grid-template-columns: 1fr;
+  }
+}/*# sourceMappingURL=Analytics.module.css.map */

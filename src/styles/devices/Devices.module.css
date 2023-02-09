@@ -1,0 +1,183 @@
+.devices {
+  padding: 1rem;
+  height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+  flex-direction: row;
+}
+.devices .left {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  gap: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  max-width: 49vw;
+}
+.devices .left .device-details {
+  padding: 1rem;
+  height: auto;
+  width: inherit;
+  position: relative;
+}
+.devices .left .device-details .details {
+  max-height: 35vh;
+  overflow-y: auto;
+  padding: 1rem;
+}
+.devices .left .device-details .details ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.devices .left .device-details .details ul li {
+  display: block;
+  padding: 6px;
+}
+.devices .left .device-details .details ul li em:first-of-type {
+  font-weight: bold;
+}
+.devices .left .map-container {
+  max-width: 49vw;
+  overflow-x: auto;
+  height: 460px;
+}
+.devices .right {
+  flex: 1;
+  max-height: 98vh;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  gap: 10px;
+}
+.devices .right .search-container {
+  width: 50%;
+}
+.devices .right .search-container .input {
+  width: 100%;
+}
+.devices .right .users {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.device-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  flex-direction: row;
+  padding: 1rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+.device-card .img-container {
+  padding: 10px;
+}
+.device-card .img-container img {
+  width: 50px;
+  height: 50px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: top;
+     object-position: top;
+  border-radius: 50%;
+}
+.device-card .details {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 7px;
+  flex-direction: column;
+}
+.device-card .details em {
+  display: block;
+}
+.device-card .details em:first-of-type {
+  font-size: 16px;
+  font-weight: bold;
+}
+.device-card .actions button {
+  background: darkgreen;
+  color: white;
+}
+.device-card .actions button:hover {
+  background: white;
+  color: darkgreen;
+}
+
+.devices-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: auto;
+  gap: 10px;
+  padding: 10px;
+  overflow-x: hidden;
+}
+
+@media (max-width: 1000px) {
+  .devices-list {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 991px) {
+  .devices {
+    overflow-y: auto;
+  }
+  .devices .left .device-details {
+    grid-template-columns: 1fr;
+  }
+  .devices .left .device-details .details {
+    border: none;
+  }
+  .devices .left .map-container {
+    height: 500px;
+  }
+  .devices .right {
+    height: auto;
+    max-height: 300vh;
+  }
+  .devices .right .users {
+    max-height: 140vh;
+  }
+}
+@media (max-width: 691px) {
+  .devices {
+    display: block;
+  }
+  .devices .left {
+    max-width: 150vw;
+    min-height: 100vh;
+    margin-bottom: 1rem;
+  }
+  .devices .left .device-details .details {
+    max-height: 50vh;
+  }
+  .devices .left .map-container {
+    background: #000;
+    max-width: 100%;
+    height: 50vh;
+  }
+  .devices .right {
+    max-width: 100vw;
+  }
+  .devices .right::before {
+    content: "Militants";
+    font-size: 30px;
+    font-weight: bold;
+    margin: 1rem 0;
+  }
+}
+@media (max-width: 451px) {
+  .device-card {
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+  }
+}/*# sourceMappingURL=Devices.module.css.map */

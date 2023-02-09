@@ -1,0 +1,59 @@
+.login {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1rem;
+  flex-direction: column;
+}
+.login em {
+  font-size: 40px;
+  text-align: center;
+  line-height: 40px;
+  margin: 2rem 0;
+}
+.login .form {
+  width: 100%;
+}
+.login .input {
+  width: 400px;
+}
+.login .input > div:first-of-type {
+  height: 70px;
+  width: 100%;
+}
+.login .actions button {
+  width: 200px;
+  height: 60px;
+  background: rgb(55, 165, 66);
+  color: white;
+}
+.login .actions button:hover {
+  background: white;
+  color: rgb(55, 165, 66);
+}
+.login .actions button i {
+  font-size: 20px;
+}
+
+@media (max-width: 700px) {
+  .login {
+    align-items: center;
+    gap: 0;
+  }
+  .login .form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-direction: column;
+  }
+}
+@media (max-width: 451px) {
+  .login .form {
+    width: 100%;
+  }
+  .login .input {
+    width: 90%;
+  }
+}/*# sourceMappingURL=Login.module.css.map */

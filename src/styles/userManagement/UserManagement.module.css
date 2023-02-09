@@ -1,0 +1,232 @@
+.users {
+  padding: 1rem;
+  height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+  flex-direction: row;
+}
+.users .left {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  gap: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  max-width: 49vw;
+}
+.users .left .user-details {
+  padding: 1rem;
+  height: auto;
+  width: inherit;
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.7fr 1fr;
+  grid-auto-rows: auto;
+  gap: 10px;
+}
+.users .left .user-details .details {
+  max-height: 35vh;
+  overflow-y: auto;
+  padding: 1rem;
+  border-left: 1px solid rgba(0, 0, 0, 0.3);
+}
+.users .left .user-details .details ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.users .left .user-details .details ul li {
+  display: block;
+  padding: 6px;
+}
+.users .left .user-details .details ul li em:first-of-type {
+  font-weight: bold;
+}
+.users .left .map-container {
+  max-width: 49vw;
+  overflow-x: auto;
+  height: 460px;
+}
+.users .right {
+  flex: 1;
+  max-height: 98vh;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  gap: 10px;
+}
+.users .right .search-container {
+  width: 50%;
+}
+.users .right .search-container .input {
+  width: 100%;
+}
+.users .right .users {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.users-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: auto;
+  gap: 10px;
+  padding: 10px;
+  overflow-x: hidden;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  flex-direction: row;
+  padding: 1rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+.user-card .img-container {
+  padding: 10px;
+}
+.user-card .img-container img {
+  width: 50px;
+  height: 50px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: top;
+     object-position: top;
+  border-radius: 50%;
+}
+.user-card .details {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 7px;
+  flex-direction: column;
+}
+.user-card .details em {
+  display: block;
+}
+.user-card .details em:first-of-type {
+  font-size: 16px;
+  font-weight: bold;
+}
+.user-card .actions button {
+  background: darkgreen;
+  color: white;
+}
+.user-card .actions button:hover {
+  background: white;
+  color: darkgreen;
+}
+
+@media (max-width: 1000px) {
+  .users-list {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 991px) {
+  .users {
+    overflow-y: auto;
+  }
+  .users .left .user-details {
+    grid-template-columns: 1fr;
+  }
+  .users .left .user-details .details {
+    border: none;
+  }
+  .users .left .map-container {
+    height: 500px;
+  }
+  .users .right {
+    height: auto;
+    max-height: 300vh;
+  }
+  .users .right .users {
+    max-height: 140vh;
+  }
+  .devices {
+    overflow-y: auto;
+  }
+  .devices .left .device-details {
+    grid-template-columns: 1fr;
+  }
+  .devices .left .device-details .details {
+    border: none;
+  }
+  .devices .left .map-container {
+    height: 500px;
+  }
+  .devices .right {
+    height: auto;
+    max-height: 300vh;
+  }
+  .devices .right .users {
+    max-height: 140vh;
+  }
+}
+@media (max-width: 691px) {
+  .users {
+    display: block;
+  }
+  .users .left {
+    max-width: 150vw;
+    min-height: 100vh;
+    margin-bottom: 1rem;
+  }
+  .users .left .user-details .details {
+    max-height: 50vh;
+  }
+  .users .left .map-container {
+    background: #000;
+    max-width: 100%;
+    height: 50vh;
+  }
+  .users .right {
+    max-width: 100vw;
+  }
+  .users .right::before {
+    content: "Militants";
+    font-size: 30px;
+    font-weight: bold;
+    margin: 1rem 0;
+  }
+  .devices {
+    display: block;
+  }
+  .devices .left {
+    max-width: 150vw;
+    min-height: 100vh;
+    margin-bottom: 1rem;
+  }
+  .devices .left .device-details .details {
+    max-height: 50vh;
+  }
+  .devices .left .map-container {
+    background: #000;
+    max-width: 100%;
+    height: 50vh;
+  }
+  .devices .right {
+    max-width: 100vw;
+  }
+  .devices .right::before {
+    content: "Militants";
+    font-size: 30px;
+    font-weight: bold;
+    margin: 1rem 0;
+  }
+}
+@media (max-width: 451px) {
+  .user-card {
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+  }
+}/*# sourceMappingURL=UserManagement.module.css.map */

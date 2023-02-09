@@ -748,5 +748,205 @@
       "station": "Benin Barracks",
       "state": "FCT"
     }
+  ],
+  "stations": [
+    {
+      "_id": "63e4ebd70969ba50a995a07f",
+      "name": "AkwaIbom barracks",
+      "dateAdded": "Mon Sep 18 2000 02:23:18 GMT+0100 (West Africa Standard Time)",
+      "address": "604 Grimes Road, Joes, Massachusetts, 924",
+      "location": {
+        "lat": 13.009116,
+        "lng": 3.050868
+      },
+      "state": "Anambra state"
+    },
+    {
+      "_id": "63e4ebd7315f589e474f300b",
+      "name": "Abeokuta Barracks",
+      "dateAdded": "Mon Jul 26 1982 19:02:24 GMT+0100 (West Africa Standard Time)",
+      "address": "497 Chestnut Street, Shepardsville, Missouri, 5126",
+      "location": {
+        "lat": 9.798442,
+        "lng": 11.622389
+      },
+      "state": "Edo state"
+    },
+    {
+      "_id": "63e4ebd7b8e16eaf86d9d4f6",
+      "name": "AkwaIbom barracks",
+      "dateAdded": "Tue Jan 06 1976 14:45:05 GMT+0100 (West Africa Standard Time)",
+      "address": "447 Heath Place, Maybell, Louisiana, 9071",
+      "location": {
+        "lat": 12.538379,
+        "lng": 4.809958
+      },
+      "state": "FCT"
+    },
+    {
+      "_id": "63e4ebd7187d7e0110468d14",
+      "name": "Benin Barracks",
+      "dateAdded": "Fri Oct 06 1995 15:00:57 GMT+0100 (West Africa Standard Time)",
+      "address": "815 Albany Avenue, Umapine, Vermont, 415",
+      "location": {
+        "lat": 4.001012,
+        "lng": 9.338921
+      },
+      "state": "FCT"
+    },
+    {
+      "_id": "63e4ebd71fe9fc07216ea3f8",
+      "name": "AkwaIbom barracks",
+      "dateAdded": "Fri Jan 30 2015 16:49:10 GMT+0100 (West Africa Standard Time)",
+      "address": "988 Banner Avenue, Wyoming, Virginia, 9330",
+      "location": {
+        "lat": 8.108443,
+        "lng": 10.599676
+      },
+      "state": "FCT"
+    },
+    {
+      "_id": "63e4ebd70474e29d567b32c6",
+      "name": "Abuja Barracks",
+      "dateAdded": "Sat Aug 07 2004 14:06:13 GMT+0100 (West Africa Standard Time)",
+      "address": "804 Tillary Street, Terlingua, Kansas, 5123",
+      "location": {
+        "lat": 12.361902,
+        "lng": 12.97145
+      },
+      "state": "Ogun state"
+    },
+    {
+      "_id": "63e4ebd732df77f432305d4f",
+      "name": "Awka Barracks",
+      "dateAdded": "Sat Jun 18 1988 15:24:13 GMT+0100 (West Africa Standard Time)",
+      "address": "948 Holmes Lane, Belgreen, Connecticut, 4983",
+      "location": {
+        "lat": 5.288706,
+        "lng": 8.680216
+      },
+      "state": "AkwaIbom state"
+    },
+    {
+      "_id": "63e4ebd7441828770d5ec4f9",
+      "name": "Abeokuta Barracks",
+      "dateAdded": "Sat Apr 14 2018 05:41:04 GMT+0100 (West Africa Standard Time)",
+      "address": "525 Nautilus Avenue, Sandston, Indiana, 5507",
+      "location": {
+        "lat": 12.156331,
+        "lng": 7.341724
+      },
+      "state": "FCT"
+    },
+    {
+      "_id": "63e4ebd7415cfda4c34ba9c9",
+      "name": "Abeokuta Barracks",
+      "dateAdded": "Fri Feb 08 1974 11:51:42 GMT+0100 (West Africa Standard Time)",
+      "address": "553 Aster Court, Yorklyn, South Carolina, 7558",
+      "location": {
+        "lat": 9.553975,
+        "lng": 8.28923
+      },
+      "state": "FCT"
+    },
+    {
+      "_id": "63e4ebd744b94a3890ad1fc9",
+      "name": "Benin Barracks",
+      "dateAdded": "Sat Dec 10 1977 04:11:16 GMT+0100 (West Africa Standard Time)",
+      "address": "185 Gerald Court, Talpa, Kentucky, 775",
+      "location": {
+        "lat": 11.058321,
+        "lng": 6.498223
+      },
+      "state": "Ogun state"
+    },
+    {
+      "_id": "63e4ebd71c6e299d0938e163",
+      "name": "Awka Barracks",
+      "dateAdded": "Tue Jun 29 2021 21:39:01 GMT+0100 (West Africa Standard Time)",
+      "address": "858 Foster Avenue, Richville, Marshall Islands, 9203",
+      "location": {
+        "lat": 10.744074,
+        "lng": 8.233774
+      },
+      "state": "Anambra state"
+    },
+    {
+      "_id": "63e4ebd7ff9d6e73d99bded6",
+      "name": "AkwaIbom barracks",
+      "dateAdded": "Tue Oct 19 1982 02:04:24 GMT+0100 (West Africa Standard Time)",
+      "address": "670 Quincy Street, Berlin, Michigan, 8965",
+      "location": {
+        "lat": 8.979012,
+        "lng": 9.285785
+      },
+      "state": "Ogun state"
+    },
+    {
+      "_id": "63e4ebd777d5be9e62ba7962",
+      "name": "Abuja Barracks",
+      "dateAdded": "Mon Nov 24 1986 11:14:31 GMT+0100 (West Africa Standard Time)",
+      "address": "635 Fairview Place, Dunbar, Montana, 1936",
+      "location": {
+        "lat": 7.723832,
+        "lng": 9.487399
+      },
+      "state": "Lagos state"
+    },
+    {
+      "_id": "63e4ebd76d284cae769bc566",
+      "name": "Benin Barracks",
+      "dateAdded": "Fri Nov 12 2021 12:27:59 GMT+0100 (West Africa Standard Time)",
+      "address": "966 Conselyea Street, Sardis, Illinois, 6973",
+      "location": {
+        "lat": 6.390315,
+        "lng": 6.731868
+      },
+      "state": "FCT"
+    },
+    {
+      "_id": "63e4ebd767e8677adec9fe1b",
+      "name": "Awka Barracks",
+      "dateAdded": "Thu Jun 16 1983 03:17:25 GMT+0100 (West Africa Standard Time)",
+      "address": "446 Joralemon Street, Nord, Puerto Rico, 8595",
+      "location": {
+        "lat": 4.606647,
+        "lng": 8.155053
+      },
+      "state": "Anambra state"
+    },
+    {
+      "_id": "63e4ebd7084c64452c88ca5a",
+      "name": "Benin Barracks",
+      "dateAdded": "Sat Sep 04 2021 07:17:58 GMT+0100 (West Africa Standard Time)",
+      "address": "821 Legion Street, Harviell, New Jersey, 7413",
+      "location": {
+        "lat": 12.947465,
+        "lng": 11.679291
+      },
+      "state": "AkwaIbom state"
+    },
+    {
+      "_id": "63e4ebd763515ff994cdcf09",
+      "name": "Awka Barracks",
+      "dateAdded": "Mon Feb 02 1998 13:23:00 GMT+0100 (West Africa Standard Time)",
+      "address": "886 Montgomery Street, Dubois, Tennessee, 8051",
+      "location": {
+        "lat": 10.772949,
+        "lng": 8.425102
+      },
+      "state": "Ogun state"
+    },
+    {
+      "_id": "63e4ebd7674623f5fa1fd9b4",
+      "name": "Benin Barracks",
+      "dateAdded": "Tue Aug 01 2006 02:58:37 GMT+0100 (West Africa Standard Time)",
+      "address": "509 Marconi Place, Warsaw, Oklahoma, 9828",
+      "location": {
+        "lat": 4.278057,
+        "lng": 13.215832
+      },
+      "state": "AkwaIbom state"
+    }
   ]
 }

@@ -1,0 +1,250 @@
+.landing {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: minmax(100vh, 120vh);
+  gap: 0px;
+  max-width: 100vw;
+}
+.landing > section {
+  padding: 5rem 10rem;
+  position: relative;
+}
+.landing > section .bg {
+  width: 100vw;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.billboard p,
+.billboard em {
+  filter: drop-shadow(0px 0px 20px black);
+}
+.billboard .bg {
+  background: url("../../assets/img/Nigeria-soldiers.png");
+  background-size: cover;
+  opacity: 1;
+}
+.billboard .main {
+  color: white;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: minmax(100%, auto);
+  gap: 0;
+}
+.billboard .logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-direction: row;
+}
+.billboard .logo-container .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-direction: column;
+}
+.billboard .logo-container .logo em:first-of-type {
+  font-size: 60px;
+  font-weight: normal;
+}
+.billboard .logo-container .logo::before {
+  content: "";
+  position: relative;
+  display: block;
+  width: 200px;
+  height: 200px;
+  background-color: rgb(55, 165, 66);
+  background-image: url("../../assets/img/logo.png");
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: 200px;
+}
+
+.login {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1rem;
+  flex-direction: column;
+}
+.login em {
+  font-size: 40px;
+  text-align: center;
+  line-height: 40px;
+  margin: 2rem 0;
+}
+.login .form {
+  width: 100%;
+}
+.login .input {
+  width: 400px;
+}
+.login .input > div:first-of-type {
+  height: 70px;
+  width: 100%;
+}
+.login .actions button {
+  width: 200px;
+  height: 60px;
+  background: rgb(55, 165, 66);
+  color: white;
+}
+.login .actions button:hover {
+  background: white;
+  color: rgb(55, 165, 66);
+}
+.login .actions button i {
+  font-size: 20px;
+}
+
+.banner p,
+.banner em,
+.banner h1 {
+  filter: drop-shadow(0px 0px 30px black);
+}
+.banner .bg {
+  background-size: cover;
+}
+.banner .main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1rem;
+  flex-direction: row;
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  max-width: 100vw;
+}
+.banner .main .content-container {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  flex-direction: column;
+}
+.banner .main .content-container h1 {
+  font-size: 80px;
+  font-weight: normal;
+  color: white;
+}
+.banner .main .content-container h1 span {
+  color: rgb(55, 165, 66);
+}
+.banner .main .content-container p {
+  font-size: 20px;
+  color: white;
+}
+.banner .main .icon-container {
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  flex-direction: column;
+}
+.banner .main .icon-container div {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  background: rgb(55, 165, 66);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-direction: row;
+}
+.banner .main .icon-container div i {
+  font-size: 50px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-direction: row;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-direction: column;
+  padding: 3rem;
+  background-color: darkgreen;
+  color: white;
+  text-align: center;
+}
+.footer h1 {
+  font-weight: normal;
+}
+
+@media (max-width: 1000px) {
+  .landing {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  .landing > section {
+    padding: 5rem;
+  }
+}
+@media (max-width: 700px) {
+  .landing {
+    grid-auto-rows: minmax(100vh, auto);
+  }
+  .landing > section {
+    padding: 1rem;
+  }
+  .billboard .main {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+  .login {
+    align-items: center;
+    gap: 0;
+  }
+  .login .form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-direction: column;
+  }
+}
+@media (max-width: 600px) {
+  .banner .main {
+    flex-direction: column;
+    align-items: center;
+  }
+  .banner .main .content-container {
+    align-items: center;
+    text-align: center;
+  }
+}
+@media (max-width: 451px) {
+  .login .form {
+    width: 100%;
+  }
+  .login .input {
+    width: 90%;
+  }
+  .banner .main > div {
+    transform: scale(0.8);
+  }
+}
+@media (max-width: 421px) {
+  .landing > section {
+    padding: 0;
+  }
+}/*# sourceMappingURL=Landing.module.css.map */

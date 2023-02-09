@@ -1,0 +1,255 @@
+.home {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+.home .profile-parent {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.home .profile-parent .toogle-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-direction: row;
+  padding: 10px;
+}
+.home .profile-parent .toogle-profile {
+  cursor: pointer;
+  transition: 500ms;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  box-shadow: 0px 0px 10px black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0px;
+  flex-direction: row;
+}
+.home .profile-parent .toogle-profile i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0px;
+  flex-direction: row;
+  text-align: center;
+}
+
+.profile {
+  height: 90vh;
+  width: 300px;
+  background-color: rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  position: relative;
+  right: 1rem;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+}
+.profile .profile-container {
+  border-radius: 1rem;
+  overflow-y: hidden;
+}
+.profile .profile-container .bg {
+  height: 130px;
+  background: url("../../assets/img/flag-on-uniform.png");
+  width: 100%;
+}
+.profile .profile-container .details-container {
+  background: rgba(144, 238, 144, 0.3);
+  height: 140px;
+}
+.profile .profile-container .details-container .details {
+  text-align: center;
+  position: relative;
+  top: -70px;
+}
+.profile .profile-container .details-container .details .img-container img {
+  width: 120px;
+  height: 120px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid darkgreen;
+}
+.profile .profile-container .details-container .details em:first-of-type {
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 30px;
+}
+.profile .profile-container .details-container .details a {
+  display: block;
+  cursor: pointer;
+}
+
+.menu {
+  position: absolute;
+  margin-top: 1rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  height: 95vh;
+  padding: 10px;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  transition: 0.3s;
+  max-width: 60px;
+  width: 60px;
+  overflow-x: hidden;
+}
+.menu em {
+  color: darkgreen;
+  display: none;
+}
+.menu:hover {
+  width: 250px;
+  max-width: 300px;
+}
+.menu:hover em {
+  display: block;
+}
+.menu .logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+.menu .logo-container img {
+  width: 40px;
+  height: 40px;
+}
+.menu .logo-container em {
+  font-size: 20px;
+  font-weight: bold;
+  color: darkgreen;
+}
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.menu ul li {
+  cursor: pointer;
+  padding: 10px 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+  flex-direction: row;
+}
+.menu ul li i {
+  font-size: 23px;
+  color: rgb(4, 57, 4);
+}
+.menu ul li:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.map-tab {
+  width: 100vw;
+  height: 100vh;
+}
+
+.profile-animate-enter {
+  width: 0;
+  overflow-x: hidden;
+  right: -1000px;
+  transition: 500ms;
+}
+
+.profile-animate-enter-done {
+  right: 1rem;
+  transition: 500ms;
+}
+
+.profile-animate-exit-active {
+  width: 0;
+  overflow-x: hidden;
+  right: -1000px;
+  transition: 500ms;
+}
+
+.profile-animate-exit-done {
+  display: none;
+}
+
+.profile-animate-appear {
+  width: 0;
+  overflow-x: hidden;
+  right: -1000px;
+  transition: 500ms;
+}
+
+.profile-animate-appear-done {
+  right: 1rem;
+  transition: 500ms;
+}
+
+.menu-animate-enter {
+  width: 0;
+  overflow-x: hidden;
+  left: -1000px;
+  transition: 500ms;
+}
+
+.menu-animate-enter-done {
+  left: 1rem;
+  transition: 500ms;
+}
+
+.menu-animate-exit-active {
+  width: 0;
+  overflow-x: hidden;
+  left: -1000px;
+  transition: 500ms;
+}
+
+.menu-animate-exit-done {
+  display: none;
+}
+
+.menu-animate-appear {
+  width: 0;
+  overflow-x: hidden;
+  left: -1000px;
+  transition: 500ms;
+}
+
+.menu-animate-appear-done {
+  left: 1rem;
+  transition: 500ms;
+}
+
+@keyframes slideIn {
+  0% {
+    display: block;
+  }
+  25% {
+    right: -1000px;
+  }
+  100% {
+    right: 1rem;
+  }
+}
+@keyframes slideOut {
+  0% {
+    right: 1rem;
+  }
+  75% {
+    right: -1000px;
+  }
+  100% {
+    display: none;
+  }
+}/*# sourceMappingURL=Home.module.css.map */
