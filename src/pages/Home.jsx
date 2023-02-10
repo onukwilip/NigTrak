@@ -13,7 +13,7 @@ import Ranks from "../components/Ranks";
 import { Stations } from "../components/Stations";
 import data from "../data.json";
 import { InfoWindow, Marker } from "@react-google-maps/api";
-
+//
 const MapTab = ({ position }) => {
   const [showInfo, setShowInfo] = useState(/**@type data.users[0] */ null);
   return (
