@@ -6,16 +6,30 @@ import { CSSTransition } from "react-transition-group";
 import { Route, Routes } from "react-router-dom";
 import Menu from "../components/Menu";
 import Profile from "../components/Profile";
-import { AllUsers } from "../components/UsersManagement";
+import { AllUsers, ranks } from "../components/UsersManagement";
 import { AllDevices } from "../components/DevicesManagement";
 import { Analytics } from "../components/Analytics";
 import Ranks from "../components/Ranks";
 import { Stations } from "../components/Stations";
+import data from "../data.json";
+import { Marker } from "@react-google-maps/api";
 
 const MapTab = ({ position }) => {
   return (
     <div className={css["map-tab"]}>
-      {position && <Map newCenter={position} zoom={10}></Map>}
+      {position && (
+        <Map newCenter={position} zoom={10}>
+          {data.users.map((user) => (
+            <Marker
+              position={user.location}
+              icon={{
+                url: ranks[user.rank],
+                scaledSize: new window.google.maps.Size(35, 35),
+              }}
+            />
+          ))}
+        </Map>
+      )}
     </div>
   );
 };
