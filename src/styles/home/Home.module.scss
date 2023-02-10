@@ -95,6 +95,9 @@ $transition-length: 500ms;
   max-width: 60px;
   width: 60px;
   overflow-x: hidden;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   em {
     color: darkgreen;
     display: none;
@@ -102,8 +105,18 @@ $transition-length: 500ms;
   &:hover {
     width: 250px;
     max-width: 300px;
+    ul li {
+      justify-content: start;
+      i {
+        width: auto;
+      }
+    }
     em {
       display: block;
+    }
+    &::-webkit-scrollbar {
+      display: block;
+      width: 5px;
     }
   }
   .logo-container {
@@ -123,34 +136,27 @@ $transition-length: 500ms;
     list-style-type: none;
     margin: 0;
     padding: 0;
-    // transition: 0.3s;
-    // max-width: 50px;
-    // width: 45px;
-    // overflow-x: hidden;
-    // em {
-    //   color: white;
-    //   display: none;
-    // }
     li {
       cursor: pointer;
       padding: 10px 10px;
       border-radius: 5px;
-      @include flex(center, flex-start, 15px, row);
+      @include flex(center, center, 15px, row);
+      width: 100%;
       i {
         font-size: 23px;
         color: rgb(4, 57, 4);
+        width: 100%;
+      }
+      i.dot {
+        font-size: 15px;
       }
       &:hover {
         background-color: rgba(black, 0.1);
       }
     }
-    // &:hover {
-    //   width: 250px;
-    //   max-width: 250px;
-    //   em {
-    //     display: block;
-    //   }
-    // }
+  }
+  ul.submenu {
+    // animation: slideDown 2.5s forwards;
   }
 }
 
@@ -272,6 +278,15 @@ $transition-length: 500ms;
   }
   100% {
     display: none;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    height: 0px;
+  }
+  to {
+    height: auto;
   }
 }
 

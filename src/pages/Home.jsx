@@ -13,13 +13,13 @@ import Ranks from "../components/Ranks";
 import { Stations } from "../components/Stations";
 import data from "../data.json";
 import { InfoWindow, Marker } from "@react-google-maps/api";
-//
+
 const MapTab = ({ position }) => {
   const [showInfo, setShowInfo] = useState(/**@type data.users[0] */ null);
   return (
     <div className={css["map-tab"]}>
       {position && (
-        <Map newCenter={position} zoom={10}>
+        <Map newCenter={position} zoom={6.5}>
           {data.users.map((user) => (
             <Marker
               position={user.location}
