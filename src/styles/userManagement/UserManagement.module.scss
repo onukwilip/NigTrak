@@ -181,33 +181,8 @@
         margin: $spacing 0;
       }
     }
-  }
-
-  .devices {
-    display: block;
-    .left {
-      max-width: 150vw;
-      min-height: 100vh;
-      margin-bottom: $spacing;
-      .device-details {
-        .details {
-          max-height: 50vh;
-        }
-      }
-      .map-container {
-        background: #000;
-        max-width: 100%;
-        height: 50vh;
-      }
-    }
-    .right {
-      max-width: 100vw;
-      &::before {
-        content: "Militants";
-        font-size: 30px;
-        font-weight: bold;
-        margin: $spacing 0;
-      }
+    .user-card {
+      margin-bottom: 10px;
     }
   }
 }
