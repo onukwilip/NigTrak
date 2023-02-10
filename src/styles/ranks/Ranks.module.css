@@ -1,1 +1,135 @@
-/*# sourceMappingURL=Ranks.module.css.map */
+.ranks {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  grid-auto-rows: minmax(100vh, auto);
+  gap: 0;
+}
+.ranks .left {
+  padding: 1rem;
+}
+.ranks .left .filter-container {
+  display: grid;
+  grid-template-columns: 0.8fr 1fr;
+  grid-auto-rows: auto;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+.ranks .left .ranks-list-container .ranks-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  gap: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 85vh;
+  padding: 10px;
+  max-width: 100vw;
+}
+.ranks .right {
+  max-width: 100vw;
+  height: 100vh;
+}
+
+.rank-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  flex-direction: column;
+  padding: 1rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  max-width: 90vw;
+}
+.rank-card .img-container {
+  padding: 10px;
+}
+.rank-card .img-container img {
+  width: 50px;
+  height: 50px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: top;
+     object-position: top;
+  border-radius: 50%;
+}
+.rank-card .details {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 7px;
+  flex-direction: column;
+}
+.rank-card .details em {
+  display: block;
+  max-width: 80vw;
+  word-wrap: break-word;
+}
+.rank-card .details em:first-of-type {
+  font-size: 16px;
+  font-weight: bold;
+}
+.rank-card .actions button {
+  background: darkgreen;
+  color: white;
+}
+.rank-card .actions button:hover {
+  background: white;
+  color: darkgreen;
+}
+
+.info {
+  max-width: 300px;
+  overflow-x: auto;
+}
+.info .img-container {
+  padding: 10px;
+}
+.info .img-container img {
+  width: 50px;
+  height: 50px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: top;
+     object-position: top;
+  border-radius: 50%;
+}
+.info .details {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 7px;
+  flex-direction: column;
+}
+.info .details em {
+  display: block;
+  max-width: 80vw;
+  word-wrap: break-word;
+}
+.info .details em:first-of-type {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+@media (max-width: 1000px) {
+  .ranks {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 491px) {
+  .ranks .left .filter-container {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 451px) {
+  .ranks .left .ranks-list-container .ranks-list {
+    padding: 5px;
+  }
+  .rank-card {
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+  }
+}/*# sourceMappingURL=Ranks.module.css.map */

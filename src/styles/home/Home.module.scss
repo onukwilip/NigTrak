@@ -6,7 +6,7 @@ $transition-length: 500ms;
   width: 100vw;
   height: 100vh;
   .profile-parent {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     .toogle-container {
@@ -80,7 +80,7 @@ $transition-length: 500ms;
 }
 
 .menu {
-  position: absolute;
+  position: fixed;
   margin-top: $spacing;
   background-color: rgba(white, 0.5);
   backdrop-filter: blur(10px);

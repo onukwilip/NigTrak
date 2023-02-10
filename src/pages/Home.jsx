@@ -12,9 +12,10 @@ import { Analytics } from "../components/Analytics";
 import Ranks from "../components/Ranks";
 import { Stations } from "../components/Stations";
 import data from "../data.json";
-import { Marker } from "@react-google-maps/api";
+import { InfoWindow, Marker } from "@react-google-maps/api";
 
 const MapTab = ({ position }) => {
+  const [showInfo, setShowInfo] = useState(/**@type data.users[0] */ null);
   return (
     <div className={css["map-tab"]}>
       {position && (
@@ -22,12 +23,44 @@ const MapTab = ({ position }) => {
           {data.users.map((user) => (
             <Marker
               position={user.location}
-              icon={{
-                url: ranks[user.rank],
-                scaledSize: new window.google.maps.Size(35, 35),
-              }}
+              icon={
+                window.google && {
+                  url: ranks[user.rank],
+                  scaledSize: new window.google.maps.Size(35, 35),
+                }
+              }
+              onClick={() => setShowInfo(user)}
             />
           ))}
+          {showInfo && (
+            <InfoWindow
+              position={showInfo.location}
+              onCloseClick={() => setShowInfo(null)}
+            >
+              <div className="info">
+                <div className={"img-container"}>
+                  <img
+                    src="https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+                    alt="Militant"
+                  />
+                </div>
+                <div className={"details"}>
+                  <em>
+                    <b>ID:</b> {showInfo?._id}
+                  </em>
+                  <em>
+                    <b>Name:</b> {showInfo?.name}
+                  </em>
+                  <em>
+                    <b>Station:</b> {showInfo?.station}
+                  </em>
+                  <em>
+                    <b>State:</b> {showInfo?.state}
+                  </em>
+                </div>
+              </div>
+            </InfoWindow>
+          )}
         </Map>
       )}
     </div>

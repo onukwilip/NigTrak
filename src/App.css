@@ -5,6 +5,40 @@
   box-sizing: border-box;
 }
 
+.info {
+  max-width: 300px;
+  overflow-x: auto;
+}
+.info .img-container {
+  padding: 10px;
+}
+.info .img-container img {
+  width: 50px;
+  height: 50px;
+  -o-object-fit: cover;
+  object-fit: cover;
+  -o-object-position: top;
+  object-position: top;
+  border-radius: 50%;
+}
+.info .details {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 7px;
+  flex-direction: column;
+}
+.info .details em {
+  display: block;
+  max-width: 80vw;
+  word-wrap: break-word;
+}
+.info .details em:first-of-type {
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .rank {
   width: 20px;
   height: 20px;
