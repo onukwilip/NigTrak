@@ -12,11 +12,18 @@ const mapContainerStyle = {
 };
 
 const center = {
-  lat: -3.745,
-  lng: -38.523,
+  lat: 9.082,
+  lng: 8.6753,
 };
 
-const Map = ({ newCenter, zoom, children, reference, circles = [] }) => {
+const Map = ({
+  newCenter,
+  zoom,
+  children,
+  reference,
+  circles = [],
+  showMarker = true,
+}) => {
   const map = useRef();
 
   const { isLoaded } = useJsApiLoader({
@@ -44,7 +51,7 @@ const Map = ({ newCenter, zoom, children, reference, circles = [] }) => {
         zoom={zoom}
         onLoad={onLoad}
       >
-        <Marker position={newCenter} />
+        {showMarker && <Marker position={newCenter} />}
         {circles.map((eachCircle, i) => {
           return (
             <Circle

@@ -948,5 +948,1595 @@
       },
       "state": "AkwaIbom state"
     }
+  ],
+  "ranks": [
+    {
+      "_id": "63e5f9c882e68bd7b74a198a",
+      "rank": "Major General",
+      "members": [
+        {
+          "_id": "63e5f9c8de4daae0a81a099f",
+          "name": "Ashley Jordan",
+          "location": {
+            "lat": 5.179108,
+            "lng": 4.604137
+          },
+          "station": "Ikeja barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c8346338ef68adf225", "#63e5f9c89a8f3c24037a714b"]
+        },
+        {
+          "_id": "63e5f9c8e48a30e5183c8ecb",
+          "name": "Norman Bean",
+          "location": {
+            "lat": 12.730991,
+            "lng": 13.56982
+          },
+          "station": "Ikeja barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c88b09e27f9d29b38c", "#63e5f9c803fd6388886cb792"]
+        },
+        {
+          "_id": "63e5f9c88478132353f42f5a",
+          "name": "Cantrell Spencer",
+          "location": {
+            "lat": 4.760565,
+            "lng": 9.343027
+          },
+          "station": "Awka barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c8473687168fc443e5", "#63e5f9c8073ee150b09e92f1"]
+        },
+        {
+          "_id": "63e5f9c86c166050cb6fdf10",
+          "name": "Cook Jimenez",
+          "location": {
+            "lat": 13.140788,
+            "lng": 10.644799
+          },
+          "station": "Ikeja barracks",
+          "state": "Anambra state",
+          "devices": ["#63e5f9c83df5e3eea395bb18", "#63e5f9c8223ccaedbf2a8799"]
+        },
+        {
+          "_id": "63e5f9c8daafd19fe9ce683b",
+          "name": "Diana Giles",
+          "location": {
+            "lat": 10.318598,
+            "lng": 4.609558
+          },
+          "station": "Benin barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c80551367cb729e44c",
+            "#63e5f9c8e2b9ecbc06efdfed",
+            "#63e5f9c876d4210b9c7a70aa",
+            "#63e5f9c8b2f29a9b983ca247"
+          ]
+        },
+        {
+          "_id": "63e5f9c8c0b808efeebdd749",
+          "name": "Mccray Hall",
+          "location": {
+            "lat": 12.61043,
+            "lng": 6.254868
+          },
+          "station": "Abuja barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c8d0ae8b43f5fa2b80"]
+        },
+        {
+          "_id": "63e5f9c87306194aebee2e20",
+          "name": "Workman Stanley",
+          "location": {
+            "lat": 12.026626,
+            "lng": 10.879312
+          },
+          "station": "Enugu barracks",
+          "state": "Anambra state",
+          "devices": ["#63e5f9c85af6d91c25ebf8f5"]
+        },
+        {
+          "_id": "63e5f9c81782072d00cc40dd",
+          "name": "Estella Dawson",
+          "location": {
+            "lat": 13.599145,
+            "lng": 9.326634
+          },
+          "station": "Awka barracks",
+          "state": "FCT",
+          "devices": ["#63e5f9c8ff12dd91ea97ffb3", "#63e5f9c852dc3490f8f89ed3"]
+        },
+        {
+          "_id": "63e5f9c84e69340dff729d75",
+          "name": "Pratt Caldwell",
+          "location": {
+            "lat": 11.466337,
+            "lng": 8.158658
+          },
+          "station": "Benin barracks",
+          "state": "Edo state",
+          "devices": [
+            "#63e5f9c8445afafa54c4ce39",
+            "#63e5f9c832bb6a6f71c0e7b3",
+            "#63e5f9c80f69509a679755a1",
+            "#63e5f9c85a4640e5e05a72bd"
+          ]
+        },
+        {
+          "_id": "63e5f9c8be820318b193b495",
+          "name": "Gracie Adkins",
+          "location": {
+            "lat": 12.784736,
+            "lng": 6.63022
+          },
+          "station": "Abuja barracks",
+          "state": "Anambra state",
+          "devices": ["#63e5f9c8d36c153fe19caf6b", "#63e5f9c8006ae6eea6d52d25"]
+        },
+        {
+          "_id": "63e5f9c860ba3b2ba77c8d72",
+          "name": "Aguirre Jones",
+          "location": {
+            "lat": 4.589231,
+            "lng": 6.990703
+          },
+          "station": "Ikeja barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c85ad81b5f818a3452"]
+        },
+        {
+          "_id": "63e5f9c8dd6052cfcb0adc47",
+          "name": "Dixie Hewitt",
+          "location": {
+            "lat": 4.265796,
+            "lng": 6.725515
+          },
+          "station": "Enugu barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c8b60dffead1d5a2be",
+            "#63e5f9c8cdd6dbad92ab3e5f",
+            "#63e5f9c8d2fcabb19141e239",
+            "#63e5f9c84b0220aa62926547"
+          ]
+        },
+        {
+          "_id": "63e5f9c8a212c1be16200415",
+          "name": "Walter Gross",
+          "location": {
+            "lat": 11.855246,
+            "lng": 11.824735
+          },
+          "station": "Awka barracks",
+          "state": "Lagos state",
+          "devices": ["#63e5f9c82c3bbf2b933a6755", "#63e5f9c8433d90c4b4cdb482"]
+        },
+        {
+          "_id": "63e5f9c8197912d497ecbf10",
+          "name": "Judith Mullins",
+          "location": {
+            "lat": 8.312641,
+            "lng": 5.390908
+          },
+          "station": "Enugu barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c87b6e5980c014e5e3",
+            "#63e5f9c839af757d7dc08ef8",
+            "#63e5f9c87c56f590ec3ae20d"
+          ]
+        },
+        {
+          "_id": "63e5f9c8f54a9ed634992c16",
+          "name": "Wyatt Lopez",
+          "location": {
+            "lat": 9.00485,
+            "lng": 4.120507
+          },
+          "station": "Awka barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c80e628ac57fed3c08",
+            "#63e5f9c84f6f3a0b0b010b55",
+            "#63e5f9c8a8c8bbe860366050",
+            "#63e5f9c8993383862e30343e"
+          ]
+        },
+        {
+          "_id": "63e5f9c8a36f19a41bd438e3",
+          "name": "Carmela Daniel",
+          "location": {
+            "lat": 6.887231,
+            "lng": 9.699489
+          },
+          "station": "Enugu barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c8b726214e6aef58fa",
+            "#63e5f9c8090eea07c78219d7",
+            "#63e5f9c89d5b7f9780461c3c",
+            "#63e5f9c8f0072e736250885e"
+          ]
+        },
+        {
+          "_id": "63e5f9c83316c8ce85fddcb0",
+          "name": "Cohen Marquez",
+          "location": {
+            "lat": 8.608928,
+            "lng": 10.770212
+          },
+          "station": "Benin barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c82b066e8742c2b286",
+            "#63e5f9c8324630c135735651",
+            "#63e5f9c898b9ef315c5da262"
+          ]
+        },
+        {
+          "_id": "63e5f9c8fbdd0d5c01eb68af",
+          "name": "Watts Henderson",
+          "location": {
+            "lat": 4.110205,
+            "lng": 13.151605
+          },
+          "station": "Awka barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c8aa9eba66d04d8692",
+            "#63e5f9c89a8bc45e14704389",
+            "#63e5f9c80ba4644a0ec24c4d",
+            "#63e5f9c8fa35770035315414"
+          ]
+        },
+        {
+          "_id": "63e5f9c8b0b89a584fe4ab73",
+          "name": "Concetta Graves",
+          "location": {
+            "lat": 11.828452,
+            "lng": 13.368268
+          },
+          "station": "Awka barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c8664547b60d8b56e8",
+            "#63e5f9c8e6d06db200287052",
+            "#63e5f9c8228c1a14e8db59ce"
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "63e5f9c87ab885b966fa708e",
+      "rank": "Sergent",
+      "members": [
+        {
+          "_id": "63e5f9c819ff648735897e93",
+          "name": "Mary Vazquez",
+          "location": {
+            "lat": 6.530857,
+            "lng": 9.348762
+          },
+          "station": "Awka barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c8317a0ae60edb4918",
+            "#63e5f9c89d5b88a91fdb0267",
+            "#63e5f9c84a96bd238c46b4ce",
+            "#63e5f9c8e2477278f36c429f"
+          ]
+        },
+        {
+          "_id": "63e5f9c8b9e6b8492a9057b5",
+          "name": "Maritza Prince",
+          "location": {
+            "lat": 13.045582,
+            "lng": 3.167552
+          },
+          "station": "Awka barracks",
+          "state": "Edo state",
+          "devices": [
+            "#63e5f9c8850167ce6214328e",
+            "#63e5f9c8d2d6a3404c945da8",
+            "#63e5f9c86bed2e0c03ff1092",
+            "#63e5f9c8e8e3f392a5fac682"
+          ]
+        },
+        {
+          "_id": "63e5f9c89843e8437f1698ba",
+          "name": "Jamie Savage",
+          "location": {
+            "lat": 8.723412,
+            "lng": 5.899011
+          },
+          "station": "Abuja barracks",
+          "state": "Enugu state",
+          "devices": [
+            "#63e5f9c8307ac95060a14645",
+            "#63e5f9c865496ec8e73e0e82",
+            "#63e5f9c82fcf8c1b6ccd47a4",
+            "#63e5f9c8500dfb6ad3cf1a39"
+          ]
+        },
+        {
+          "_id": "63e5f9c815fbb276ee0687f9",
+          "name": "Beatriz Dennis",
+          "location": {
+            "lat": 10.01249,
+            "lng": 9.024674
+          },
+          "station": "Abuja barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c8a68dbac7573d9c32",
+            "#63e5f9c8bebe3b3c1904efb4",
+            "#63e5f9c8cd3c6ef21c133502"
+          ]
+        },
+        {
+          "_id": "63e5f9c8c8c3293abaaac0da",
+          "name": "Riggs Harvey",
+          "location": {
+            "lat": 5.745759,
+            "lng": 4.25442
+          },
+          "station": "Ikeja barracks",
+          "state": "Anambra state",
+          "devices": ["#63e5f9c8a8df985c98331ae6"]
+        },
+        {
+          "_id": "63e5f9c8679853afe86992ff",
+          "name": "Laura Oneill",
+          "location": {
+            "lat": 10.941715,
+            "lng": 7.321308
+          },
+          "station": "Enugu barracks",
+          "state": "FCT",
+          "devices": ["#63e5f9c8aa860146915acd2f", "#63e5f9c8e5f20ac3a5c39e03"]
+        },
+        {
+          "_id": "63e5f9c88e897e437ba47a63",
+          "name": "Velez Todd",
+          "location": {
+            "lat": 5.50845,
+            "lng": 13.384622
+          },
+          "station": "Awka barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c89cbc678db73f64ca", "#63e5f9c8bc6141cfebe0cc9c"]
+        },
+        {
+          "_id": "63e5f9c82ebb277aa3c612dd",
+          "name": "Byers Schroeder",
+          "location": {
+            "lat": 4.653093,
+            "lng": 12.332786
+          },
+          "station": "Benin barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c862119bfecbab65a0"]
+        },
+        {
+          "_id": "63e5f9c8e4d842a1a96811ba",
+          "name": "Hillary Hogan",
+          "location": {
+            "lat": 12.725291,
+            "lng": 14.808566
+          },
+          "station": "Benin barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c8e52d260e14ee6cbf"]
+        },
+        {
+          "_id": "63e5f9c8b87bb805935b3819",
+          "name": "Wynn Park",
+          "location": {
+            "lat": 5.387227,
+            "lng": 9.944709
+          },
+          "station": "Benin barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c81a051eeabffcec70",
+            "#63e5f9c8d35b8912c9a696fc",
+            "#63e5f9c82d24d8433efebf9a"
+          ]
+        },
+        {
+          "_id": "63e5f9c83e03f0613573eccc",
+          "name": "Rosalie Banks",
+          "location": {
+            "lat": 5.321109,
+            "lng": 8.234795
+          },
+          "station": "Benin barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c887fd50d23620d5d5"]
+        },
+        {
+          "_id": "63e5f9c8b558bb05f479cb24",
+          "name": "Georgia Wilson",
+          "location": {
+            "lat": 10.481935,
+            "lng": 11.717935
+          },
+          "station": "Abuja barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c85d3ef64f4dfb9e84", "#63e5f9c8dd24f232f66e1afb"]
+        },
+        {
+          "_id": "63e5f9c85536a9b272e6d824",
+          "name": "Mcgowan Zamora",
+          "location": {
+            "lat": 8.944856,
+            "lng": 12.849872
+          },
+          "station": "Benin barracks",
+          "state": "Lagos state",
+          "devices": ["#63e5f9c8a832e1513b5916af"]
+        },
+        {
+          "_id": "63e5f9c85516b2d1f6b4df92",
+          "name": "Oneal Burt",
+          "location": {
+            "lat": 13.284144,
+            "lng": 12.04394
+          },
+          "station": "Ikeja barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c8bc048dd85998f9ba"]
+        },
+        {
+          "_id": "63e5f9c839cbd2e1435d0d9d",
+          "name": "Lisa Sanchez",
+          "location": {
+            "lat": 13.708659,
+            "lng": 11.780772
+          },
+          "station": "Abuja barracks",
+          "state": "Enugu state",
+          "devices": [
+            "#63e5f9c8504bd78a3e935f4b",
+            "#63e5f9c86046b5072c9ecf4e",
+            "#63e5f9c843cb8500d0a5cffb",
+            "#63e5f9c80ff500a212169a7d"
+          ]
+        },
+        {
+          "_id": "63e5f9c85f8519fb62cdb766",
+          "name": "Evelyn Mills",
+          "location": {
+            "lat": 4.949684,
+            "lng": 12.898826
+          },
+          "station": "Benin barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c8f2011af0a9812dee",
+            "#63e5f9c8f63a856872c9cde4",
+            "#63e5f9c8813ef507c91b5ac4"
+          ]
+        },
+        {
+          "_id": "63e5f9c8d7c7a4c791f3928f",
+          "name": "Addie Hunt",
+          "location": {
+            "lat": 9.510292,
+            "lng": 14.153367
+          },
+          "station": "Awka barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c8f5f7043871cbc091",
+            "#63e5f9c8fcbf1fd2d377247f",
+            "#63e5f9c851b053c2afd6ec99",
+            "#63e5f9c8d500c642a4eebebb"
+          ]
+        },
+        {
+          "_id": "63e5f9c85115a0da3f2f593f",
+          "name": "Lola Wade",
+          "location": {
+            "lat": 13.360382,
+            "lng": 8.656839
+          },
+          "station": "Abuja barracks",
+          "state": "Enugu state",
+          "devices": [
+            "#63e5f9c8f85ae75cacec000a",
+            "#63e5f9c8dca70602b66f3a32",
+            "#63e5f9c8c90efd0773e920a6",
+            "#63e5f9c8af5300626e4b8706"
+          ]
+        },
+        {
+          "_id": "63e5f9c87ca0c11c5a1668d8",
+          "name": "Stacey Dyer",
+          "location": {
+            "lat": 13.15977,
+            "lng": 14.393771
+          },
+          "station": "Awka barracks",
+          "state": "Enugu state",
+          "devices": [
+            "#63e5f9c875e4eb651e2e6c5f",
+            "#63e5f9c8c275e91df1568bcd",
+            "#63e5f9c88a413f676fb645f3"
+          ]
+        },
+        {
+          "_id": "63e5f9c84e0b8253d9a333e4",
+          "name": "Copeland Roach",
+          "location": {
+            "lat": 8.65086,
+            "lng": 12.985977
+          },
+          "station": "Enugu barracks",
+          "state": "Enugu state",
+          "devices": [
+            "#63e5f9c825d270aee54fdc2f",
+            "#63e5f9c8feb3c8edebdb80c4",
+            "#63e5f9c88c08600e81b4ad13"
+          ]
+        },
+        {
+          "_id": "63e5f9c885d4367671eb669d",
+          "name": "Clemons Smith",
+          "location": {
+            "lat": 10.086929,
+            "lng": 6.053747
+          },
+          "station": "Awka barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c829d7a7e7b088a390",
+            "#63e5f9c81158810ea7177143",
+            "#63e5f9c8c18d320ad4e7b59a",
+            "#63e5f9c8a852aa3e9abc4d63"
+          ]
+        },
+        {
+          "_id": "63e5f9c803c3bbd1f8417167",
+          "name": "Loraine Donaldson",
+          "location": {
+            "lat": 10.968318,
+            "lng": 8.602132
+          },
+          "station": "Abuja barracks",
+          "state": "FCT",
+          "devices": ["#63e5f9c89853cf89f6c5d3ad"]
+        },
+        {
+          "_id": "63e5f9c81d55d01695c829b4",
+          "name": "Parks Strong",
+          "location": {
+            "lat": 4.032941,
+            "lng": 7.028742
+          },
+          "station": "Benin barracks",
+          "state": "Enugu state",
+          "devices": [
+            "#63e5f9c8863b516015860538",
+            "#63e5f9c89adce606ee63b273",
+            "#63e5f9c8cccc58c596960637",
+            "#63e5f9c8c0d39841e2bfcc91"
+          ]
+        },
+        {
+          "_id": "63e5f9c83a792c6595cf2197",
+          "name": "Aguilar Richardson",
+          "location": {
+            "lat": 8.867306,
+            "lng": 3.95675
+          },
+          "station": "Benin barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c81a48ebe62b744959",
+            "#63e5f9c816cb115df6322bc2",
+            "#63e5f9c8d7a17335cf35accd",
+            "#63e5f9c89afddcb109c7e759"
+          ]
+        },
+        {
+          "_id": "63e5f9c81fd92e9ae33cf0b6",
+          "name": "Charlene Whitaker",
+          "location": {
+            "lat": 7.153153,
+            "lng": 6.223294
+          },
+          "station": "Enugu barracks",
+          "state": "FCT",
+          "devices": ["#63e5f9c807d402385e3f7578", "#63e5f9c86723564a4e812a63"]
+        },
+        {
+          "_id": "63e5f9c8a7c85391b4fc8b9b",
+          "name": "Barton Juarez",
+          "location": {
+            "lat": 8.857005,
+            "lng": 9.127042
+          },
+          "station": "Ikeja barracks",
+          "state": "FCT",
+          "devices": ["#63e5f9c807cd3eb7f1363c7c", "#63e5f9c85414b047909d4ddc"]
+        }
+      ]
+    },
+    {
+      "_id": "63e5f9c85ee43f92155d0524",
+      "rank": "Coloniel",
+      "members": [
+        {
+          "_id": "63e5f9c87e46b9f2c5f22bc3",
+          "name": "Alford Durham",
+          "location": {
+            "lat": 4.322295,
+            "lng": 6.852901
+          },
+          "station": "Abuja barracks",
+          "state": "Edo state",
+          "devices": [
+            "#63e5f9c8df8a8063c8bc413d",
+            "#63e5f9c8f93c0814e46b8b41",
+            "#63e5f9c804ae3c5a4b848b8a"
+          ]
+        },
+        {
+          "_id": "63e5f9c83ebfd60944b7147c",
+          "name": "Julia Serrano",
+          "location": {
+            "lat": 5.69803,
+            "lng": 3.223632
+          },
+          "station": "Benin barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c81d7bc7bc7ea2a81f",
+            "#63e5f9c8a00631936f25381a",
+            "#63e5f9c86daebba618396f3c",
+            "#63e5f9c85f4f7906b716eead"
+          ]
+        },
+        {
+          "_id": "63e5f9c8f9c8f835a7ba5ce0",
+          "name": "Mcleod Vang",
+          "location": {
+            "lat": 10.813657,
+            "lng": 3.742727
+          },
+          "station": "Enugu barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c88ccbccb5b228128e",
+            "#63e5f9c88b64f62f14605fc9",
+            "#63e5f9c85386d93c07501f59",
+            "#63e5f9c8313dbd9ab6208cd7"
+          ]
+        },
+        {
+          "_id": "63e5f9c8987204ad2fe3ab11",
+          "name": "Nona Yang",
+          "location": {
+            "lat": 11.238301,
+            "lng": 10.187195
+          },
+          "station": "Benin barracks",
+          "state": "FCT",
+          "devices": ["#63e5f9c8fc21613ad8e46f3d"]
+        },
+        {
+          "_id": "63e5f9c8a5a90eca9c85cebf",
+          "name": "Pickett Delacruz",
+          "location": {
+            "lat": 7.315449,
+            "lng": 14.88505
+          },
+          "station": "Benin barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c86f8663d58f1e5733"]
+        },
+        {
+          "_id": "63e5f9c8e5df0121509b532b",
+          "name": "Gladys Peters",
+          "location": {
+            "lat": 13.061484,
+            "lng": 14.674435
+          },
+          "station": "Enugu barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c810202f5f06cbc7f6", "#63e5f9c83c40544fb8ee94d1"]
+        },
+        {
+          "_id": "63e5f9c84361b1eed555f620",
+          "name": "Shelton Odonnell",
+          "location": {
+            "lat": 7.274321,
+            "lng": 6.160196
+          },
+          "station": "Awka barracks",
+          "state": "Edo state",
+          "devices": [
+            "#63e5f9c8c12b846301739c8e",
+            "#63e5f9c8264e8eaa463123bd",
+            "#63e5f9c8f06f19ef07092205"
+          ]
+        },
+        {
+          "_id": "63e5f9c83b3ddb8306573f9a",
+          "name": "Coffey Fulton",
+          "location": {
+            "lat": 7.956771,
+            "lng": 14.750594
+          },
+          "station": "Abuja barracks",
+          "state": "Enugu state",
+          "devices": [
+            "#63e5f9c82f8bd44c037ab7a7",
+            "#63e5f9c8d7a98385e5b1730f",
+            "#63e5f9c831363a028aaac479"
+          ]
+        },
+        {
+          "_id": "63e5f9c8a7da3dabac868ea1",
+          "name": "Forbes Allison",
+          "location": {
+            "lat": 11.609651,
+            "lng": 13.965789
+          },
+          "station": "Abuja barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c81ec21768076b570e",
+            "#63e5f9c804cee6bdbd9965aa",
+            "#63e5f9c8d677b3977867b076",
+            "#63e5f9c816bd28a97f519e00"
+          ]
+        },
+        {
+          "_id": "63e5f9c81d985ac4481b69ff",
+          "name": "Polly Guy",
+          "location": {
+            "lat": 10.12297,
+            "lng": 14.136042
+          },
+          "station": "Awka barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c8410f379fde1e87c6",
+            "#63e5f9c84e2ef23664b7d107",
+            "#63e5f9c803fff8b3f7cc17e3"
+          ]
+        },
+        {
+          "_id": "63e5f9c8f534a54aaebe7f0b",
+          "name": "Combs Beach",
+          "location": {
+            "lat": 8.772274,
+            "lng": 3.591824
+          },
+          "station": "Benin barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c802e43c9dfff6855f",
+            "#63e5f9c87c58cddf099c040c",
+            "#63e5f9c8aa7e9baed46221ea"
+          ]
+        },
+        {
+          "_id": "63e5f9c8e114639010e62d60",
+          "name": "Manuela Dickson",
+          "location": {
+            "lat": 5.176456,
+            "lng": 13.145036
+          },
+          "station": "Abuja barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c8e2fed656dcc13d32", "#63e5f9c843a8e52123426b03"]
+        },
+        {
+          "_id": "63e5f9c8f8f2958198328222",
+          "name": "Robyn Austin",
+          "location": {
+            "lat": 9.826253,
+            "lng": 4.026548
+          },
+          "station": "Enugu barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c8ff84c7b4d6352ad2",
+            "#63e5f9c8f67a5b14ccf49e3c",
+            "#63e5f9c85639fd82402626f2",
+            "#63e5f9c88db7c63f9485f0b2"
+          ]
+        },
+        {
+          "_id": "63e5f9c8b5a40a89d4b252f5",
+          "name": "Richard Castillo",
+          "location": {
+            "lat": 5.563918,
+            "lng": 9.946298
+          },
+          "station": "Enugu barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c8300d94921a8392b7",
+            "#63e5f9c86489e09e5bb78d44",
+            "#63e5f9c8c59edde6ef0ad97a"
+          ]
+        },
+        {
+          "_id": "63e5f9c810c5dca72ab64f17",
+          "name": "Calderon Wolfe",
+          "location": {
+            "lat": 12.618858,
+            "lng": 11.247134
+          },
+          "station": "Benin barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c88dd7a710a5989f70",
+            "#63e5f9c8f8ca0ff823aa8bf6",
+            "#63e5f9c82658ccf6c1a22e81"
+          ]
+        },
+        {
+          "_id": "63e5f9c80aaa25de2dffab01",
+          "name": "Holden Walter",
+          "location": {
+            "lat": 4.52503,
+            "lng": 9.002165
+          },
+          "station": "Ikeja barracks",
+          "state": "Edo state",
+          "devices": [
+            "#63e5f9c83caaa535def3ea57",
+            "#63e5f9c8408dc85b310034e6",
+            "#63e5f9c8e3ceb3a1e6fc5152",
+            "#63e5f9c84494306ffb2205df"
+          ]
+        },
+        {
+          "_id": "63e5f9c8976961a59840d009",
+          "name": "Jacqueline Petty",
+          "location": {
+            "lat": 7.140251,
+            "lng": 4.589978
+          },
+          "station": "Benin barracks",
+          "state": "Enugu state",
+          "devices": [
+            "#63e5f9c80d2c57d508be71df",
+            "#63e5f9c8bb8ed3e017362ded",
+            "#63e5f9c8b47f75aa549f2098"
+          ]
+        },
+        {
+          "_id": "63e5f9c8f0f70d8d3dba5728",
+          "name": "Wiley Atkins",
+          "location": {
+            "lat": 13.39279,
+            "lng": 4.268889
+          },
+          "station": "Ikeja barracks",
+          "state": "Lagos state",
+          "devices": ["#63e5f9c8e8f1e76c984a75bc", "#63e5f9c8a91198b4f7d37565"]
+        },
+        {
+          "_id": "63e5f9c85967d8a0a07b2cda",
+          "name": "Nelda Walton",
+          "location": {
+            "lat": 12.708738,
+            "lng": 7.443682
+          },
+          "station": "Abuja barracks",
+          "state": "Edo state",
+          "devices": [
+            "#63e5f9c87e728992dd262811",
+            "#63e5f9c80028674d3eeb669a",
+            "#63e5f9c889d11df2f092a7f2",
+            "#63e5f9c89be17afd5126b0d4"
+          ]
+        },
+        {
+          "_id": "63e5f9c84010f0f5fde16ceb",
+          "name": "Pansy Manning",
+          "location": {
+            "lat": 4.931585,
+            "lng": 8.63358
+          },
+          "station": "Abuja barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c8fde65f0ab5a0cb2c",
+            "#63e5f9c84ee66d639a1abbb7",
+            "#63e5f9c8844f5c821d12136b"
+          ]
+        },
+        {
+          "_id": "63e5f9c8ffcc1027d497160b",
+          "name": "Le Duncan",
+          "location": {
+            "lat": 4.213306,
+            "lng": 3.163848
+          },
+          "station": "Awka barracks",
+          "state": "Enugu state",
+          "devices": [
+            "#63e5f9c8ab6716b588c7d9e1",
+            "#63e5f9c8d3b671f44c722f79",
+            "#63e5f9c8f7959090bec69c2d"
+          ]
+        },
+        {
+          "_id": "63e5f9c85b2bbb64ebea4bd1",
+          "name": "Gale Dixon",
+          "location": {
+            "lat": 8.472811,
+            "lng": 6.452175
+          },
+          "station": "Benin barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c8b7775c14c41045a2"]
+        },
+        {
+          "_id": "63e5f9c8769181a00568c4bb",
+          "name": "Ida Mathis",
+          "location": {
+            "lat": 5.416296,
+            "lng": 6.72314
+          },
+          "station": "Benin barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c8f19d0539b9aaa7bb"]
+        }
+      ]
+    },
+    {
+      "_id": "63e5f9c8ae11cb01409c5e82",
+      "rank": "Leutenant Coloniel",
+      "members": [
+        {
+          "_id": "63e5f9c88db9caf91efa8826",
+          "name": "Marion Horton",
+          "location": {
+            "lat": 10.300065,
+            "lng": 6.420304
+          },
+          "station": "Enugu barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c8b4496d0f115122b7",
+            "#63e5f9c81b5473d31c9d8c0d",
+            "#63e5f9c8224737d799ed8ff4",
+            "#63e5f9c89e0535ffc70e04c4"
+          ]
+        },
+        {
+          "_id": "63e5f9c884bc837bd8eb864d",
+          "name": "Mccormick Lancaster",
+          "location": {
+            "lat": 12.816557,
+            "lng": 10.755588
+          },
+          "station": "Benin barracks",
+          "state": "Lagos state",
+          "devices": ["#63e5f9c8a4400fa27aa83587"]
+        },
+        {
+          "_id": "63e5f9c8f7116980197d3b79",
+          "name": "Blanchard Schultz",
+          "location": {
+            "lat": 5.61941,
+            "lng": 10.330715
+          },
+          "station": "Enugu barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c8401ab8b35be0a28d", "#63e5f9c84a44ae6aade70a06"]
+        },
+        {
+          "_id": "63e5f9c8e4ef895ae88b34f5",
+          "name": "Holcomb Wiggins",
+          "location": {
+            "lat": 5.909272,
+            "lng": 6.26761
+          },
+          "station": "Ikeja barracks",
+          "state": "Anambra state",
+          "devices": ["#63e5f9c8910a3668d53fcc4d", "#63e5f9c8cde57a8ecc366309"]
+        },
+        {
+          "_id": "63e5f9c8652487025f1f7c78",
+          "name": "Candace Herrera",
+          "location": {
+            "lat": 4.571413,
+            "lng": 4.489103
+          },
+          "station": "Abuja barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c8595f9d65829e0d6b",
+            "#63e5f9c8bc607d97b58b46e3",
+            "#63e5f9c8b60583321e9d128c"
+          ]
+        },
+        {
+          "_id": "63e5f9c8109b029b8388505c",
+          "name": "Rochelle Barnes",
+          "location": {
+            "lat": 8.948997,
+            "lng": 9.585887
+          },
+          "station": "Abuja barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c802d9a8a027cc4b11", "#63e5f9c84eb3c1e30451f1e2"]
+        },
+        {
+          "_id": "63e5f9c81952bc057337567e",
+          "name": "Leola Wheeler",
+          "location": {
+            "lat": 7.246856,
+            "lng": 11.125208
+          },
+          "station": "Benin barracks",
+          "state": "FCT",
+          "devices": ["#63e5f9c81c9d8c9832082783"]
+        },
+        {
+          "_id": "63e5f9c8f91d0d140fdd9680",
+          "name": "Wiggins Ayers",
+          "location": {
+            "lat": 8.89743,
+            "lng": 6.980068
+          },
+          "station": "Ikeja barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c883e098fad194bb67"]
+        },
+        {
+          "_id": "63e5f9c8080463f133c04475",
+          "name": "Jackson Zimmerman",
+          "location": {
+            "lat": 10.863824,
+            "lng": 8.168187
+          },
+          "station": "Benin barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c87908615daf7d5ab6",
+            "#63e5f9c8317ff05f364fa4cd",
+            "#63e5f9c85e494a41250d8423",
+            "#63e5f9c8c960f53e1696ef8b"
+          ]
+        },
+        {
+          "_id": "63e5f9c812c09971dd38a49b",
+          "name": "Earnestine Emerson",
+          "location": {
+            "lat": 6.760867,
+            "lng": 6.79807
+          },
+          "station": "Enugu barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c8b23b380dfb3cde4c",
+            "#63e5f9c86583b2c2edcaa081",
+            "#63e5f9c8dc8fe18c40dcd7a9"
+          ]
+        },
+        {
+          "_id": "63e5f9c8716f7bbfa09dbf32",
+          "name": "Carlene Chaney",
+          "location": {
+            "lat": 12.3337,
+            "lng": 9.770927
+          },
+          "station": "Awka barracks",
+          "state": "FCT",
+          "devices": ["#63e5f9c89d443d235fc244c7"]
+        },
+        {
+          "_id": "63e5f9c8a944f65dbcdd9f81",
+          "name": "Mccarthy Robles",
+          "location": {
+            "lat": 8.230255,
+            "lng": 5.21609
+          },
+          "station": "Abuja barracks",
+          "state": "Edo state",
+          "devices": [
+            "#63e5f9c8aa98d93794557983",
+            "#63e5f9c8dd8d06dd3d134920",
+            "#63e5f9c8bda51ab0c9aaaac8",
+            "#63e5f9c8e548c1b8b60446da"
+          ]
+        },
+        {
+          "_id": "63e5f9c8ec37e9f8ac52e40f",
+          "name": "Kline Lee",
+          "location": {
+            "lat": 9.198112,
+            "lng": 13.873727
+          },
+          "station": "Ikeja barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c86292377e2ab74c54",
+            "#63e5f9c8eeea612dbf4067a1",
+            "#63e5f9c8801d3a56f0013728"
+          ]
+        },
+        {
+          "_id": "63e5f9c8fb3946c55d83a1f2",
+          "name": "Fox Harding",
+          "location": {
+            "lat": 12.908546,
+            "lng": 5.094689
+          },
+          "station": "Benin barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c82e43563bdadb2b66"]
+        },
+        {
+          "_id": "63e5f9c8dce6c064463bea04",
+          "name": "Maggie Frederick",
+          "location": {
+            "lat": 11.878192,
+            "lng": 14.981479
+          },
+          "station": "Awka barracks",
+          "state": "Anambra state",
+          "devices": ["#63e5f9c8443e60b1eed3f3e6", "#63e5f9c8b491629e0fed638c"]
+        },
+        {
+          "_id": "63e5f9c8e713a60343c134c1",
+          "name": "Velazquez Morin",
+          "location": {
+            "lat": 11.199809,
+            "lng": 9.336684
+          },
+          "station": "Benin barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c811cedf0d7845b82f",
+            "#63e5f9c85cd7e429d2aa6026",
+            "#63e5f9c8b28be0d329718f63",
+            "#63e5f9c8c4d0fd4f8ecdf28b"
+          ]
+        },
+        {
+          "_id": "63e5f9c878deadadcdacecc7",
+          "name": "Franks Conrad",
+          "location": {
+            "lat": 12.5646,
+            "lng": 5.795452
+          },
+          "station": "Awka barracks",
+          "state": "Enugu state",
+          "devices": [
+            "#63e5f9c8e828816baa688fe8",
+            "#63e5f9c8882783ea06ebb83a",
+            "#63e5f9c8faf5c8b8167ea939"
+          ]
+        },
+        {
+          "_id": "63e5f9c8822032c6c4bf64fb",
+          "name": "Carla Boyd",
+          "location": {
+            "lat": 4.114403,
+            "lng": 11.25321
+          },
+          "station": "Awka barracks",
+          "state": "Edo state",
+          "devices": [
+            "#63e5f9c84f5b793b0bc678fa",
+            "#63e5f9c88cb25310d117fef1",
+            "#63e5f9c81ecb4b49611cbdd9"
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "63e5f9c8297689f6337507c9",
+      "rank": "Sergent",
+      "members": [
+        {
+          "_id": "63e5f9c82f1e4b610907795e",
+          "name": "Campos Simon",
+          "location": {
+            "lat": 7.958174,
+            "lng": 4.764206
+          },
+          "station": "Abuja barracks",
+          "state": "Anambra state",
+          "devices": ["#63e5f9c8773bd2294f2e91fb", "#63e5f9c8cabc9883c125cc83"]
+        },
+        {
+          "_id": "63e5f9c892a450ef55cddf87",
+          "name": "Ballard Morales",
+          "location": {
+            "lat": 6.364455,
+            "lng": 14.560332
+          },
+          "station": "Awka barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c872170dc0f5b7367a"]
+        },
+        {
+          "_id": "63e5f9c851556065cd4f0e41",
+          "name": "Robles Bradshaw",
+          "location": {
+            "lat": 9.268106,
+            "lng": 11.898029
+          },
+          "station": "Ikeja barracks",
+          "state": "Enugu state",
+          "devices": [
+            "#63e5f9c83af610450036eb37",
+            "#63e5f9c802926d46679979cd",
+            "#63e5f9c81c5121793195b1ba"
+          ]
+        },
+        {
+          "_id": "63e5f9c871de623b445f5dc7",
+          "name": "Erica Mendoza",
+          "location": {
+            "lat": 8.277436,
+            "lng": 8.277108
+          },
+          "station": "Ikeja barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c8eb2f5b07e631baa2",
+            "#63e5f9c825ffaa595e64c61b",
+            "#63e5f9c83ea303b98833f065",
+            "#63e5f9c823cdb3fa98699325"
+          ]
+        },
+        {
+          "_id": "63e5f9c83e61d36320efd78b",
+          "name": "Larsen Fuentes",
+          "location": {
+            "lat": 4.046151,
+            "lng": 12.768872
+          },
+          "station": "Abuja barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c897addc2bba01ae5a"]
+        },
+        {
+          "_id": "63e5f9c8c7b8244cf5f5653c",
+          "name": "Josefa Sampson",
+          "location": {
+            "lat": 11.882933,
+            "lng": 4.965448
+          },
+          "station": "Awka barracks",
+          "state": "Edo state",
+          "devices": [
+            "#63e5f9c801882b675b6339d8",
+            "#63e5f9c8d32a66f35d603208",
+            "#63e5f9c8b42519f57747f6a5",
+            "#63e5f9c8974baa1f4ab103a1"
+          ]
+        },
+        {
+          "_id": "63e5f9c8e1843e842b1ac612",
+          "name": "Duncan Coleman",
+          "location": {
+            "lat": 12.468079,
+            "lng": 3.301857
+          },
+          "station": "Abuja barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c8c22400cee39e6fd6",
+            "#63e5f9c80a34f4eda453a16f",
+            "#63e5f9c826539131df2433e5"
+          ]
+        },
+        {
+          "_id": "63e5f9c8b0d9cbe1aefcd116",
+          "name": "Wolfe Gilbert",
+          "location": {
+            "lat": 8.94265,
+            "lng": 7.827341
+          },
+          "station": "Benin barracks",
+          "state": "Lagos state",
+          "devices": ["#63e5f9c87b76b529ffd99281", "#63e5f9c8793b8b09ebdb6e6f"]
+        },
+        {
+          "_id": "63e5f9c8fdadce942ba79b41",
+          "name": "Dora Terry",
+          "location": {
+            "lat": 13.866282,
+            "lng": 7.410249
+          },
+          "station": "Awka barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c8b1b5ac1ae468876d",
+            "#63e5f9c80eb6cb0979fb2cab",
+            "#63e5f9c899553d94b71acffe",
+            "#63e5f9c8fa435e47bd550057"
+          ]
+        },
+        {
+          "_id": "63e5f9c855f15619bc8a8e26",
+          "name": "Grimes Mcdowell",
+          "location": {
+            "lat": 11.998328,
+            "lng": 3.193878
+          },
+          "station": "Enugu barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c8700ec1768af93e08",
+            "#63e5f9c89fc9afbd373f32ce",
+            "#63e5f9c8cd5307d27ff5f71d"
+          ]
+        },
+        {
+          "_id": "63e5f9c864aa69a696d7a224",
+          "name": "Hood Horn",
+          "location": {
+            "lat": 7.92517,
+            "lng": 5.245873
+          },
+          "station": "Enugu barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c81fd4a8cef91576f1",
+            "#63e5f9c84f353b5878196da3",
+            "#63e5f9c85c6a5970527c2bb8",
+            "#63e5f9c834ae87503e50e182"
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "63e5f9c88adcb7c47cceee78",
+      "rank": "General",
+      "members": [
+        {
+          "_id": "63e5f9c8773a6502f7343720",
+          "name": "Roman Weiss",
+          "location": {
+            "lat": 11.536766,
+            "lng": 12.171084
+          },
+          "station": "Ikeja barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c8e5d972dd2d23303f",
+            "#63e5f9c825b142b1bcfc393d",
+            "#63e5f9c86591af039cda97d8"
+          ]
+        },
+        {
+          "_id": "63e5f9c854c22c311e168a43",
+          "name": "Ware Christian",
+          "location": {
+            "lat": 10.202997,
+            "lng": 7.637507
+          },
+          "station": "Benin barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c81b901e326cf28f06"]
+        },
+        {
+          "_id": "63e5f9c8bdef2a0f236a0d52",
+          "name": "Carr Preston",
+          "location": {
+            "lat": 13.218251,
+            "lng": 8.903845
+          },
+          "station": "Abuja barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c8924262a4de6fb19b",
+            "#63e5f9c82ca76c7c583c78ba",
+            "#63e5f9c837a8b8dd01347ee7"
+          ]
+        },
+        {
+          "_id": "63e5f9c8c5f106fb4501cab0",
+          "name": "Long Doyle",
+          "location": {
+            "lat": 4.138528,
+            "lng": 14.72282
+          },
+          "station": "Enugu barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c8e04284b956ff8370", "#63e5f9c8ce9d34baa7491ccf"]
+        },
+        {
+          "_id": "63e5f9c882b2dff1fe437b26",
+          "name": "Moss Nicholson",
+          "location": {
+            "lat": 8.018044,
+            "lng": 13.003712
+          },
+          "station": "Abuja barracks",
+          "state": "Edo state",
+          "devices": [
+            "#63e5f9c8b38689c5ce837ae2",
+            "#63e5f9c81987b9106214bd9b",
+            "#63e5f9c8a077185fd0cd760f"
+          ]
+        },
+        {
+          "_id": "63e5f9c8c8fba105fb8e5598",
+          "name": "Dickson Flowers",
+          "location": {
+            "lat": 13.671324,
+            "lng": 14.187681
+          },
+          "station": "Abuja barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c8edd9223231af2efe",
+            "#63e5f9c8e17243c7977686d7",
+            "#63e5f9c8e86c2babad5b5531"
+          ]
+        },
+        {
+          "_id": "63e5f9c847526c89e5cd5f5d",
+          "name": "Medina Mathews",
+          "location": {
+            "lat": 5.52374,
+            "lng": 5.974036
+          },
+          "station": "Benin barracks",
+          "state": "FCT",
+          "devices": ["#63e5f9c80bf256286ebdf32e", "#63e5f9c8a00aa912be477da7"]
+        },
+        {
+          "_id": "63e5f9c8870d41fd76348d48",
+          "name": "Patsy Browning",
+          "location": {
+            "lat": 8.066597,
+            "lng": 10.142093
+          },
+          "station": "Ikeja barracks",
+          "state": "Enugu state",
+          "devices": [
+            "#63e5f9c89171e582386c2a82",
+            "#63e5f9c897a1cbf0b86d4eaa",
+            "#63e5f9c89af583b860305126"
+          ]
+        },
+        {
+          "_id": "63e5f9c8402e2fc840ce1bcc",
+          "name": "Rhodes Charles",
+          "location": {
+            "lat": 9.001723,
+            "lng": 6.481124
+          },
+          "station": "Abuja barracks",
+          "state": "FCT",
+          "devices": ["#63e5f9c82df04c41e239012a", "#63e5f9c8268c8f7e1cf45f4b"]
+        },
+        {
+          "_id": "63e5f9c8bba39adb9aba67dd",
+          "name": "Horn Rodriquez",
+          "location": {
+            "lat": 11.377541,
+            "lng": 5.616379
+          },
+          "station": "Benin barracks",
+          "state": "Anambra state",
+          "devices": ["#63e5f9c8e7c47944b9b8539c"]
+        },
+        {
+          "_id": "63e5f9c8c429168d870c146f",
+          "name": "Lara Holmes",
+          "location": {
+            "lat": 13.822999,
+            "lng": 13.495573
+          },
+          "station": "Ikeja barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c88371bb5ddd2f9073", "#63e5f9c8377b7282fc18143e"]
+        },
+        {
+          "_id": "63e5f9c8a7447fbdefe309a4",
+          "name": "Burt Parker",
+          "location": {
+            "lat": 5.582085,
+            "lng": 7.062114
+          },
+          "station": "Awka barracks",
+          "state": "Lagos state",
+          "devices": [
+            "#63e5f9c80a9280c0a52eced0",
+            "#63e5f9c8645c26b3e6cb8b08",
+            "#63e5f9c8879ecfc9c1213723",
+            "#63e5f9c80500b3e414ec882c"
+          ]
+        },
+        {
+          "_id": "63e5f9c846ee7015f2fd2703",
+          "name": "Bianca Welch",
+          "location": {
+            "lat": 10.65805,
+            "lng": 5.519439
+          },
+          "station": "Benin barracks",
+          "state": "Edo state",
+          "devices": ["#63e5f9c885ddec02b1540cef"]
+        },
+        {
+          "_id": "63e5f9c8a43c5722e01c3e98",
+          "name": "Margaret Bush",
+          "location": {
+            "lat": 6.282426,
+            "lng": 7.218492
+          },
+          "station": "Benin barracks",
+          "state": "Enugu state",
+          "devices": ["#63e5f9c8689e245485e17b59"]
+        },
+        {
+          "_id": "63e5f9c8a4dd3085af246048",
+          "name": "Castro Summers",
+          "location": {
+            "lat": 13.640576,
+            "lng": 12.170143
+          },
+          "station": "Benin barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c8e7102a3a38f10ff7",
+            "#63e5f9c874fcaa413f810a8b",
+            "#63e5f9c8783789160bd3419b",
+            "#63e5f9c8f705f54c779d7d7d"
+          ]
+        },
+        {
+          "_id": "63e5f9c8d60bc91fbe1aa9fa",
+          "name": "Gates Gray",
+          "location": {
+            "lat": 12.347114,
+            "lng": 4.418583
+          },
+          "station": "Abuja barracks",
+          "state": "Anambra state",
+          "devices": [
+            "#63e5f9c8a0b1cde8ac5bf028",
+            "#63e5f9c82c2fbd3364e88bda",
+            "#63e5f9c86d75d23ef2c6ab75"
+          ]
+        },
+        {
+          "_id": "63e5f9c8ab16f628486d62c8",
+          "name": "Kerri Bray",
+          "location": {
+            "lat": 7.515078,
+            "lng": 3.766867
+          },
+          "station": "Benin barracks",
+          "state": "Anambra state",
+          "devices": ["#63e5f9c8f51c5c59e0404013"]
+        },
+        {
+          "_id": "63e5f9c8a79f8480fddd7a20",
+          "name": "Mcintyre Suarez",
+          "location": {
+            "lat": 8.325098,
+            "lng": 3.09583
+          },
+          "station": "Enugu barracks",
+          "state": "FCT",
+          "devices": [
+            "#63e5f9c832a4a3c3a24bd000",
+            "#63e5f9c8832fb6e1b020194a",
+            "#63e5f9c875d89caf94944619"
+          ]
+        }
+      ]
+    }
   ]
 }

@@ -13,7 +13,7 @@ import Map from "../components/Map";
 import { Button, Input } from "semantic-ui-react";
 import data from "../data.json";
 
-const ranks = {
+export const ranks = {
   General: mRank,
   "Major General": mgRank,
   Coloniel: cRank,
