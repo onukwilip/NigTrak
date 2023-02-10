@@ -180,3 +180,11 @@ export const AllUsers = ({ position }) => {
     </section>
   );
 };
+
+export const CreateUser = () => {
+  return <div>Create User</div>;
+};
+
+export const EditUser = () => {
+  return <div>Edit User</div>;
+};

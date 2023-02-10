@@ -51,10 +51,12 @@ const MenuListItem = ({ eachMenu, i }) => {
     fullHeight: {
       minHeight: "90px",
       height: 40 * eachMenu?.subMenus?.length + "px",
+      overflowY: "hidden",
     },
     exit: {
       minHeight: 0,
       height: 0,
+      overflowY: "hidden",
     },
   };
   return (
@@ -64,13 +66,14 @@ const MenuListItem = ({ eachMenu, i }) => {
           <i className={eachMenu.icon} />
           <em>{eachMenu.name}</em>
         </li>
-        {showSubMenu && eachMenu.subMenus?.length > 0 && (
-          <AnimatePresence>
+        <AnimatePresence>
+          {showSubMenu && eachMenu.subMenus?.length > 0 && (
             <motion.ul
               className={css["submenu"]}
               variants={variants}
               initial="noHeight"
               animate="fullHeight"
+              exit="exit"
             >
               {eachMenu.subMenus.map((eachMenu, i) => (
                 <Link to={eachMenu?.tab || "/home/"} key={i}>
@@ -81,8 +84,8 @@ const MenuListItem = ({ eachMenu, i }) => {
                 </Link>
               ))}
             </motion.ul>
-          </AnimatePresence>
-        )}
+          )}
+        </AnimatePresence>
       </Link>
     </>
   );

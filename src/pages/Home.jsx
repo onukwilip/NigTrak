@@ -6,7 +6,12 @@ import { CSSTransition } from "react-transition-group";
 import { Route, Routes } from "react-router-dom";
 import Menu from "../components/Menu";
 import Profile from "../components/Profile";
-import { AllUsers, ranks } from "../components/UsersManagement";
+import {
+  AllUsers,
+  CreateUser,
+  EditUser,
+  ranks,
+} from "../components/UsersManagement";
 import { AllDevices } from "../components/DevicesManagement";
 import { Analytics } from "../components/Analytics";
 import Ranks from "../components/Ranks";
@@ -116,7 +121,9 @@ const Home = () => {
         <Routes>
           <Route path="/" element={<MapTab position={position} />} />
           <Route path="/analytics" element={<Analytics />} />
-          <Route path="/users" element={<AllUsers position={position} />} />
+          <Route path="/users/" element={<AllUsers position={position} />} />
+          <Route path="users/add" element={<CreateUser />} />
+          <Route path="users/edit" element={<EditUser />} />
           <Route path="/devices" element={<AllDevices />} />
           <Route path="/ranks" element={<Ranks />} />
           <Route path="/stations" element={<Stations />} />
