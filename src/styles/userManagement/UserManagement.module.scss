@@ -124,7 +124,8 @@
         @include grid(1fr 0.4fr, auto, 20px);
         .form-inputs {
           .device-container .devices,
-          .ammo-container .ammos {
+          .ammo-container .ammos,
+          .accessory-container .accessories {
             @include grid(1fr, auto, 10px);
             padding: 5px;
             .message {

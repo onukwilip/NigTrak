@@ -14,6 +14,7 @@ import { Button, Divider, Form, Icon, Input, Message } from "semantic-ui-react";
 import data from "../data.json";
 import walkieTalkieTrans from "../assets/img/walkie-talkie-trans.png";
 import { useInput, useForm } from "use-manage-form";
+import { useNavigate } from "react-router-dom";
 
 export const ranks = {
   General: mRank,
@@ -116,6 +117,11 @@ export const UsersList = ({ users, onViewMore, className }) => {
 export const AllUsers = ({ position }) => {
   const [userProfile, setUserProfile] = useState(data.users[0]);
   const [militaints, setMilitaints] = useState(data.users);
+  const navigate = useNavigate();
+
+  const editUser = () => {
+    navigate(`/home/users/edit/${userProfile?._id}`);
+  };
 
   const onSearch = (/**@type String */ value) => {
     const filtered = data.users.filter(
@@ -177,6 +183,12 @@ export const AllUsers = ({ position }) => {
                 </em>
               </li>
             </ul>
+            <br />
+            <div className="actions">
+              <Button className="button" onClick={editUser}>
+                Edit User
+              </Button>
+            </div>
           </div>
         </div>
         <div className={css["map-container"]}>
@@ -210,6 +222,7 @@ export const CreateUser = () => {
   const [uploaded, setUploaded] = useState(null);
   const [selectedDevices, setSelectedDevices] = useState([]);
   const [selectedAmmos, setSelectedAmmos] = useState([]);
+  const [selectedAccessories, setSelectedAccessories] = useState([]);
   const fileRef = useRef();
   const {
     value: name,
@@ -280,6 +293,13 @@ export const CreateUser = () => {
     reset: resetAmmo,
   } = useInput((value) => true);
 
+  const {
+    value: accessory,
+    onBlur: onAccessoryBlur,
+    onChange: onAccessoryChange,
+    reset: resetAccessory,
+  } = useInput((value) => true);
+
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [
       onNameBlur,
@@ -298,7 +318,9 @@ export const CreateUser = () => {
       resetStation,
       resetDevice,
       resetAmmo,
+      resetAccessory,
       () => setSelectedDevices([]),
+      () => setSelectedAccessories([]),
       () => setSelectedAmmos([]),
       () => setUploaded(null),
     ],
@@ -329,6 +351,14 @@ export const CreateUser = () => {
 
   const removeAmmo = (ammo) =>
     setSelectedAmmos((prev) => prev.filter((prevAmmo) => prevAmmo !== ammo));
+
+  const addAccessories = (e, { value }) =>
+    setSelectedAccessories((prev) => [...prev, value]);
+
+  const removeAccessories = (accessory) =>
+    setSelectedAccessories((prev) =>
+      prev.filter((prevAccessories) => prevAccessories !== accessory)
+    );
 
   const onSubmit = () => {
     if (!formIsValid) return executeBlurHandlers();
@@ -457,6 +487,29 @@ export const CreateUser = () => {
       key: 7,
       value: "Tazer",
       text: "Tazer",
+    },
+  ];
+
+  const accessories = [
+    {
+      key: 0,
+      value: "Helmet",
+      text: "Helmet",
+    },
+    {
+      key: 1,
+      value: "Drone",
+      text: "Drone",
+    },
+    {
+      key: 2,
+      value: "Laptop",
+      text: "Laptop",
+    },
+    {
+      key: 3,
+      value: "Bulletproof",
+      text: "Bulletproof",
     },
   ];
 
@@ -606,6 +659,40 @@ export const CreateUser = () => {
                 </div>
               </div>
               <br />
+              <div className={css["accessory-container"]}>
+                <h3>Accessories</h3>
+                <Form.Select
+                  label="Select an accessory"
+                  placeholder="Select accessory"
+                  options={accessories}
+                  value={accessory}
+                  onChange={(e, { value }) => {
+                    addAccessories(e, { value });
+                    onAccessoryChange(value);
+                  }}
+                  onBlur={onAccessoryBlur}
+                />
+                <div className={css.accessories}>
+                  {selectedAccessories.length > 0 ? (
+                    <>
+                      {selectedAccessories.map((eachAccessory) => (
+                        <>
+                          <Card
+                            item={eachAccessory}
+                            onCancel={removeAccessories}
+                          />
+                        </>
+                      ))}
+                    </>
+                  ) : (
+                    <Message
+                      content="No accessory added"
+                      className={css.message}
+                    />
+                  )}
+                </div>
+              </div>
+              <br />
               <div className={css["ammo-container"]}>
                 <h3>Ammunition</h3>
                 <Form.Select
@@ -685,6 +772,7 @@ export const EditUser = () => {
   const [uploaded, setUploaded] = useState(null);
   const [selectedDevices, setSelectedDevices] = useState([]);
   const [selectedAmmos, setSelectedAmmos] = useState([]);
+  const [selectedAccessories, setSelectedAccessories] = useState([]);
   const fileRef = useRef();
   const {
     value: name,
@@ -755,6 +843,13 @@ export const EditUser = () => {
     reset: resetAmmo,
   } = useInput((value) => true);
 
+  const {
+    value: accessory,
+    onBlur: onAccessoryBlur,
+    onChange: onAccessoryChange,
+    reset: resetAccessory,
+  } = useInput((value) => true);
+
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [
       onNameBlur,
@@ -773,7 +868,9 @@ export const EditUser = () => {
       resetStation,
       resetDevice,
       resetAmmo,
+      resetAccessory,
       () => setSelectedDevices([]),
+      () => setSelectedAccessories([]),
       () => setSelectedAmmos([]),
       () => setUploaded(null),
     ],
@@ -804,6 +901,14 @@ export const EditUser = () => {
 
   const removeAmmo = (ammo) =>
     setSelectedAmmos((prev) => prev.filter((prevAmmo) => prevAmmo !== ammo));
+
+  const addAccessories = (e, { value }) =>
+    setSelectedAccessories((prev) => [...prev, value]);
+
+  const removeAccessories = (accessory) =>
+    setSelectedAccessories((prev) =>
+      prev.filter((prevAccessories) => prevAccessories !== accessory)
+    );
 
   const onSubmit = () => {
     if (!formIsValid) return executeBlurHandlers();
@@ -932,6 +1037,29 @@ export const EditUser = () => {
       key: 7,
       value: "Tazer",
       text: "Tazer",
+    },
+  ];
+
+  const accessories = [
+    {
+      key: 0,
+      value: "Helmet",
+      text: "Helmet",
+    },
+    {
+      key: 1,
+      value: "Drone",
+      text: "Drone",
+    },
+    {
+      key: 2,
+      value: "Laptop",
+      text: "Laptop",
+    },
+    {
+      key: 3,
+      value: "Bulletproof",
+      text: "Bulletproof",
     },
   ];
 
@@ -1075,6 +1203,40 @@ export const EditUser = () => {
                   ) : (
                     <Message
                       content="No device added"
+                      className={css.message}
+                    />
+                  )}
+                </div>
+              </div>
+              <br />
+              <div className={css["accessory-container"]}>
+                <h3>Accessories</h3>
+                <Form.Select
+                  label="Select an accessory"
+                  placeholder="Select accessory"
+                  options={accessories}
+                  value={accessory}
+                  onChange={(e, { value }) => {
+                    addAccessories(e, { value });
+                    onAccessoryChange(value);
+                  }}
+                  onBlur={onAccessoryBlur}
+                />
+                <div className={css.accessories}>
+                  {selectedAccessories.length > 0 ? (
+                    <>
+                      {selectedAccessories.map((eachAccessory) => (
+                        <>
+                          <Card
+                            item={eachAccessory}
+                            onCancel={removeAccessories}
+                          />
+                        </>
+                      ))}
+                    </>
+                  ) : (
+                    <Message
+                      content="No accessory added"
                       className={css.message}
                     />
                   )}
