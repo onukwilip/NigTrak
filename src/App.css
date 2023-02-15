@@ -55,3 +55,8 @@
   color: darkgreen;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
+
+.my-message {
+  width: 100%;
+  background: #000;
+}

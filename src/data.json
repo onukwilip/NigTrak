@@ -749,6 +749,64 @@
       "state": "FCT"
     }
   ],
+  "device-models": [
+    {
+      "_id": "63ecd0e879ffe41dbeb32303",
+      "name": "Huwawei"
+    },
+    {
+      "_id": "63ecd0e8a3d67048c566b6a9",
+      "name": "Samsung"
+    },
+    {
+      "_id": "63ecd0e83413cdb92b503243",
+      "name": "Dell"
+    },
+    {
+      "_id": "63ecd0e8a7a65400bc4d2113",
+      "name": "Huwawei"
+    },
+    {
+      "_id": "63ecd0e830be41e482206404",
+      "name": "Samsung"
+    }
+  ],
+  "accessories": [
+    {
+      "_id": "63ecea09cd0bc979c799d7e4",
+      "name": "Guard"
+    },
+    {
+      "_id": "63ecea09f88d3d1793dfa6e6",
+      "name": "Bulletproof vest"
+    },
+    {
+      "_id": "63ecea0906ecf0c0e7f9e6bc",
+      "name": "Baton"
+    },
+    {
+      "_id": "63ecea09dc26c5b9ba3b0c5b",
+      "name": "Guard"
+    }
+  ],
+  "ammunition": [
+    {
+      "_id": "63eceebe388e703a93497d7a",
+      "name": "AK 47"
+    },
+    {
+      "_id": "63eceebe21330c7714bf7a4f",
+      "name": "Revolver"
+    },
+    {
+      "_id": "63eceebede655bd18f6c7bdf",
+      "name": "Baton"
+    },
+    {
+      "_id": "63eceebe732f049bc8bac43b",
+      "name": "Pistol"
+    }
+  ],
   "stations": [
     {
       "_id": "63e4ebd70969ba50a995a07f",

@@ -14,7 +14,7 @@ import { Button, Divider, Form, Icon, Input, Message } from "semantic-ui-react";
 import data from "../data.json";
 import walkieTalkieTrans from "../assets/img/walkie-talkie-trans.png";
 import { useInput, useForm } from "use-manage-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const ranks = {
   General: mRank,
@@ -146,7 +146,7 @@ export const AllUsers = ({ position }) => {
             />
           </div>
           <div className={css.details}>
-            <ul>
+            <ul className={css["list"]}>
               <li>
                 <em>Address</em>: <em>{userProfile["address"]}</em>
               </li>
@@ -176,11 +176,33 @@ export const AllUsers = ({ position }) => {
               </li>
               <li>
                 <em>Devices</em>:{" "}
-                <em>
-                  {userProfile["devices"].map(
-                    (eachDevice) => `${eachDevice}, `
-                  )}
-                </em>
+                <ul className={css["mini-list"]}>
+                  {userProfile["devices"].map((eachDevice, i) => (
+                    <li key={i}>
+                      <Link to="/home/devices/edit">{`${eachDevice}, `}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li>
+                <em>Accessories</em>:{" "}
+                <ul className={css["mini-list"]}>
+                  {["Helmet", "Drone"].map((eachAccessory, i) => (
+                    <li key={i}>
+                      <span>{`${eachAccessory}, `}</span>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li>
+                <em>Ammunition</em>:{" "}
+                <ul className={css["mini-list"]}>
+                  {["Pistol", "Rifle", "AK 47"].map((eachAmmo, i) => (
+                    <li key={i}>
+                      <span>{`${eachAmmo}, `}</span>
+                    </li>
+                  ))}
+                </ul>
               </li>
             </ul>
             <br />

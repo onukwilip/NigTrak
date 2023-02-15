@@ -22,16 +22,23 @@
         overflow-y: auto;
         padding: $spacing;
         border-left: 1px solid rgba(black, 0.3);
-        ul {
+        ul.list {
           list-style-type: none;
           margin: 0;
           padding: 0;
-          li {
+          & > li {
             display: block;
             padding: 6px;
             em:first-of-type {
               font-weight: bold;
             }
+          }
+        }
+        ul.mini-list {
+          padding-left: $spacing;
+          list-style-type: disc;
+          li em {
+            font-weight: normal;
           }
         }
       }

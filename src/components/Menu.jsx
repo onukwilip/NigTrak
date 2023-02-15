@@ -20,11 +20,12 @@ const menus = [
     new MenuClass("Get Users", "/home/users/", ""),
     new MenuClass("Create User", "/home/users/add", ""),
     new MenuClass("Edit User", "/home/users/edit", ""),
+    new MenuClass("Bulk upload", "/home/users/bulk", ""),
   ]),
   new MenuClass("Devices", "/home/devices", "fa-solid fa-walkie-talkie", [
     new MenuClass("Get Devices", "/home/devices/", ""),
     new MenuClass("Create Device", "/home/devices/add", ""),
-    new MenuClass("Edit Device", "/home/devices/edit", ""),
+    new MenuClass("Bulk upload", "/home/devices/bulk", ""),
   ]),
   new MenuClass(
     "Stations",

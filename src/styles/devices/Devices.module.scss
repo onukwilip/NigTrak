@@ -100,6 +100,29 @@
   overflow-x: hidden;
 }
 
+.create-device {
+  min-height: 100vh;
+  margin: 0;
+  padding: $spacing;
+  @include flex(flex-start, flex-start, $spacing, column);
+}
+
+.section-main {
+  width: 100%;
+  box-shadow: 0px 0px 10px rgba(black, 0.3);
+  border-radius: 10px;
+  .head {
+    padding: $spacing;
+  }
+  .divider {
+    padding: 0;
+    margin: 0;
+  }
+  .body {
+    padding: $spacing;
+  }
+}
+
 @media (max-width: 1000px) {
   .devices-list {
     grid-template-columns: 1fr;

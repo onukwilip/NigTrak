@@ -142,6 +142,7 @@ $transition-length: 500ms;
       border-radius: 5px;
       @include flex(center, center, 15px, row);
       width: 100%;
+      overflow-x: hidden;
       i {
         font-size: 23px;
         color: rgb(4, 57, 4);

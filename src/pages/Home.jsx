@@ -3,7 +3,7 @@ import { Button, Divider, Icon, Input } from "semantic-ui-react";
 import Map from "../components/Map";
 import css from "../styles/home/Home.module.scss";
 import { CSSTransition } from "react-transition-group";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Menu from "../components/Menu";
 import Profile from "../components/Profile";
 import {
@@ -12,7 +12,11 @@ import {
   EditUser,
   ranks,
 } from "../components/UsersManagement";
-import { AllDevices } from "../components/DevicesManagement";
+import {
+  AllDevices,
+  CreateDevice,
+  EditDevice,
+} from "../components/DevicesManagement";
 import { Analytics } from "../components/Analytics";
 import Ranks from "../components/Ranks";
 import { Stations } from "../components/Stations";
@@ -126,6 +130,12 @@ const Home = () => {
           <Route path="users/edit" element={<EditUser />} />
           <Route path="users/edit/:id" element={<EditUser />} />
           <Route path="/devices" element={<AllDevices />} />
+          <Route path="devices/add" element={<CreateDevice />} />
+          <Route
+            path="devices/edit"
+            element={<Navigate to={"/home/devices/add"} />}
+          />
+          <Route path="devices/edit/:id" element={<CreateDevice />} />
           <Route path="/ranks" element={<Ranks />} />
           <Route path="/stations" element={<Stations />} />
         </Routes>
