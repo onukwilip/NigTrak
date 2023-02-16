@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Divider, Icon, Input } from "semantic-ui-react";
+import { Button, Divider, Icon, Input, Message } from "semantic-ui-react";
 import Map from "../components/Map";
 import css from "../styles/home/Home.module.scss";
 import { CSSTransition } from "react-transition-group";
@@ -28,7 +28,7 @@ const MapTab = ({ position }) => {
   const [showInfo, setShowInfo] = useState(/**@type data.users[0] */ null);
   return (
     <div className={css["map-tab"]}>
-      {position && (
+      {position ? (
         <Map newCenter={position} zoom={6.5}>
           {data.users.map((user) => (
             <Marker
@@ -72,6 +72,8 @@ const MapTab = ({ position }) => {
             </InfoWindow>
           )}
         </Map>
+      ) : (
+        <Message content="Please enable your location" warning />
       )}
     </div>
   );

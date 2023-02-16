@@ -5,6 +5,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import React, { useCallback, useRef } from "react";
+import CustomLoader from "./CustomLoader";
 
 const mapContainerStyle = {
   width: "100%",
@@ -40,7 +41,11 @@ const Map = ({
   }, []);
 
   if (!isLoaded) {
-    return <>Loading...</>;
+    return (
+      <div style={{ width: "100vw", height: "100vh" }}>
+        <CustomLoader />
+      </div>
+    );
   }
 
   return (

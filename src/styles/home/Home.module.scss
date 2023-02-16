@@ -41,6 +41,10 @@ $transition-length: 500ms;
   border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(black, 0.3);
   padding: $spacing;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
   .profile-container {
     border-radius: $spacing;
     overflow-y: hidden;
@@ -75,6 +79,25 @@ $transition-length: 500ms;
           cursor: pointer;
         }
       }
+    }
+  }
+  ul.list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    & > li {
+      display: block;
+      padding: 6px;
+      em:first-of-type {
+        font-weight: bold;
+      }
+    }
+  }
+  ul.mini-list {
+    padding-left: $spacing;
+    list-style-type: disc;
+    li em {
+      font-weight: normal;
     }
   }
 }
