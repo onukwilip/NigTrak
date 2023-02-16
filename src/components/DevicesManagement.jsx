@@ -8,14 +8,20 @@ import {
   Input,
   Message,
   Table,
+  Checkbox,
+  Icon,
+  Select,
 } from "semantic-ui-react";
 import data from "../data.json";
 import css from "../styles/devices/Devices.module.scss";
-import { motion, useAnimation } from "framer-motion";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import walkieTalkieTrans from "../assets/img/walkie-talkie-trans.png";
-import { SelectClass } from "../utils";
+import { clearSimilarArrayObjects, SelectClass } from "../utils";
 import { useForm, useInput } from "use-manage-form";
 import { useNavigate, useParams } from "react-router-dom";
+import Main from "./Main";
+import { FileUpload } from "./FileUpload";
+import * as XLSX from "xlsx";
 
 export const DeviceCard = ({ device, onViewMore = () => {}, index }) => {
   const [ref, inView] = useInView();
@@ -840,4 +846,453 @@ export const CreateDevice = () => {
   );
 };
 
-export const UploadBulkDevices = () => {};
+const EachTableRow = ({
+  data: deviceData,
+  onCheckedHandler,
+  onEdit,
+  onDelete,
+  approvedState,
+  refreshCheckedState,
+}) => {
+  const [checked, setChecked] = useState(approvedState);
+  const [editingRow, setEditingRow] = useState(false);
+
+  const {
+    value: IMEI,
+    isValid: IMEIIsValid,
+    inputIsInValid: IMEIInputIsInValid,
+    onChange: onIMEIChange,
+    onBlur: onIMEIBlur,
+    reset: resetIMEI,
+  } = useInput((value) => value?.trim() !== "");
+
+  const {
+    value: serialNumber,
+    isValid: serialNumberIsValid,
+    inputIsInValid: serialNumberInputIsInValid,
+    onChange: onSerialNumberChange,
+    onBlur: onSerialNumberBlur,
+    reset: resetSerialNumber,
+  } = useInput((value) => value?.trim() !== "");
+
+  const {
+    value: deviceModel,
+    isValid: deviceModelIsValid,
+    inputIsInValid: deviceModelInputIsInValid,
+    onChange: onDeviceModelChange,
+    onBlur: onDeviceModelBlur,
+    reset: resetDeviceModel,
+  } = useInput((value) => value?.trim() !== "");
+
+  const { executeBlurHandlers, formIsValid } = useForm({
+    blurHandlers: [onIMEIBlur, onSerialNumberBlur, onDeviceModelBlur],
+    validateOptions: () =>
+      IMEIIsValid && serialNumberIsValid && deviceModelIsValid,
+  });
+
+  const update = () => {
+    if (!formIsValid) return executeBlurHandlers();
+
+    const data = {
+      ["IMEI number"]: IMEI,
+      ["Serial number"]: serialNumber,
+      ["Device model"]: deviceModel,
+    };
+    onEdit(data);
+    setEditingRow(false);
+  };
+
+  const deviceModelOptions = data["device-models"].map(
+    (eachModel) =>
+      new SelectClass(eachModel?._id, eachModel?.name, eachModel?.name)
+  );
+
+  useEffect(() => {
+    setChecked(approvedState);
+  }, [approvedState, refreshCheckedState]);
+
+  useEffect(() => {
+    onIMEIChange(deviceData["IMEI number"]);
+    onSerialNumberChange(deviceData["Serial number"]);
+    onDeviceModelChange(deviceData["Device model"]);
+  }, [editingRow]);
+
+  if (editingRow) {
+    return (
+      <Table.Row>
+        <Table.Cell collapsing></Table.Cell>
+        <Table.Cell>
+          <Input
+            placeholder="Input IMEI number"
+            value={IMEI}
+            onChange={(e) => onIMEIChange(e.target.value)}
+            onBlur={onIMEIBlur}
+            error={IMEIInputIsInValid}
+          />
+        </Table.Cell>
+        <Table.Cell>
+          <Input
+            placeholder="Input serial number"
+            value={serialNumber}
+            onChange={(e) => onSerialNumberChange(e.target.value)}
+            onBlur={onSerialNumberBlur}
+            error={serialNumberInputIsInValid}
+          />
+        </Table.Cell>
+        <Table.Cell>
+          <Select
+            placeholder="Select device model"
+            value={deviceModel}
+            onChange={(e, { value }) => onDeviceModelChange(value)}
+            onBlur={onDeviceModelBlur}
+            error={deviceModelInputIsInValid}
+            options={deviceModelOptions}
+          />
+        </Table.Cell>
+        <Table.Cell collapsing>
+          <Button color="green" onClick={update}>
+            Update
+          </Button>
+        </Table.Cell>
+      </Table.Row>
+    );
+  }
+  return (
+    <Table.Row>
+      <Table.Cell collapsing>
+        {/* <div
+          class="ui fitted slider checkbox"
+          onClick={() => {
+            setChecked((prev) => !prev);
+          }}
+        >
+          <input
+            type="checkbox"
+            class="hidden"
+            readOnly=""
+            tabIndex="0"
+            onChange={(e) => {
+              onCheckedHandler(data, e?.target?.checked);
+            }}
+            id="device-checkbox"
+            checked={checked}
+          />
+          <label></label>
+        </div> */}
+        <Checkbox
+          slider
+          checked={checked}
+          onChange={(e, { checked }) => {
+            onCheckedHandler(deviceData, checked);
+            setChecked((prev) => !prev);
+          }}
+        />
+      </Table.Cell>
+      <Table.Cell>{deviceData["IMEI number"]}</Table.Cell>
+      <Table.Cell>{deviceData["Serial number"]}</Table.Cell>
+      <Table.Cell>{deviceData["Device model"]}</Table.Cell>
+      <Table.Cell collapsing>
+        <Button
+          color="blue"
+          onClick={() => {
+            setEditingRow(true);
+          }}
+        >
+          Edit
+        </Button>
+        <Button color="red" onClick={() => onDelete(deviceData)}>
+          Delete
+        </Button>
+      </Table.Cell>
+    </Table.Row>
+  );
+};
+
+export const UploadBulkDevices = () => {
+  const [uploadedData, setUploadedData] = useState([]);
+  const [selectedDevices, setSelectedDevices] = useState({});
+  const [approvedState, setApprovedState] = useState(false);
+  const [refreshCheckedState, setRefreshCheckedState] = useState(false);
+  const [submitState, setSubmitState] = useState({
+    uploading: false,
+    success: false,
+    error: false,
+  });
+
+  const getExention = (/**@type String */ string) => {
+    const arr = string?.split(".");
+    if (Array.isArray(arr)) return arr[arr?.length - 1];
+
+    return "";
+  };
+
+  const {
+    value: file,
+    isValid: fileIsValid,
+    inputIsInValid: fileInputIsInValid,
+    onChange: onFileChange,
+    onBlur: onFileBlur,
+    reset: resetFIle,
+  } = useInput(
+    (/**@type File */ file) =>
+      getExention(file?.name) === "xlsx" || getExention(file?.name) === "json"
+  );
+
+  const onSuccessUpload = () => {
+    setSubmitState((prev) => ({
+      ...prev,
+      success: true,
+      uploading: false,
+    }));
+
+    setTimeout(() => {
+      setSubmitState((prev) => ({
+        ...prev,
+        success: false,
+        uploading: false,
+      }));
+    }, 1000 * 10);
+  };
+
+  const onFileReaderLoad = (e, resolve) => {
+    const bufferArray = e.target.result;
+
+    const wb = XLSX.read(bufferArray, { type: "buffer" });
+
+    const wsname = wb.SheetNames[0];
+
+    const ws = wb.Sheets[wsname];
+
+    const data = XLSX.utils.sheet_to_json(ws);
+
+    resolve(data);
+  };
+
+  const onFileReaderError = (error, reject) => {
+    reject(error);
+  };
+
+  const onFileReaderSuccess = (data) => {
+    setUploadedData(clearSimilarArrayObjects(data, "IMEI number"));
+  };
+
+  const readExcel = (file) => {
+    const promise = new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(file);
+
+      fileReader.onload = (e) => onFileReaderLoad(e, resolve);
+
+      fileReader.onerror = (error) => onFileReaderError(error, reject);
+    });
+
+    promise.then(onFileReaderSuccess);
+  };
+
+  const readJSON = (file) => {
+    const fileReader = new FileReader();
+    fileReader.readAsText(file, "UTF-8");
+    fileReader.onload = (e) => {
+      const data = JSON.parse(e.target.result);
+      setUploadedData(clearSimilarArrayObjects(data, "IMEI number"));
+    };
+  };
+
+  const fileUploadValidator = (/**@type Event */ e) => {
+    const file = e.target.files[0];
+
+    const ext = getExention(file?.name);
+
+    if (ext === "xlsx") {
+      readExcel(file);
+    } else if (ext === "json") {
+      readJSON(file);
+    }
+    onFileChange(file);
+    onFileBlur();
+  };
+
+  const onCheckedHandler = (data, checked) => {
+    if (checked === true) {
+      setSelectedDevices((preDevices) => ({
+        ...preDevices,
+        [data["IMEI number"]]: data,
+      }));
+    } else {
+      const oldDevices = { ...selectedDevices };
+      delete oldDevices[data["IMEI number"]];
+      setSelectedDevices(oldDevices);
+    }
+  };
+
+  const uploadDevices = () => {
+    setSubmitState((prev) => ({ ...prev, uploading: true }));
+
+    const selectedArray = Object.entries(selectedDevices)?.map(
+      ([key, value]) => value
+    );
+
+    if (selectedArray?.length < 1) {
+      setSubmitState((prev) => ({ ...prev, uploading: false }));
+      return;
+    }
+
+    const currentDevices = {};
+    uploadedData.forEach((eachDevice) => {
+      currentDevices[eachDevice["IMEI number"]] = eachDevice;
+    });
+
+    for (const key in selectedDevices) {
+      delete currentDevices[key];
+    }
+
+    const currentDevicesArray = Object.entries(currentDevices)?.map(
+      ([key, value]) => value
+    );
+
+    setUploadedData(currentDevicesArray);
+
+    onSuccessUpload();
+    console.log("SELECTED ARRAY", selectedArray);
+  };
+
+  const selectAllDevices = () => {
+    const addedDevices = {};
+
+    for (const data of uploadedData) {
+      addedDevices[data["IMEI number"]] = data;
+    }
+
+    setSelectedDevices(addedDevices);
+  };
+
+  const approveAll = () => {
+    selectAllDevices();
+    setApprovedState(true);
+  };
+
+  const disApproveAll = () => {
+    setSelectedDevices({});
+    setApprovedState(false);
+    setRefreshCheckedState((prev) => !prev);
+  };
+
+  const onEdit = (device) => {
+    const allDevice = [...uploadedData];
+
+    allDevice.forEach((eachDevice, i, arr) => {
+      if (eachDevice["IMEI number"] === device["IMEI number"]) {
+        arr[i] = device;
+      }
+    });
+
+    setUploadedData(allDevice);
+  };
+
+  const onDelete = (device) => {
+    setUploadedData((prevData) =>
+      prevData?.filter(
+        (eachDevice) => eachDevice["IMEI number"] !== device["IMEI number"]
+      )
+    );
+  };
+
+  return (
+    <section className={css["bulk-upload"]}>
+      <Main header="Upload devices">
+        <div className={css["upload-container"]}>
+          <FileUpload
+            label={"Upload excel/json files only"}
+            onChange={fileUploadValidator}
+            className={css.upload}
+          />
+          {file && <h4>FIle name: {file?.name}</h4>}
+          {fileInputIsInValid && (
+            <Message
+              error
+              content="File must be either a .xlsx file or .json file"
+            />
+          )}
+        </div>
+        <br />
+        <div className={css.table}>
+          {uploadedData?.length > 0 && (
+            <Table compact celled definition>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell />
+                  <Table.HeaderCell>IMEI number</Table.HeaderCell>
+                  <Table.HeaderCell>Serial number</Table.HeaderCell>
+                  <Table.HeaderCell>Device model</Table.HeaderCell>
+                  <Table.HeaderCell>Actions</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+
+              <Table.Body>
+                {uploadedData?.map((data, i) => (
+                  <EachTableRow
+                    data={data}
+                    onCheckedHandler={onCheckedHandler}
+                    key={i}
+                    approvedState={approvedState}
+                    refreshCheckedState={refreshCheckedState}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                  />
+                ))}
+              </Table.Body>
+
+              <Table.Footer fullWidth>
+                <Table.Row>
+                  <Table.HeaderCell />
+                  <Table.HeaderCell colSpan="4">
+                    <Button
+                      floated="right"
+                      icon
+                      labelPosition="left"
+                      color="green"
+                      size="small"
+                      onClick={uploadDevices}
+                      disabled={submitState.uploading}
+                    >
+                      <Icon name="cloud upload" /> Upload devices
+                    </Button>
+                    <Button size="small" primary onClick={approveAll}>
+                      Approve All
+                    </Button>
+                    <Button size="small" color="red" onClick={disApproveAll}>
+                      Disapprove All
+                    </Button>
+                  </Table.HeaderCell>
+                </Table.Row>
+              </Table.Footer>
+            </Table>
+          )}
+        </div>
+        <AnimatePresence>
+          {submitState.success && (
+            <>
+              <br />
+              <motion.div
+                initial={{
+                  y: -100,
+                  opacity: 0,
+                }}
+                animate={{
+                  y: -0,
+                  opacity: 1,
+                }}
+                exit={{
+                  y: -100,
+                  opacity: 0,
+                }}
+              >
+                <Message success content="Devices uploaded successfully" />
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </Main>
+    </section>
+  );
+};

@@ -107,6 +107,18 @@
   @include flex(flex-start, flex-start, $spacing, column);
 }
 
+.bulk-upload {
+  min-height: 100vh;
+  margin: 0;
+  padding: $spacing;
+  .upload-container {
+    @include flex(center, center, 10px, column);
+    .upload {
+      width: 30%;
+    }
+  }
+}
+
 .section-main {
   width: 100%;
   box-shadow: 0px 0px 10px rgba(black, 0.3);

@@ -16,6 +16,7 @@ import {
   AllDevices,
   CreateDevice,
   EditDevice,
+  UploadBulkDevices,
 } from "../components/DevicesManagement";
 import { Analytics } from "../components/Analytics";
 import Ranks from "../components/Ranks";
@@ -136,6 +137,7 @@ const Home = () => {
             element={<Navigate to={"/home/devices/add"} />}
           />
           <Route path="devices/edit/:id" element={<CreateDevice />} />
+          <Route path="devices/bulk" element={<UploadBulkDevices />} />
           <Route path="/ranks" element={<Ranks />} />
           <Route path="/stations" element={<Stations />} />
         </Routes>
