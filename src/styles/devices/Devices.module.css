@@ -121,6 +121,49 @@
   overflow-x: hidden;
 }
 
+.create-device {
+  min-height: 100vh;
+  margin: 0;
+  padding: 1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.bulk-upload {
+  min-height: 100vh;
+  margin: 0;
+  padding: 1rem;
+}
+.bulk-upload .upload-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-direction: column;
+}
+.bulk-upload .upload-container .upload {
+  width: 30%;
+}
+
+.section-main {
+  width: 100%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+.section-main .head {
+  padding: 1rem;
+}
+.section-main .divider {
+  padding: 0;
+  margin: 0;
+}
+.section-main .body {
+  padding: 1rem;
+}
+
 @media (max-width: 1000px) {
   .devices-list {
     grid-template-columns: 1fr;

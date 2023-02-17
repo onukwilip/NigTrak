@@ -1151,7 +1151,7 @@ export const UploadBulkDevices = () => {
     );
 
     setUploadedData(currentDevicesArray);
-
+    setSelectedDevices({});
     onSuccessUpload();
     console.log("SELECTED ARRAY", selectedArray);
   };
@@ -1233,7 +1233,7 @@ export const UploadBulkDevices = () => {
                   <EachTableRow
                     data={data}
                     onCheckedHandler={onCheckedHandler}
-                    key={i}
+                    key={data?.id}
                     approvedState={approvedState}
                     refreshCheckedState={refreshCheckedState}
                     onEdit={onEdit}

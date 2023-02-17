@@ -11,6 +11,7 @@ import {
   CreateUser,
   EditUser,
   ranks,
+  UploadBulkUsers,
 } from "../components/UsersManagement";
 import {
   AllDevices,
@@ -131,6 +132,7 @@ const Home = () => {
           <Route path="/users/" element={<AllUsers position={position} />} />
           <Route path="users/add" element={<CreateUser />} />
           <Route path="users/edit" element={<EditUser />} />
+          <Route path="users/bulk" element={<UploadBulkUsers />} />
           <Route path="users/edit/:id" element={<EditUser />} />
           <Route path="/devices" element={<AllDevices />} />
           <Route path="devices/add" element={<CreateDevice />} />

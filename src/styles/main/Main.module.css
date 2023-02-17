@@ -1,0 +1,15 @@
+.section-main {
+  width: 100%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+.section-main .head {
+  padding: 1rem;
+}
+.section-main .divider {
+  padding: 0;
+  margin: 0;
+}
+.section-main .body {
+  padding: 1rem;
+}/*# sourceMappingURL=Main.module.css.map */

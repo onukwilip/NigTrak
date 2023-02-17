@@ -217,6 +217,22 @@
   }
 }
 
+.bulk-upload {
+  min-height: 100vh;
+  margin: 0;
+  padding: $spacing;
+  .upload-container {
+    @include flex(center, center, 10px, column);
+    .upload {
+      width: 30%;
+    }
+  }
+
+  .table {
+    overflow-x: auto;
+  }
+}
+
 @media (max-width: 1000px) {
   .users-list {
     grid-template-columns: 1fr;

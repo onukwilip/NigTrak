@@ -34,17 +34,24 @@
   padding: 1rem;
   border-left: 1px solid rgba(0, 0, 0, 0.3);
 }
-.users .left .user-details .details ul {
+.users .left .user-details .details ul.list {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-.users .left .user-details .details ul li {
+.users .left .user-details .details ul.list > li {
   display: block;
   padding: 6px;
 }
-.users .left .user-details .details ul li em:first-of-type {
+.users .left .user-details .details ul.list > li em:first-of-type {
   font-weight: bold;
+}
+.users .left .user-details .details ul.mini-list {
+  padding-left: 1rem;
+  list-style-type: disc;
+}
+.users .left .user-details .details ul.mini-list li em {
+  font-weight: normal;
 }
 .users .left .map-container {
   max-width: 49vw;
@@ -126,6 +133,166 @@
   color: darkgreen;
 }
 
+.create-user {
+  padding: 1rem;
+}
+.create-user .main {
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+.create-user .main .head {
+  padding: 1rem;
+}
+.create-user .main .head em {
+  font-size: 20px;
+  font-weight: bold;
+}
+.create-user .main .divider {
+  margin: 0;
+  padding: 0;
+}
+.create-user .main .body {
+  padding: 1rem;
+}
+.create-user .main .body .form {
+  display: grid;
+  grid-template-columns: 1fr 0.4fr;
+  grid-auto-rows: auto;
+  gap: 20px;
+}
+.create-user .main .body .form .form-inputs .device-container .devices,
+.create-user .main .body .form .form-inputs .ammo-container .ammos,
+.create-user .main .body .form .form-inputs .accessory-container .accessories {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  gap: 10px;
+  padding: 5px;
+}
+.create-user .main .body .form .form-inputs .device-container .devices .message,
+.create-user .main .body .form .form-inputs .ammo-container .ammos .message,
+.create-user .main .body .form .form-inputs .accessory-container .accessories .message {
+  width: 100%;
+}
+.create-user .main .body .form .img-upload {
+  height: 300px;
+}
+.create-user .main .body .form .img-upload label {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 1rem;
+  border: 5px double darkgreen;
+  background: rgba(144, 238, 144, 0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-direction: column;
+}
+.create-user .main .body .form .img-upload label i {
+  font-size: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-direction: row;
+  color: darkgreen;
+}
+.create-user .main .body .form .img-upload label em {
+  font-size: 24px;
+  color: darkgreen;
+}
+.create-user .main .body .form .img-upload .img-container {
+  position: relative;
+}
+.create-user .main .body .form .img-upload .img-container img {
+  width: 100%;
+  height: 300px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  -o-object-position: top;
+     object-position: top;
+  border-radius: 10px;
+}
+.create-user .main .body .form .img-upload .img-container i {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 20px;
+  padding: 1.5rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-direction: row;
+  background: white;
+  border-radius: 50%;
+  color: darkgreen;
+  cursor: pointer;
+}
+.create-user .main .body .form .actions {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: auto;
+  gap: 10px;
+}
+.create-user .main .body .form .actions .button {
+  width: 100%;
+  background: darkgreen;
+  color: white;
+}
+.create-user .main .body .form .actions .button:hover {
+  background: white;
+  color: darkgreen;
+  background: lightgreen;
+}
+
+.card {
+  border-radius: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-direction: row;
+  padding: 1rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+.card .details-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  flex-direction: row;
+}
+.card .details-container img {
+  width: 40px;
+  height: auto;
+}
+
+.bulk-upload {
+  min-height: 100vh;
+  margin: 0;
+  padding: 1rem;
+}
+.bulk-upload .upload-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-direction: column;
+}
+.bulk-upload .upload-container .upload {
+  width: 30%;
+}
+.bulk-upload .table {
+  overflow-x: auto;
+}
+
 @media (max-width: 1000px) {
   .users-list {
     grid-template-columns: 1fr;
@@ -151,24 +318,13 @@
   .users .right .users {
     max-height: 140vh;
   }
-  .devices {
-    overflow-y: auto;
-  }
-  .devices .left .device-details {
+  .create-user .main .body .form {
     grid-template-columns: 1fr;
   }
-  .devices .left .device-details .details {
-    border: none;
-  }
-  .devices .left .map-container {
-    height: 500px;
-  }
-  .devices .right {
-    height: auto;
-    max-height: 300vh;
-  }
-  .devices .right .users {
-    max-height: 140vh;
+  .create-user .main .body .form .img-upload {
+    grid-row: 1/2;
+    width: 50%;
+    margin-bottom: 1rem;
   }
 }
 @media (max-width: 691px) {
@@ -197,30 +353,11 @@
     font-weight: bold;
     margin: 1rem 0;
   }
-  .devices {
-    display: block;
+  .users .user-card {
+    margin-bottom: 10px;
   }
-  .devices .left {
-    max-width: 150vw;
-    min-height: 100vh;
-    margin-bottom: 1rem;
-  }
-  .devices .left .device-details .details {
-    max-height: 50vh;
-  }
-  .devices .left .map-container {
-    background: #000;
-    max-width: 100%;
-    height: 50vh;
-  }
-  .devices .right {
-    max-width: 100vw;
-  }
-  .devices .right::before {
-    content: "Militants";
-    font-size: 30px;
-    font-weight: bold;
-    margin: 1rem 0;
+  .create-user .main .body .form .img-upload {
+    width: 70%;
   }
 }
 @media (max-width: 451px) {
@@ -228,5 +365,8 @@
     flex-direction: column;
     align-items: start;
     gap: 10px;
+  }
+  .create-user .main .body .form .img-upload {
+    width: 100%;
   }
 }/*# sourceMappingURL=UserManagement.module.css.map */

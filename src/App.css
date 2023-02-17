@@ -60,3 +60,20 @@
   width: 100%;
   background: #000;
 }
+
+.row-select-item {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.row-select-item em {
+  display: block;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: gray;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
