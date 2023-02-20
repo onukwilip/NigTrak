@@ -20,7 +20,7 @@ import {
   UploadBulkDevices,
 } from "../components/DevicesManagement";
 import { Analytics } from "../components/Analytics";
-import Ranks from "../components/Ranks";
+import { CreateEditRank, Ranks } from "../components/Ranks";
 import { CreateEditStation, Stations } from "../components/Stations";
 import data from "../data.json";
 import { InfoWindow, Marker } from "@react-google-maps/api";
@@ -143,6 +143,12 @@ const Home = () => {
           <Route path="devices/edit/:id" element={<CreateDevice />} />
           <Route path="devices/bulk" element={<UploadBulkDevices />} />
           <Route path="/ranks" element={<Ranks />} />
+          <Route path="/ranks/add" element={<CreateEditRank />} />
+          <Route
+            path="/ranks/edit"
+            element={<Navigate to={"/home/ranks/add"} />}
+          />
+          <Route path="/ranks/edit/:id" element={<CreateEditRank />} />
           <Route path="/stations" element={<Stations />} />
           <Route path="/stations/add" element={<CreateEditStation />} />
           <Route

@@ -760,11 +760,19 @@ export const CreateUser = () => {
                 </div>
               </div>
               <br />
-              <div className={css.actions}>
-                <Button className={css.button} type="submit">
+              <div className={`${css.actions} actions`}>
+                <Button
+                  className={css.button}
+                  type="submit"
+                  disabled={!formIsValid}
+                >
                   Submit
                 </Button>
-                <Button className={css.button} type="reset">
+                <Button
+                  className={css.button}
+                  type="reset"
+                  onClick={() => reset()}
+                >
                   Reset
                 </Button>
               </div>
@@ -1310,11 +1318,19 @@ export const EditUser = () => {
                 </div>
               </div>
               <br />
-              <div className={css.actions}>
-                <Button className={css.button} type="submit">
+              <div className={`${css.actions} actions`}>
+                <Button
+                  className={css.button}
+                  type="submit"
+                  disabled={!formIsValid}
+                >
                   Submit
                 </Button>
-                <Button className={css.button} type="reset">
+                <Button
+                  className={css.button}
+                  type="reset"
+                  onClick={() => reset()}
+                >
                   Reset
                 </Button>
               </div>
@@ -1964,21 +1980,21 @@ export const UploadBulkUsers = () => {
     setRefreshCheckedState((prev) => !prev);
   };
 
-  const onEdit = (device) => {
+  const onEdit = (user) => {
     const allUsers = [...uploadedData];
 
-    allUsers.forEach((eachDevice, i, arr) => {
-      if (eachDevice["id"] === device["id"]) {
-        arr[i] = device;
+    allUsers.forEach((eachUser, i, arr) => {
+      if (eachUser["id"] === user["id"]) {
+        arr[i] = user;
       }
     });
 
     setUploadedData(allUsers);
   };
 
-  const onDelete = (device) => {
+  const onDelete = (user) => {
     setUploadedData((prevData) =>
-      prevData?.filter((eachDevice) => eachDevice["id"] !== device["id"])
+      prevData?.filter((eachUser) => eachUser["id"] !== user["id"])
     );
   };
 
@@ -2084,7 +2100,7 @@ export const UploadBulkUsers = () => {
                   opacity: 0,
                 }}
               >
-                <Message success content="Devices uploaded successfully" />
+                <Message success content="Users uploaded successfully" />
               </motion.div>
             </>
           )}

@@ -4,7 +4,7 @@ import css from "../styles/main/Main.module.scss";
 const Main = ({ children, header, className }) => {
   return (
     <>
-      <div className={`${css["section-main"]}`}>
+      <div className={`${css["section-main"]} ${className}`}>
         <div className={css.head}>
           <h3>{header}</h3>
         </div>

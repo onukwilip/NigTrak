@@ -1,13 +1,26 @@
-import { useAnimation, motion } from "framer-motion";
+import { useAnimation, motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { Input, Button } from "semantic-ui-react";
+import { useInput, useForm } from "use-manage-form";
+import {
+  Button,
+  Form,
+  Icon,
+  Input,
+  Message,
+  Table,
+  Checkbox,
+  Select,
+} from "semantic-ui-react";
 import css from "../styles/ranks/Ranks.module.scss";
 import data from "../data.json";
 import Map from "./Map";
 import { Marker, InfoWindow } from "@react-google-maps/api";
 import { ranks as rankImgs } from "./UsersManagement";
-import { type } from "@testing-library/user-event/dist/type";
+import Main from "./Main";
+import { FileUpload, ImgUpload } from "./FileUpload";
+import * as XLSX from "xlsx";
+import { SelectClass, clearSimilarArrayObjects } from "../utils";
 
 export const RankCard = ({ rank, onView = () => {}, index }) => {
   const [ref, inView] = useInView();
@@ -70,7 +83,7 @@ export const RankCard = ({ rank, onView = () => {}, index }) => {
 
 const mapCenter = { lat: 9.082, lng: 8.6753 };
 
-const Ranks = () => {
+export const Ranks = () => {
   const [ranks, setRanks] = useState(/**@type data.ranks */ data.ranks);
   const [rankMembers, setRankMembers] = useState([]);
   const [showInfo, setShowInfo] = useState(false);
@@ -164,4 +177,563 @@ const Ranks = () => {
   );
 };
 
-export default Ranks;
+const AddEditRankSection = () => {
+  const [resetFileImage, setResetFileImage] = useState(false);
+  const {
+    value: name,
+    isValid: nameIsValid,
+    inputIsInValid: nameInputIsInValid,
+    onChange: onNameChange,
+    onBlur: onNameBlur,
+    reset: resetName,
+  } = useInput((value) => value?.trim() !== "");
+
+  const {
+    value: file,
+    isValid: fileIsValid,
+    inputIsInValid: fileInputIsInValid,
+    onChange: onFileChange,
+    onBlur: onFileBlur,
+    reset: resetFile,
+  } = useInput((value) => typeof value === "object");
+
+  const { executeBlurHandlers, formIsValid, reset } = useForm({
+    blurHandlers: [onNameBlur, onFileBlur],
+    resetHandlers: [
+      resetName,
+      resetFile,
+      () => setResetFileImage((prev) => !prev),
+    ],
+    validateOptions: () => nameIsValid && fileIsValid,
+  });
+
+  const submitHandler = () => {
+    if (!formIsValid) return executeBlurHandlers();
+
+    const data = new FormData();
+    data.append("name", name);
+    data.append("file", file);
+
+    console.log("SUCCESS", data);
+    reset();
+  };
+
+  return (
+    <>
+      <Main header={"Create rank"}>
+        <Form onSubmit={submitHandler}>
+          <div className={"upload-container"}>
+            <ImgUpload
+              className="upload"
+              value={file}
+              onChange={(e) => {
+                onFileBlur();
+                onFileChange(e?.target?.files[0]);
+              }}
+              triggerReset={resetFileImage}
+            />
+            {fileInputIsInValid && (
+              <Message color="red" content="Please upload an image" />
+            )}
+          </div>
+          <br />
+          <Form.Group widths={"equal"}>
+            <Form.Input
+              placeholder="Enter name of rank"
+              icon="pencil alternate"
+              iconPosition="left"
+              value={name}
+              onChange={(e) => onNameChange(e.target.value)}
+              onBlur={onNameBlur}
+              error={
+                nameInputIsInValid && {
+                  content: "Input must NOT be empty",
+                  pointing: "above",
+                }
+              }
+            />
+          </Form.Group>
+          <div className={`actions ${css.actions}`}>
+            <Button type="submit" disabled={!formIsValid}>
+              Submit
+            </Button>
+            <Button type="reset" onClick={() => reset()}>
+              Reset
+            </Button>
+          </div>
+        </Form>
+      </Main>
+    </>
+  );
+};
+
+const EachTableRow = ({
+  data: userData /**@type data.users[0] */,
+  onCheckedHandler,
+  onEdit,
+  onDelete,
+  approvedState,
+  refreshCheckedState,
+}) => {
+  const [checked, setChecked] = useState(approvedState);
+  const [editingRow, setEditingRow] = useState(false);
+
+  const {
+    value: name,
+    isValid: nameIsValid,
+    inputIsInValid: nameInputIsInValid,
+    onChange: onNameChange,
+    onBlur: onNameBlur,
+    reset: resetName,
+  } = useInput((value) => value?.trim() !== "");
+
+  const {
+    value: address,
+    isValid: addressIsValid,
+    inputIsInValid: addressInputIsInValid,
+    onChange: onAddressChange,
+    onBlur: onAddressBlur,
+    reset: resetAddress,
+  } = useInput((value) => value?.trim() !== "");
+
+  const {
+    value: state,
+    isValid: stateIsValid,
+    inputIsInValid: stateInputIsInValid,
+    onChange: onStateChange,
+    onBlur: onStateBlur,
+    reset: resetState,
+  } = useInput((value) => value?.trim() !== "");
+
+  const {
+    value: LGA,
+    isValid: LGAIsValid,
+    inputIsInValid: LGAInputIsInValid,
+    onChange: onLGAChange,
+    onBlur: onLGABlur,
+    reset: resetLGA,
+  } = useInput((value) => value?.trim() !== "");
+
+  const { executeBlurHandlers, formIsValid, reset } = useForm({
+    blurHandlers: [onNameBlur, onAddressBlur, onStateBlur, onLGABlur],
+    resetHandlers: [resetName, resetAddress, resetState, resetLGA],
+    validateOptions: () =>
+      nameIsValid && addressIsValid && stateIsValid && LGAIsValid,
+  });
+
+  const states = data.states.map(
+    (eachState) =>
+      new SelectClass(eachState.code, eachState.name, eachState.name)
+  );
+
+  const lgas = data.states
+    .find((eachState) => eachState.name === state)
+    ?.lgas?.map((eachLga, i) => new SelectClass(i, eachLga, eachLga));
+
+  const update = () => {
+    if (!formIsValid) return executeBlurHandlers();
+
+    const data = {
+      id: userData?.id,
+      Name: name,
+      Address: address,
+      State: state,
+      LGA,
+    };
+    console.log("DATA", data);
+    onEdit(data);
+    setEditingRow(false);
+  };
+
+  useEffect(() => {
+    setChecked(approvedState);
+  }, [approvedState, refreshCheckedState]);
+
+  useEffect(() => {
+    onNameChange(userData?.Name);
+    onAddressChange(userData?.Address);
+    onStateChange(userData?.State);
+    onLGAChange(userData?.LGA);
+  }, [editingRow]);
+
+  if (editingRow) {
+    return (
+      <Table.Row>
+        <Table.Cell collapsing></Table.Cell>
+        <Table.HeaderCell>
+          <Input
+            placeholder="Fullname..."
+            value={name}
+            onChange={(e) => onNameChange(e.target.value)}
+            onBlur={onNameBlur}
+            error={nameInputIsInValid}
+          />
+        </Table.HeaderCell>
+        <Table.HeaderCell>
+          <Input
+            placeholder="Address..."
+            value={address}
+            onChange={(e) => onAddressChange(e.target.value)}
+            onBlur={onAddressBlur}
+            error={addressInputIsInValid}
+          />
+        </Table.HeaderCell>
+        <Table.HeaderCell>
+          <Select
+            label="Select a state"
+            placeholder="Select a state"
+            options={states}
+            value={state}
+            onChange={(e, { value }) => onStateChange(value)}
+            onBlur={onStateBlur}
+            error={stateInputIsInValid}
+          />
+        </Table.HeaderCell>
+        <Table.HeaderCell>
+          <Select
+            label="Select an LGA"
+            placeholder="Select an LGA"
+            options={lgas}
+            value={LGA}
+            onChange={(e, { value }) => onLGAChange(value)}
+            onBlur={onLGABlur}
+            error={LGAInputIsInValid}
+          />
+        </Table.HeaderCell>
+        <Table.Cell collapsing>
+          <Button color="green" onClick={update}>
+            Update
+          </Button>
+        </Table.Cell>
+      </Table.Row>
+    );
+  }
+  return (
+    <Table.Row>
+      <Table.Cell collapsing>
+        <Checkbox
+          slider
+          checked={checked}
+          onChange={(e, { checked }) => {
+            onCheckedHandler(userData, checked);
+            setChecked((prev) => !prev);
+          }}
+        />
+      </Table.Cell>
+      <Table.HeaderCell>{userData?.Name}</Table.HeaderCell>
+      <Table.HeaderCell>{userData?.Address}</Table.HeaderCell>
+      <Table.HeaderCell>{userData?.State}</Table.HeaderCell>
+      <Table.HeaderCell>{userData?.LGA}</Table.HeaderCell>
+      <Table.Cell collapsing>
+        <Button
+          color="blue"
+          onClick={() => {
+            setEditingRow(true);
+          }}
+        >
+          Edit
+        </Button>
+        <Button color="red" onClick={() => onDelete(userData)}>
+          Delete
+        </Button>
+      </Table.Cell>
+    </Table.Row>
+  );
+};
+
+const UploadBulkRanksSection = () => {
+  const [uploadedData, setUploadedData] = useState([]);
+  const [selectedRanks, setSelectedRanks] = useState({});
+  const [approvedState, setApprovedState] = useState(false);
+  const [refreshCheckedState, setRefreshCheckedState] = useState(false);
+  const [submitState, setSubmitState] = useState({
+    uploading: false,
+    success: false,
+    error: false,
+  });
+
+  const getExention = (/**@type String */ string) => {
+    const arr = string?.split(".");
+    if (Array.isArray(arr)) return arr[arr?.length - 1];
+
+    return "";
+  };
+
+  const {
+    value: file,
+    isValid: fileIsValid,
+    inputIsInValid: fileInputIsInValid,
+    onChange: onFileChange,
+    onBlur: onFileBlur,
+    reset: resetFIle,
+  } = useInput(
+    (/**@type File */ file) =>
+      getExention(file?.name) === "xlsx" || getExention(file?.name) === "json"
+  );
+
+  const onSuccessUpload = () => {
+    setSubmitState((prev) => ({
+      ...prev,
+      success: true,
+      uploading: false,
+    }));
+
+    setTimeout(() => {
+      setSubmitState((prev) => ({
+        ...prev,
+        success: false,
+        uploading: false,
+      }));
+    }, 1000 * 10);
+  };
+
+  const onFileReaderLoad = (e, resolve) => {
+    const bufferArray = e.target.result;
+
+    const wb = XLSX.read(bufferArray, { type: "buffer" });
+
+    const wsname = wb.SheetNames[0];
+
+    const ws = wb.Sheets[wsname];
+
+    const data = XLSX.utils.sheet_to_json(ws);
+
+    resolve(data);
+  };
+
+  const onFileReaderError = (error, reject) => {
+    reject(error);
+  };
+
+  const onFileReaderSuccess = (data) => {
+    setUploadedData(clearSimilarArrayObjects(data, "id"));
+  };
+
+  const readExcel = (file) => {
+    const promise = new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(file);
+
+      fileReader.onload = (e) => onFileReaderLoad(e, resolve);
+
+      fileReader.onerror = (error) => onFileReaderError(error, reject);
+    });
+
+    promise.then(onFileReaderSuccess);
+  };
+
+  const readJSON = (file) => {
+    const fileReader = new FileReader();
+    fileReader.readAsText(file, "UTF-8");
+    fileReader.onload = (e) => {
+      const data = JSON.parse(e.target.result);
+      setUploadedData(clearSimilarArrayObjects(data, "id"));
+    };
+  };
+
+  const fileUploadValidator = (/**@type Event */ e) => {
+    const file = e.target.files[0];
+
+    const ext = getExention(file?.name);
+
+    if (ext === "xlsx") {
+      readExcel(file);
+    } else if (ext === "json") {
+      readJSON(file);
+    }
+    onFileChange(file);
+    onFileBlur();
+  };
+
+  const onCheckedHandler = (data, checked) => {
+    if (checked === true) {
+      setSelectedRanks((preRanks) => ({
+        ...preRanks,
+        [data["id"]]: data,
+      }));
+    } else {
+      const oldRanks = { ...selectedRanks };
+      delete oldRanks[data["id"]];
+      setSelectedRanks(oldRanks);
+    }
+  };
+
+  const uploadRanks = () => {
+    setSubmitState((prev) => ({ ...prev, uploading: true }));
+
+    const selectedArray = Object.entries(selectedRanks)?.map(
+      ([key, value]) => value
+    );
+
+    if (selectedArray?.length < 1) {
+      setSubmitState((prev) => ({ ...prev, uploading: false }));
+      return;
+    }
+
+    const currentRanks = {};
+    uploadedData.forEach((eachDevice) => {
+      currentRanks[eachDevice["id"]] = eachDevice;
+    });
+
+    for (const key in selectedRanks) {
+      delete currentRanks[key];
+    }
+
+    const currentRanksArray = Object.entries(currentRanks)?.map(
+      ([key, value]) => value
+    );
+
+    setUploadedData(currentRanksArray);
+    setSelectedRanks({});
+    onSuccessUpload();
+    console.log("SELECTED ARRAY", selectedArray);
+  };
+
+  const selectAllRanks = () => {
+    const addedRanks = {};
+
+    for (const data of uploadedData) {
+      addedRanks[data["id"]] = data;
+    }
+
+    setSelectedRanks(addedRanks);
+  };
+
+  const approveAll = () => {
+    selectAllRanks();
+    setApprovedState(true);
+  };
+
+  const disApproveAll = () => {
+    setSelectedRanks({});
+    setApprovedState(false);
+    setRefreshCheckedState((prev) => !prev);
+  };
+
+  const onEdit = (rank) => {
+    const allRanks = [...uploadedData];
+
+    allRanks.forEach((eachRank, i, arr) => {
+      if (eachRank["id"] === rank["id"]) {
+        arr[i] = rank;
+      }
+    });
+
+    setUploadedData(allRanks);
+  };
+
+  const onDelete = (rank) => {
+    setUploadedData((prevData) =>
+      prevData?.filter((eachRank) => eachRank["id"] !== rank["id"])
+    );
+  };
+
+  // console.log("UPLOADED DATA", uploadedData);
+
+  return (
+    <Main header="Upload ranks" className={css["bulk-upload"]}>
+      <div className="upload-container">
+        <FileUpload
+          label={"Upload excel/json files only"}
+          onChange={fileUploadValidator}
+          className={"upload"}
+        />
+        {file && <h4>FIle name: {file?.name}</h4>}
+        {fileInputIsInValid && (
+          <Message
+            error
+            content="File must be either a .xlsx file or .json file"
+          />
+        )}
+      </div>
+      <br />
+      <div className={css.table}>
+        {uploadedData?.length > 0 && (
+          <Table compact celled definition>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell />
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Address</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+
+            <Table.Body>
+              {uploadedData?.map((data, i) => (
+                <EachTableRow
+                  data={data}
+                  onCheckedHandler={onCheckedHandler}
+                  key={data?.id}
+                  approvedState={approvedState}
+                  refreshCheckedState={refreshCheckedState}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              ))}
+            </Table.Body>
+
+            <Table.Footer fullWidth>
+              <Table.Row>
+                <Table.HeaderCell />
+                <Table.HeaderCell colSpan="13">
+                  <Button
+                    floated="right"
+                    icon
+                    labelPosition="left"
+                    color="green"
+                    size="small"
+                    onClick={uploadRanks}
+                    disabled={
+                      Object.keys(selectedRanks)?.length < 1 ? true : false
+                    }
+                    // disabled={submitState.uploading}
+                  >
+                    <Icon name="cloud upload" /> Upload ranks
+                  </Button>
+                  <Button size="small" primary onClick={approveAll}>
+                    Approve All
+                  </Button>
+                  <Button size="small" color="red" onClick={disApproveAll}>
+                    Disapprove All
+                  </Button>
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Footer>
+          </Table>
+        )}
+      </div>
+      <AnimatePresence>
+        {submitState.success && (
+          <>
+            <br />
+            <motion.div
+              initial={{
+                y: -100,
+                opacity: 0,
+              }}
+              animate={{
+                y: -0,
+                opacity: 1,
+              }}
+              exit={{
+                y: -100,
+                opacity: 0,
+              }}
+            >
+              <Message success content="Stations uploaded successfully" />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </Main>
+  );
+};
+
+export const CreateEditRank = () => {
+  return (
+    <section className={css["create-rank"]}>
+      <AddEditRankSection />
+      <UploadBulkRanksSection />
+    </section>
+  );
+};

@@ -46,17 +46,34 @@
     }
   }
   .actions {
-    button {
-      @include button();
-      &:hover {
-        @include button-inverse();
-      }
-    }
   }
 }
 
 .create-station {
   padding: $spacing;
+  @include flex(center, center, 1rem, column);
+  & > div {
+    width: 100%;
+  }
+  .actions {
+    @include flex(flex-start, flex-start, 10px, row);
+    button {
+      width: 100%;
+    }
+  }
+}
+
+.bulk-upload {
+  .upload-container {
+    @include flex(center, center, 0, column);
+    .upload {
+      width: 300px;
+      @include media(max, 310px) {
+        margin: 10px;
+        width: 200px;
+      }
+    }
+  }
 }
 
 @media (max-width: 1000px) {

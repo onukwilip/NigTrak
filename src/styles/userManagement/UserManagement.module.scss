@@ -190,11 +190,11 @@
           @include grid(repeat(2, 1fr), auto, 10px);
           .button {
             width: 100%;
-            @include button();
-            &:hover {
-              @include button-inverse();
-              background: lightgreen;
-            }
+            // @include button();
+            // &:hover {
+            //   @include button-inverse();
+            //   background: lightgreen;
+            // }
           }
         }
       }
@@ -224,7 +224,11 @@
   .upload-container {
     @include flex(center, center, 10px, column);
     .upload {
-      width: 30%;
+      width: 300px;
+      @include media(max, 310px) {
+        margin: 10px;
+        width: 200px;
+      }
     }
   }
 

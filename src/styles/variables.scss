@@ -27,3 +27,9 @@ $spacing: 1rem;
   gap: $gap;
   flex-direction: $fd;
 }
+
+@mixin media($prefix, $size) {
+  @media (#{$prefix}-width: $size) {
+    @content;
+  }
+}

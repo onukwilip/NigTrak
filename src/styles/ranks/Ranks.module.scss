@@ -65,6 +65,23 @@
   }
 }
 
+.create-rank {
+  padding: $spacing;
+  @include flex(center, center, 1rem, column);
+  & > div {
+    width: 100%;
+  }
+  .actions {
+    @include flex(flex-start, flex-start, 10px, row);
+    button {
+      width: 100%;
+    }
+  }
+}
+
+.bulk-upload {
+}
+
 .info {
   max-width: 300px;
   overflow-x: auto;

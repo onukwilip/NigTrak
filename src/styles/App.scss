@@ -1,3 +1,4 @@
+@import "./variables.scss";
 .App {
   overflow-x: hidden;
   width: 100%;
@@ -76,4 +77,16 @@
   color: white;
   display: flex;
   justify-content: space-between;
+}
+
+.upload-container {
+  @include flex(center, center, 0, column);
+}
+
+.upload {
+  width: 300px;
+  @include media(max, 310px) {
+    margin: 10px;
+    width: 200px;
+  }
 }
