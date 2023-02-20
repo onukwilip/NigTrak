@@ -19,6 +19,21 @@
       width: 100%;
     }
   }
+
+  .select {
+    width: 400px;
+    height: 70px;
+    & > div:first-of-type {
+      height: 100%;
+      width: 100%;
+      @include flex(center, space-between, 0, row);
+      i {
+        height: 100% !important;
+        @include flex(center, center, 0, row);
+      }
+    }
+  }
+
   .actions {
     button {
       width: 200px;

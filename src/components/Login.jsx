@@ -2,9 +2,17 @@ import { useForm, useInput } from "use-manage-form";
 import css from "../styles/login/Login.module.scss";
 import { Button, Form, Icon } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
+import { SelectClass } from "../utils";
 
 const Login = () => {
   const navigate = useNavigate();
+  const forceOptions = [
+    new SelectClass(4, null, "Select your force"),
+    new SelectClass(0, "Army", "Army"),
+    new SelectClass(1, "Air force", "Air force"),
+    new SelectClass(2, "Navy", "Navy"),
+    new SelectClass(3, "Police", "Police"),
+  ];
   const {
     value: id,
     isValid: idIsValid,
@@ -43,6 +51,11 @@ const Login = () => {
       <div className={css.login}>
         <em>Tracking systems nationwide</em>
         <Form className={css.form} onSubmit={submitHandler}>
+          <Form.Select
+            placeholder="Select your force"
+            className={css.select}
+            options={forceOptions}
+          />
           <Form.Input
             icon="users"
             iconPosition="left"
