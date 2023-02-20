@@ -7,7 +7,7 @@ import { SelectClass } from "../utils";
 const Login = () => {
   const navigate = useNavigate();
   const forceOptions = [
-    new SelectClass(4, null, "Select your force"),
+    new SelectClass(4, "", "Select your force"),
     new SelectClass(0, "Army", "Army"),
     new SelectClass(1, "Air force", "Air force"),
     new SelectClass(2, "Navy", "Navy"),
@@ -23,6 +23,15 @@ const Login = () => {
   } = useInput((/**@type String */ value) => value?.trim() !== "");
 
   const {
+    value: force,
+    isValid: forceIsValid,
+    inputIsInValid: forceInputIsInValid,
+    onChange: onForceChange,
+    onBlur: onForceBlur,
+    reset: resetForce,
+  } = useInput((/**@type String */ value) => value?.trim() !== "");
+
+  const {
     value: password,
     isValid: passwordIsValid,
     inputIsInValid: passwordInputIsInValid,
@@ -32,9 +41,9 @@ const Login = () => {
   } = useInput((/**@type String */ value) => value?.trim() !== "");
 
   const { executeBlurHandlers, formIsValid, reset } = useForm({
-    blurHandlers: [onPasswordBlur, onIdBlur],
-    resetHandlers: [resetId, resetPassword],
-    validateOptions: () => passwordIsValid && idIsValid,
+    blurHandlers: [onPasswordBlur, onIdBlur, onForceBlur],
+    resetHandlers: [resetId, resetPassword, resetForce],
+    validateOptions: () => passwordIsValid && idIsValid && forceIsValid,
   });
 
   const submitHandler = () => {
@@ -55,6 +64,15 @@ const Login = () => {
             placeholder="Select your force"
             className={css.select}
             options={forceOptions}
+            value={force}
+            onChange={(e, { value }) => onForceChange(value)}
+            onBlur={onForceBlur}
+            error={
+              forceInputIsInValid && {
+                content: "Please select a force",
+                position: "above",
+              }
+            }
           />
           <Form.Input
             icon="users"
