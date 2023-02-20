@@ -1233,7 +1233,7 @@ export const UploadBulkDevices = () => {
                   <EachTableRow
                     data={data}
                     onCheckedHandler={onCheckedHandler}
-                    key={data?.id}
+                    key={data["IMEI number"]}
                     approvedState={approvedState}
                     refreshCheckedState={refreshCheckedState}
                     onEdit={onEdit}
