@@ -1,11 +1,13 @@
 import { useAnimation, motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { Input, Select, Button } from "semantic-ui-react";
+import { Input, Select, Button, Form } from "semantic-ui-react";
 import css from "../styles/stations/Stations.module.scss";
 import data from "../data.json";
 import Map from "./Map";
 import { Marker } from "@react-google-maps/api";
+import Main from "./Main";
+import { SelectClass } from "../utils";
 
 export const StationCard = ({ station, onView = () => {}, index }) => {
   const [ref, inView] = useInView();
@@ -151,6 +153,34 @@ export const Stations = () => {
           </Map>
         )}
       </div>
+    </section>
+  );
+};
+
+export const CreateEditStation = () => {
+  const states = data.states.map(
+    (eachState) =>
+      new SelectClass(eachState.code, eachState.name, eachState.name)
+  );
+  return (
+    <section className={css["create-station"]}>
+      <Main header={"Create station"}>
+        <Form>
+          <Form.Group widths={"equal"}>
+            <Form.Input
+              placeholder="Enter name of station"
+              icon="pencil alternate"
+              iconPosition="left"
+            />
+            <Form.Input
+              placeholder="Enter address of station"
+              icon="address book outline"
+              iconPosition="left"
+            />
+            <Form.Select placeholder="Select state" options={states} />
+          </Form.Group>
+        </Form>
+      </Main>
     </section>
   );
 };

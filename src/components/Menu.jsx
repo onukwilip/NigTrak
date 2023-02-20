@@ -48,16 +48,25 @@ const menus = [
 const MenuListItem = ({ eachMenu, i }) => {
   const [showSubMenu, setShowSubMenu] = useState(false);
   const variants = {
-    noHeight: { minHeight: 0, height: 0 },
-    fullHeight: {
-      minHeight: "90px",
-      height: 40 * eachMenu?.subMenus?.length + "px",
-      overflowY: "hidden",
+    // noHeight: { minHeight: 0, height: 0 },
+    // fullHeight: {
+    //   minHeight: "90px",
+    //   height: 40 * eachMenu?.subMenus?.length + "px",
+    //   overflowY: "hidden",
+    // },
+    // exit: {
+    //   minHeight: 0,
+    //   height: 0,
+    //   overflowY: "hidden",
+    // },
+    left: { opacity: 0, x: -100 },
+    normal: {
+      opacity: 1,
+      x: 0,
     },
     exit: {
-      minHeight: 0,
-      height: 0,
-      overflowY: "hidden",
+      opacity: 0,
+      x: 100,
     },
   };
   return (
@@ -72,8 +81,8 @@ const MenuListItem = ({ eachMenu, i }) => {
             <motion.ul
               className={css["submenu"]}
               variants={variants}
-              initial="noHeight"
-              animate="fullHeight"
+              initial="left"
+              animate="normal"
               exit="exit"
             >
               {eachMenu.subMenus.map((eachMenu, i) => (

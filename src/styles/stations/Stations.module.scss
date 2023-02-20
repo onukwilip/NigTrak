@@ -55,6 +55,10 @@
   }
 }
 
+.create-station {
+  padding: $spacing;
+}
+
 @media (max-width: 1000px) {
   .stations {
     grid-template-columns: 1fr;

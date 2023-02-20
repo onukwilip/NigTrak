@@ -21,7 +21,7 @@ import {
 } from "../components/DevicesManagement";
 import { Analytics } from "../components/Analytics";
 import Ranks from "../components/Ranks";
-import { Stations } from "../components/Stations";
+import { CreateEditStation, Stations } from "../components/Stations";
 import data from "../data.json";
 import { InfoWindow, Marker } from "@react-google-maps/api";
 
@@ -144,6 +144,12 @@ const Home = () => {
           <Route path="devices/bulk" element={<UploadBulkDevices />} />
           <Route path="/ranks" element={<Ranks />} />
           <Route path="/stations" element={<Stations />} />
+          <Route path="/stations/add" element={<CreateEditStation />} />
+          <Route
+            path="/stations/edit"
+            element={<Navigate to={"/home/stations/add"} />}
+          />
+          <Route path="/stations/edit/:id" element={<CreateEditStation />} />
         </Routes>
       </div>
       <div className={css["profile-parent"]}>
