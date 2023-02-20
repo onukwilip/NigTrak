@@ -1564,7 +1564,6 @@ const EachTableRow = ({
     onRankChange(userData?.rank);
     onStationChange(userData?.station);
     onGenderChange(userData?.gender);
-    // setSelectedDevices(userData?.devices?.split(",")?.map((device) => device));
     setSelectedDevices(userData?.devices?.split(",")?.map(mapValidate));
     setSelectedAccessories(userData?.accessories?.split(",")?.map(mapValidate));
     setSelectedAmmos(userData?.ammunition?.split(",")?.map(mapValidate));
