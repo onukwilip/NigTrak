@@ -7,6 +7,18 @@
   max-height: 100vh;
   overflow: hidden;
 
+  img.force-img {
+    margin: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 50px;
+    width: 50px;
+    object-fit: contain;
+    object-position: top;
+    z-index: 2;
+  }
+
   img {
     min-height: 100vh;
     width: 100vw;

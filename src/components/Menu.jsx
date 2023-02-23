@@ -19,7 +19,7 @@ const menus = [
   new MenuClass("Users", "/home/users", "fa-solid fa-person-military-rifle", [
     new MenuClass("Get Users", "/home/users/", ""),
     new MenuClass("Create User", "/home/users/add", ""),
-    new MenuClass("Edit User", "/home/users/edit", ""),
+    // new MenuClass("Edit User", "/home/users/edit", ""),
     new MenuClass("Bulk upload", "/home/users/bulk", ""),
   ]),
   new MenuClass("Devices", "/home/devices", "fa-solid fa-walkie-talkie", [
@@ -34,13 +34,13 @@ const menus = [
     [
       new MenuClass("Get Stations", "/home/stations/", ""),
       new MenuClass("Create Station", "/home/stations/add", ""),
-      new MenuClass("Edit Station", "/home/stations/edit", ""),
+      // new MenuClass("Edit Station", "/home/stations/edit", ""),
     ]
   ),
   new MenuClass("Ranks", "/home/ranks", "fa-solid fa-ranking-star", [
     new MenuClass("Get Ranks", "/home/ranks/", ""),
     new MenuClass("Create Rank", "/home/ranks/add", ""),
-    new MenuClass("Edit Rank", "/home/ranks/edit", ""),
+    // new MenuClass("Edit Rank", "/home/ranks/edit", ""),
   ]),
   new MenuClass("Log out", "/", "fa-solid fa-right-from-bracket"),
 ];

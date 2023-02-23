@@ -407,6 +407,7 @@ export const CreateUser = () => {
       station,
       devices: selectedDevices,
       ammos: selectedAmmos,
+      accessories: selectedAccessories,
     });
     reset();
   };

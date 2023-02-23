@@ -268,7 +268,7 @@ const AddEditRankSection = () => {
 };
 
 const EachTableRow = ({
-  data: userData /**@type data.users[0] */,
+  data: rankData /**@type data.users[0] */,
   onCheckedHandler,
   onEdit,
   onDelete,
@@ -287,58 +287,18 @@ const EachTableRow = ({
     reset: resetName,
   } = useInput((value) => value?.trim() !== "");
 
-  const {
-    value: address,
-    isValid: addressIsValid,
-    inputIsInValid: addressInputIsInValid,
-    onChange: onAddressChange,
-    onBlur: onAddressBlur,
-    reset: resetAddress,
-  } = useInput((value) => value?.trim() !== "");
-
-  const {
-    value: state,
-    isValid: stateIsValid,
-    inputIsInValid: stateInputIsInValid,
-    onChange: onStateChange,
-    onBlur: onStateBlur,
-    reset: resetState,
-  } = useInput((value) => value?.trim() !== "");
-
-  const {
-    value: LGA,
-    isValid: LGAIsValid,
-    inputIsInValid: LGAInputIsInValid,
-    onChange: onLGAChange,
-    onBlur: onLGABlur,
-    reset: resetLGA,
-  } = useInput((value) => value?.trim() !== "");
-
   const { executeBlurHandlers, formIsValid, reset } = useForm({
-    blurHandlers: [onNameBlur, onAddressBlur, onStateBlur, onLGABlur],
-    resetHandlers: [resetName, resetAddress, resetState, resetLGA],
-    validateOptions: () =>
-      nameIsValid && addressIsValid && stateIsValid && LGAIsValid,
+    blurHandlers: [onNameBlur],
+    resetHandlers: [resetName],
+    validateOptions: () => nameIsValid,
   });
-
-  const states = data.states.map(
-    (eachState) =>
-      new SelectClass(eachState.code, eachState.name, eachState.name)
-  );
-
-  const lgas = data.states
-    .find((eachState) => eachState.name === state)
-    ?.lgas?.map((eachLga, i) => new SelectClass(i, eachLga, eachLga));
 
   const update = () => {
     if (!formIsValid) return executeBlurHandlers();
 
     const data = {
-      id: userData?.id,
-      Name: name,
-      Address: address,
-      State: state,
-      LGA,
+      id: rankData?.id,
+      name,
     };
     console.log("DATA", data);
     onEdit(data);
@@ -350,10 +310,7 @@ const EachTableRow = ({
   }, [approvedState, refreshCheckedState]);
 
   useEffect(() => {
-    onNameChange(userData?.Name);
-    onAddressChange(userData?.Address);
-    onStateChange(userData?.State);
-    onLGAChange(userData?.LGA);
+    onNameChange(rankData?.name);
   }, [editingRow]);
 
   if (editingRow) {
@@ -367,37 +324,6 @@ const EachTableRow = ({
             onChange={(e) => onNameChange(e.target.value)}
             onBlur={onNameBlur}
             error={nameInputIsInValid}
-          />
-        </Table.HeaderCell>
-        <Table.HeaderCell>
-          <Input
-            placeholder="Address..."
-            value={address}
-            onChange={(e) => onAddressChange(e.target.value)}
-            onBlur={onAddressBlur}
-            error={addressInputIsInValid}
-          />
-        </Table.HeaderCell>
-        <Table.HeaderCell>
-          <Select
-            label="Select a state"
-            placeholder="Select a state"
-            options={states}
-            value={state}
-            onChange={(e, { value }) => onStateChange(value)}
-            onBlur={onStateBlur}
-            error={stateInputIsInValid}
-          />
-        </Table.HeaderCell>
-        <Table.HeaderCell>
-          <Select
-            label="Select an LGA"
-            placeholder="Select an LGA"
-            options={lgas}
-            value={LGA}
-            onChange={(e, { value }) => onLGAChange(value)}
-            onBlur={onLGABlur}
-            error={LGAInputIsInValid}
           />
         </Table.HeaderCell>
         <Table.Cell collapsing>
@@ -415,15 +341,13 @@ const EachTableRow = ({
           slider
           checked={checked}
           onChange={(e, { checked }) => {
-            onCheckedHandler(userData, checked);
+            onCheckedHandler(rankData, checked);
             setChecked((prev) => !prev);
           }}
         />
       </Table.Cell>
-      <Table.HeaderCell>{userData?.Name}</Table.HeaderCell>
-      <Table.HeaderCell>{userData?.Address}</Table.HeaderCell>
-      <Table.HeaderCell>{userData?.State}</Table.HeaderCell>
-      <Table.HeaderCell>{userData?.LGA}</Table.HeaderCell>
+      <Table.HeaderCell>{rankData?.name}</Table.HeaderCell>
+
       <Table.Cell collapsing>
         <Button
           color="blue"
@@ -433,7 +357,7 @@ const EachTableRow = ({
         >
           Edit
         </Button>
-        <Button color="red" onClick={() => onDelete(userData)}>
+        <Button color="red" onClick={() => onDelete(rankData)}>
           Delete
         </Button>
       </Table.Cell>
@@ -654,7 +578,7 @@ const UploadBulkRanksSection = () => {
               <Table.Row>
                 <Table.HeaderCell />
                 <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Address</Table.HeaderCell>
+                <Table.HeaderCell>Actions</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
 
@@ -720,7 +644,7 @@ const UploadBulkRanksSection = () => {
                 opacity: 0,
               }}
             >
-              <Message success content="Stations uploaded successfully" />
+              <Message success content="Ranks uploaded successfully" />
             </motion.div>
           </>
         )}

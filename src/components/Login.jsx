@@ -4,7 +4,7 @@ import { Button, Form, Icon } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import { SelectClass } from "../utils";
 
-const Login = () => {
+const Login = ({ toogleForce }) => {
   const navigate = useNavigate();
   const forceOptions = [
     new SelectClass(4, "", "Select your force"),
@@ -65,7 +65,10 @@ const Login = () => {
             className={css.select}
             options={forceOptions}
             value={force}
-            onChange={(e, { value }) => onForceChange(value)}
+            onChange={(e, { value }) => {
+              onForceChange(value);
+              toogleForce(value);
+            }}
             onBlur={onForceBlur}
             error={
               forceInputIsInValid && {

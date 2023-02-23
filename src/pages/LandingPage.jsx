@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay } from "swiper";
 import "swiper/css";
@@ -10,10 +10,32 @@ import paperMap from "../assets/img/paper-map.png";
 import googleEarth from "../assets/img/google-earth.png";
 import css from "../styles/landingPage/LandingPage.module.scss";
 import Login from "../components/Login";
+import armyLogo from "../assets/img/nig-army.png";
+import airforceLogo from "../assets/img/nig-airforce.png";
+import navyLogo from "../assets/img/nig-navy.png";
+import policeLogo from "../assets/img/nig-police.png";
 
 const LandingPage = () => {
+  const [force, setForce] = useState("");
+
+  const chooseForce = (force) => {
+    if (force === "Army") {
+      return armyLogo;
+    } else if (force === "Air force") {
+      return airforceLogo;
+    } else if (force === "Navy") {
+      return navyLogo;
+    } else if (force === "Police") {
+      return policeLogo;
+    } else {
+      return "";
+    }
+  };
   return (
     <section className={`${css["landing-page"]}`}>
+      {force?.trim() !== "" && (
+        <img src={chooseForce(force)} alt="" className={css["force-img"]} />
+      )}
       <Swiper
         effect="fade"
         modules={[EffectFade, Autoplay]}
@@ -43,7 +65,7 @@ const LandingPage = () => {
             <em>Nigeria defence tracking system</em>
           </div>
         </div>
-        <Login />
+        <Login toogleForce={setForce} />
       </div>
     </section>
   );
