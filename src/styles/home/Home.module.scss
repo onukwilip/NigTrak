@@ -185,6 +185,30 @@ $transition-length: 500ms;
   }
 }
 
+.force-img {
+  position: fixed;
+  z-index: 6;
+  bottom: 0;
+  left: 0;
+  margin: 10px;
+  max-width: 70px;
+  @include flex(center, center, 5px, column);
+  background: rgba(black, 0.5);
+  border-radius: 10px;
+  padding: 5px;
+  img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    object-position: top;
+  }
+  em {
+    font-weight: bold;
+    color: white;
+    text-align: center;
+  }
+}
+
 .map-tab {
   width: 100vw;
   height: 100vh;

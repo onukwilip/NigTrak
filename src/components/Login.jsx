@@ -51,6 +51,7 @@ const Login = ({ toogleForce }) => {
       return executeBlurHandlers();
     }
     // SUBMIT FORM
+    sessionStorage.setItem("force", force);
     navigate("/home", { replace: true });
     reset();
   };

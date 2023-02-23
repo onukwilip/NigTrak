@@ -11,7 +11,7 @@ import googleEarth from "../assets/img/google-earth.png";
 import css from "../styles/landingPage/LandingPage.module.scss";
 import Login from "../components/Login";
 import armyLogo from "../assets/img/nig-army.png";
-import airforceLogo from "../assets/img/nig-airforce.png";
+import airforceLogo from "../assets/img/nig-airforce-2.png";
 import navyLogo from "../assets/img/nig-navy.png";
 import policeLogo from "../assets/img/nig-police.png";
 

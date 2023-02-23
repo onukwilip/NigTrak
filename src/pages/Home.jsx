@@ -24,6 +24,10 @@ import { CreateEditRank, Ranks } from "../components/Ranks";
 import { CreateEditStation, Stations } from "../components/Stations";
 import data from "../data.json";
 import { InfoWindow, Marker } from "@react-google-maps/api";
+import armyLogo from "../assets/img/nig-army.png";
+import airforceLogo from "../assets/img/nig-airforce-2.png";
+import navyLogo from "../assets/img/nig-navy.png";
+import policeLogo from "../assets/img/nig-police.png";
 
 const MapTab = ({ position }) => {
   const [showInfo, setShowInfo] = useState(/**@type data.users[0] */ null);
@@ -84,12 +88,27 @@ const Home = () => {
   const [position, setPosition] = useState(null);
   const [showProfile, setShowProfile] = useState(true);
   const [showMenu, setShowMenu] = useState(true);
+  const force = sessionStorage.getItem("force");
   const profileRef = useRef();
   const onSuccess = (pos) => {
     const crd = pos.coords;
 
     console.log("POSITION", crd);
     setPosition({ lat: crd.latitude, lng: crd.longitude });
+  };
+
+  const chooseForce = (force) => {
+    if (force === "Army") {
+      return armyLogo;
+    } else if (force === "Air force") {
+      return airforceLogo;
+    } else if (force === "Navy") {
+      return navyLogo;
+    } else if (force === "Police") {
+      return policeLogo;
+    } else {
+      return "";
+    }
   };
 
   useEffect(() => {
@@ -107,6 +126,10 @@ const Home = () => {
 
   return (
     <section className={css.home}>
+      <div className={css["force-img"]}>
+        <img src={chooseForce(force)} alt="" />
+        <em>Nigerian {force}</em>
+      </div>
       <CSSTransition
         in={showMenu}
         appear={true}
