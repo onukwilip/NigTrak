@@ -39,6 +39,17 @@
       overflow-x: auto;
       height: 460px;
     }
+    .message-container {
+      width: 100%;
+      padding: 10px;
+      @include flex(center, center, 0, row);
+      & > div {
+        width: 100%;
+      }
+    }
+  }
+  .left-no-map .device-details .details {
+    max-height: 70vh;
   }
   .right {
     flex: 1;
@@ -121,6 +132,21 @@
       }
     }
   }
+  .error-table {
+    color: darkred;
+    thead tr th {
+      background: lighten(orangered, 45);
+      color: darkred;
+    }
+    tbody tr td {
+      background: lighten(orangered, 48);
+      color: red;
+    }
+    tfoot tr td {
+      background: lighten(orangered, 45);
+      color: darkred;
+    }
+  }
 }
 
 .section-main {
@@ -182,10 +208,16 @@
         }
       }
       .map-container {
-        background: #000;
         max-width: 100%;
         height: 50vh;
       }
+      .message-container {
+        height: 100px;
+      }
+    }
+    .left-no-map {
+      height: auto;
+      min-height: auto;
     }
     .right {
       max-width: 100vw;

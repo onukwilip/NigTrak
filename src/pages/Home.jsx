@@ -8,8 +8,7 @@ import Menu from "../components/Menu";
 import Profile from "../components/Profile";
 import {
   AllUsers,
-  CreateUser,
-  EditUser,
+  CreateEditUser,
   ranks,
   UploadBulkUsers,
 } from "../components/UsersManagement";
@@ -28,28 +27,75 @@ import armyLogo from "../assets/img/nig-army.png";
 import airforceLogo from "../assets/img/nig-airforce-2.png";
 import navyLogo from "../assets/img/nig-navy.png";
 import policeLogo from "../assets/img/nig-police.png";
+import { useDispatch, useSelector } from "react-redux";
+import { sockeDeviceActions } from "../store/store";
+import useAjaxHook from "use-ajax-request";
+import axios from "axios";
+import { manageSocketDevicesConnection, mapCenter } from "../utils";
+import { getDeviceAction } from "../store/devicesReducer";
+
+const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
 
 const MapTab = ({ position }) => {
   const [showInfo, setShowInfo] = useState(/**@type data.users[0] */ null);
+  const socketDevices = useSelector((state) => state?.socketDevices);
+  const dispatch = useDispatch();
+  const {
+    sendRequest: getDevices,
+    data: devices,
+    error: devicesError,
+    loading: loadingDevices,
+  } = useAjaxHook({
+    instance: axios,
+    options: {
+      url: `${process.env.REACT_APP_API_DOMAIN}/api/device`,
+      method: "GET",
+    },
+  });
+
+  manageSocketDevicesConnection({ ws, dispatch });
+
+  useEffect(() => {
+    getDevices();
+  }, []);
+
+  useEffect(() => {
+    console.log("Socket devices", socketDevices);
+  }, [socketDevices]);
+
   return (
     <div className={css["map-tab"]}>
       {position ? (
-        <Map newCenter={position} zoom={6.5}>
-          {data.users.map((user) => (
-            <Marker
-              position={user.location}
-              icon={
-                window.google && {
-                  url: ranks[user.rank],
-                  scaledSize: new window.google.maps.Size(35, 35),
-                }
-              }
-              onClick={() => setShowInfo(user)}
-            />
-          ))}
+        <Map newCenter={mapCenter} zoom={6.5} showMarker={false}>
+          {Object.entries(socketDevices).map(([key, socketDevice]) => {
+            const device = devices?.find(
+              (eachDevice) => eachDevice["IMEI_Number"] === key
+            );
+            if (device)
+              return (
+                <Marker
+                  position={{ lat: socketDevice?.lat, lng: socketDevice?.lng }}
+                  // icon={
+                  //   window.google && {
+                  //     url: ranks[user.rank],
+                  //     scaledSize: new window.google.maps.Size(35, 35),
+                  //   }
+                  // }
+                  onClick={() =>
+                    setShowInfo({
+                      ...device,
+                      lat: socketDevice?.lat,
+                      lng: socketDevice?.lng,
+                    })
+                  }
+                />
+              );
+
+            return <></>;
+          })}
           {showInfo && (
             <InfoWindow
-              position={showInfo.location}
+              position={{ lat: showInfo?.lat, lng: showInfo?.lng }}
               onCloseClick={() => setShowInfo(null)}
             >
               <div className="info">
@@ -61,17 +107,23 @@ const MapTab = ({ position }) => {
                 </div>
                 <div className={"details"}>
                   <em>
-                    <b>ID:</b> {showInfo?._id}
+                    <b>IMEI number:</b> {showInfo?.["IMEI_Number"]}
                   </em>
                   <em>
-                    <b>Name:</b> {showInfo?.name}
+                    <b>Holder Id:</b> {showInfo?.UserId || "Nil"}
                   </em>
                   <em>
-                    <b>Station:</b> {showInfo?.station}
+                    <b>Holder name:</b> {showInfo?.Name || "Nil"}
                   </em>
                   <em>
+                    <b>Holder station:</b> {showInfo?.Station || "Nil"}
+                  </em>
+                  <em>
+                    <b>Holder rank:</b> {showInfo?.Rank || "Nil"}
+                  </em>
+                  {/* <em>
                     <b>State:</b> {showInfo?.state}
-                  </em>
+                  </em> */}
                 </div>
               </div>
             </InfoWindow>
@@ -90,6 +142,9 @@ const Home = () => {
   const [showMenu, setShowMenu] = useState(true);
   const force = sessionStorage.getItem("force");
   const profileRef = useRef();
+  const dispatch = useDispatch();
+  dispatch(getDeviceAction());
+
   const onSuccess = (pos) => {
     const crd = pos.coords;
 
@@ -153,14 +208,13 @@ const Home = () => {
           <Route path="/" element={<MapTab position={position} />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/users/" element={<AllUsers position={position} />} />
-          <Route path="users/add" element={<CreateUser />} />
-          <Route path="users/edit/:id" element={<EditUser />} />
+          <Route path="users/add" element={<CreateEditUser />} />
+          <Route path="users/edit/:id" element={<CreateEditUser />} />
           <Route
             path="users/edit"
             element={<Navigate to={"/home/users/add"} />}
           />
           <Route path="users/bulk" element={<UploadBulkUsers />} />
-          <Route path="users/edit/:id" element={<EditUser />} />
           <Route path="/devices" element={<AllDevices />} />
           <Route path="devices/add" element={<CreateDevice />} />
           <Route

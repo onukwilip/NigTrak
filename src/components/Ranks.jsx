@@ -20,7 +20,7 @@ import { ranks as rankImgs } from "./UsersManagement";
 import Main from "./Main";
 import { FileUpload, ImgUpload } from "./FileUpload";
 import * as XLSX from "xlsx";
-import { SelectClass, clearSimilarArrayObjects } from "../utils";
+import { SelectClass, clearSimilarArrayObjects, mapCenter } from "../utils";
 
 export const RankCard = ({ rank, onView = () => {}, index }) => {
   const [ref, inView] = useInView();
@@ -80,8 +80,6 @@ export const RankCard = ({ rank, onView = () => {}, index }) => {
     </motion.div>
   );
 };
-
-const mapCenter = { lat: 9.082, lng: 8.6753 };
 
 export const Ranks = () => {
   const [ranks, setRanks] = useState(/**@type data.ranks */ data.ranks);

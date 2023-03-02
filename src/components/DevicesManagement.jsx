@@ -16,12 +16,22 @@ import data from "../data.json";
 import css from "../styles/devices/Devices.module.scss";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import walkieTalkieTrans from "../assets/img/walkie-talkie-trans.png";
-import { clearSimilarArrayObjects, SelectClass } from "../utils";
+import {
+  clearSimilarArrayObjects,
+  manageSocketDevicesConnection,
+  mapCenter,
+  SelectClass,
+} from "../utils";
 import { useForm, useInput } from "use-manage-form";
 import { useNavigate, useParams } from "react-router-dom";
 import Main from "./Main";
 import { FileUpload } from "./FileUpload";
 import * as XLSX from "xlsx";
+import useAjaxHook from "use-ajax-request";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+
+const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
 
 export const DeviceCard = ({ device, onViewMore = () => {}, index }) => {
   const [ref, inView] = useInView();
@@ -55,10 +65,16 @@ export const DeviceCard = ({ device, onViewMore = () => {}, index }) => {
       </div>
       <div className={css.details}>
         <em>
-          {device?._id?.substring(0, 5)}...
-          {device?._id?.substring(device?._id?.length, 21)}
+          {device?.IMEI_Number > 10 ? (
+            <>
+              {device?.IMEI_Number?.substring(0, 5)}...
+              {device?.IMEI_Number?.substring(device?._id?.length, 21)}
+            </>
+          ) : (
+            device?.IMEI_Number
+          )}
         </em>
-        <em>{device?.deviceHolderName}</em>
+        <em>{device?.Name || "Nil"}</em>
       </div>
       <div className={css.actions}>
         <Button
@@ -89,55 +105,109 @@ export const DevicesList = ({ devices, onViewMore, className }) => {
 };
 
 export const AllDevices = () => {
-  const [device, setDevice] = useState(data.devices[0]);
-  const [devices, setDevices] = useState(data.devices);
+  const [devices, setDevices] = useState([]);
+  const [device, setDevice] = useState(devices[0]);
+  const socketDevices = useSelector((state) => state?.socketDevices);
+  const [socketDevice, setSocketDevice] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const {
+    sendRequest: getDevices,
+    error: getDevicesError,
+    loading: gettingDevices,
+    data: allDevice,
+  } = useAjaxHook({
+    instance: axios,
+    options: {
+      url: `${process.env.REACT_APP_API_DOMAIN}/api/device/`,
+      method: "GET",
+    },
+  });
+
+  manageSocketDevicesConnection({ ws, dispatch });
 
   const onSearch = (/**@type String */ value) => {
-    const filtered = data.devices.filter(
+    const filtered = allDevice.filter(
       (eachDevice) =>
-        eachDevice._id.toLowerCase().includes(value.toLowerCase()) ||
-        eachDevice.deviceHolderName.toLowerCase().includes(value.toLowerCase())
+        eachDevice?.IMEI_Number.toLowerCase().includes(value.toLowerCase()) ||
+        eachDevice?.deviceHolderName
+          ?.toLowerCase()
+          .includes(value.toLowerCase()) ||
+        eachDevice?.Serial_Number.toLowerCase().includes(value.toLowerCase()) ||
+        eachDevice?.Device_Model.toLowerCase().includes(value.toLowerCase())
     );
 
     setDevices(filtered);
   };
 
   const editDevice = () => {
-    navigate(
-      `/home/devices/edit/${device?._id?.substring(1, device?._id?.length)}`
-    );
+    navigate(`/home/devices/edit/${device?.IMEI_Number}`);
   };
+
+  const onGetDevicesSuccess = ({ data }) => {
+    setDevices(data);
+  };
+
+  console.log("SOCKET DEVICE", socketDevice);
+
+  useEffect(() => {
+    getDevices(onGetDevicesSuccess);
+  }, []);
+
+  useEffect(() => {
+    setDevice(devices[0]);
+  }, [devices]);
+
+  useEffect(() => {
+    if (device && socketDevices)
+      setSocketDevice(socketDevices[device?.IMEI_Number]);
+  }, [device, socketDevices]);
 
   return (
     <section className={css.devices}>
-      <div className={css.left}>
+      <div
+        className={`${css.left} ${!socketDevice ? css["left-no-map"] : null}`}
+      >
         <div className={css["device-details"]}>
           <div className={css.details}>
             <ul>
               <li>
-                <em>ID</em>: <em>{device["_id"]}</em>
+                <em>IMEI number</em>: <em>{device?.IMEI_Number}</em>
               </li>
               <li>
-                <em>Registered</em>: <em>{device["registered"]}</em>
+                <em>Registered</em>: <em>{new Date()?.toUTCString()}</em>
               </li>{" "}
               <li>
+                <em>Serial number</em>: <em>{device?.Serial_Number}</em>
+              </li>{" "}
+              <li>
+                <em>Device model</em>: <em>{device?.Device_Model}</em>
+              </li>{" "}
+              <li>
+                <em>Status</em>:{" "}
+                <em>
+                  <span className={socketDevice ? "online" : "offline"}></span>{" "}
+                  {socketDevice ? "Online" : "Offline"}
+                </em>
+              </li>{" "}
+              {/* <li>
                 <em>Location</em>:{" "}
                 <em>
                   {device["location"]["lat"]} {device["location"]["lng"]}
                 </em>
-              </li>{" "}
-              <li>
+              </li>{" "} */}
+              {/* <li>
                 <em>State</em>: <em>{device["state"]}</em>
               </li>
               <li>
                 <em>Station</em>: <em>{device["station"]}</em>
+              </li> */}
+              <li>
+                <em>Militant ID</em>: <em>{device?.UserId || "Nil"}</em>
               </li>
               <li>
-                <em>Militant ID</em>: <em>{device["deviceHolderId"]}</em>
-              </li>
-              <li>
-                <em>Militant name</em>: <em>{device["deviceHolderName"]}</em>
+                <em>Militant name</em>: <em>{device?.Name || "Nil"}</em>
               </li>
             </ul>
             <br />
@@ -148,9 +218,21 @@ export const AllDevices = () => {
             </div>
           </div>
         </div>
-        <div className={css["map-container"]}>
-          {device["location"] && (
-            <Map newCenter={device["location"]} zoom={10} />
+        <div
+          className={
+            socketDevice ? css["map-container"] : css["message-container"]
+          }
+        >
+          {socketDevice ? (
+            <Map
+              newCenter={{
+                lat: socketDevice?.lat || mapCenter.lat,
+                lng: socketDevice?.lng || mapCenter.lng,
+              }}
+              zoom={10}
+            />
+          ) : (
+            <Message content="Device is offline" warning />
           )}
         </div>
       </div>
@@ -176,6 +258,7 @@ export const AllDevices = () => {
 };
 
 const AddDeviceSection = ({ id }) => {
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const {
     value: IMEI,
     isValid: IMEIIsValid,
@@ -210,41 +293,100 @@ const AddDeviceSection = ({ id }) => {
       IMEIIsValid && serialNumberIsValid && deviceModelIsValid,
   });
 
+  const {
+    sendRequest: postDevice,
+    error: postDeviceError,
+    loading: postingDevice,
+  } = useAjaxHook({
+    instance: axios,
+    options: {
+      url: id
+        ? `${process.env.REACT_APP_API_DOMAIN}/api/device/${id}`
+        : `${process.env.REACT_APP_API_DOMAIN}/api/device`,
+      method: id ? "PUT" : "POST",
+      data: {
+        imei: IMEI,
+        serialNumber: serialNumber,
+        deviceModel: deviceModel,
+      },
+    },
+  });
+
+  const {
+    sendRequest: getDevice,
+    error: getDeviceError,
+    loading: gettingDevice,
+  } = useAjaxHook({
+    instance: axios,
+    options: {
+      url: `${process.env.REACT_APP_API_DOMAIN}/api/device/${id}`,
+      method: "GET",
+    },
+  });
+
   const models = [
     new SelectClass(0, "Samsung", "Samsung"),
     new SelectClass(0, "Huwawei", "Huwawei"),
     new SelectClass(0, "Infinix", "Infinix"),
   ];
 
-  const addDevice = () => {
+  const onPostDeviceSuccess = ({ data }) => {
+    setShowSuccessMessage(true);
+    if (!id) reset();
+    setTimeout(() => setShowSuccessMessage(false), [1000 * 10]);
+  };
+
+  const submitHandler = () => {
     if (!formIsValid) return executeBlurHandlers();
 
     console.log("NEW DEVICE", { imei: IMEI, serialNumber, deviceModel });
-    reset();
+    postDevice(onPostDeviceSuccess);
   };
 
-  const updateDevice = () => {
-    if (!formIsValid) return executeBlurHandlers();
-
-    console.log("UPDATED DEVICE", { imei: IMEI, serialNumber, deviceModel });
-    reset();
+  const onGetDeviceSuccess = ({ data }) => {
+    onIMEIChange(data?.IMEI_Number);
+    onSerialNumberChange(data?.Serial_Number);
+    onDeviceModelChange(data?.Device_Model);
   };
+  useEffect(() => {
+    if (id) getDevice(onGetDeviceSuccess);
+  }, [id]);
 
   return (
     <>
       <div className={css["section-main"]}>
         <div className={css.head}>
-          <h3>Add device</h3>
+          <h3>{id ? "Edit" : "Add"} device</h3>
         </div>
         <hr className={css.divider} />
         <div className={css["body"]}>
-          <Form onSubmit={id ? updateDevice : addDevice}>
+          {showSuccessMessage && (
+            <>
+              <Message content="Device posted successfully" success />
+              <br />
+            </>
+          )}
+          {postDeviceError && (
+            <>
+              <Message
+                content={
+                  postDeviceError?.response?.status === 400
+                    ? `User with IMEI number ${IMEI} already exists`
+                    : "There was an error posting the device please try again"
+                }
+                error
+              />
+              <br />
+            </>
+          )}
+          <Form onSubmit={submitHandler}>
             <Form.Group widths="equal">
               <Form.Input
                 icon="pencil"
                 iconPosition="left"
                 placeholder="IMEI number..."
                 label="IMEI number"
+                disabled={id ? true : false}
                 value={IMEI}
                 onChange={(e) => onIMEIChange(e.target.value)}
                 onBlur={onIMEIBlur}
@@ -286,8 +428,12 @@ const AddDeviceSection = ({ id }) => {
               />
             </Form.Group>
             <div className="actions">
-              <Button className="send" disabled={!formIsValid}>
-                {id ? "Update device" : "Add device"}
+              <Button className="send" disabled={!formIsValid || postingDevice}>
+                {postingDevice
+                  ? "Loading..."
+                  : id
+                  ? "Update device"
+                  : "Add device"}
               </Button>
             </div>
           </Form>
@@ -1013,10 +1159,25 @@ export const UploadBulkDevices = () => {
   const [selectedDevices, setSelectedDevices] = useState({});
   const [approvedState, setApprovedState] = useState(false);
   const [refreshCheckedState, setRefreshCheckedState] = useState(false);
-  const [submitState, setSubmitState] = useState({
-    uploading: false,
-    success: false,
-    error: false,
+  const [noUploadedDevices, setNoUploadedDevices] = useState(false);
+  const [errorLogs, setErrorLogs] = useState([]);
+  const [uploadedSuccessfuly, setUploadedSuccessfuly] = useState(false);
+  const {
+    sendRequest: postDevices,
+    error: postDevicesError,
+    loading: postingDevices,
+    data: postDevicesData,
+  } = useAjaxHook({
+    instance: axios,
+    options: {
+      url: `${process.env.REACT_APP_API_DOMAIN}/api/device/bulk`,
+      method: "POST",
+      data: Object.entries(selectedDevices)?.map(([key, eachDevice]) => ({
+        imei: eachDevice["IMEI number"],
+        serialNumber: eachDevice["Serial number"],
+        deviceModel: eachDevice["Device model"],
+      })),
+    },
   });
 
   const getExention = (/**@type String */ string) => {
@@ -1037,22 +1198,6 @@ export const UploadBulkDevices = () => {
     (/**@type File */ file) =>
       getExention(file?.name) === "xlsx" || getExention(file?.name) === "json"
   );
-
-  const onSuccessUpload = () => {
-    setSubmitState((prev) => ({
-      ...prev,
-      success: true,
-      uploading: false,
-    }));
-
-    setTimeout(() => {
-      setSubmitState((prev) => ({
-        ...prev,
-        success: false,
-        uploading: false,
-      }));
-    }, 1000 * 10);
-  };
 
   const onFileReaderLoad = (e, resolve) => {
     const bufferArray = e.target.result;
@@ -1125,24 +1270,29 @@ export const UploadBulkDevices = () => {
     }
   };
 
-  const uploadDevices = () => {
-    setSubmitState((prev) => ({ ...prev, uploading: true }));
+  const onNoUploadedDevices = () => {
+    setNoUploadedDevices(true);
 
-    const selectedArray = Object.entries(selectedDevices)?.map(
-      ([key, value]) => value
-    );
+    setTimeout(() => setNoUploadedDevices(false), 1000 * 10);
+  };
 
-    if (selectedArray?.length < 1) {
-      setSubmitState((prev) => ({ ...prev, uploading: false }));
-      return;
-    }
+  const onSuccessUpload = () => {
+    setUploadedSuccessfuly(true);
 
+    setTimeout(() => {
+      setUploadedSuccessfuly(false);
+    }, 1000 * 10);
+  };
+
+  const onUploadSuccess = ({ data }) => {
+    const { uploadedDevices, errorLogs } = data;
+    console.info(data);
     const currentDevices = {};
     uploadedData.forEach((eachDevice) => {
       currentDevices[eachDevice["IMEI number"]] = eachDevice;
     });
 
-    for (const key in selectedDevices) {
+    for (const key in uploadedDevices) {
       delete currentDevices[key];
     }
 
@@ -1151,9 +1301,28 @@ export const UploadBulkDevices = () => {
     );
 
     setUploadedData(currentDevicesArray);
+    setErrorLogs(errorLogs);
     setSelectedDevices({});
-    onSuccessUpload();
-    console.log("SELECTED ARRAY", selectedArray);
+    disApproveAll();
+    if (Object?.keys(uploadedDevices)?.length > 0) {
+      onSuccessUpload();
+    } else {
+      onNoUploadedDevices();
+    }
+  };
+
+  const onErrorUpload = () => setUploadedSuccessfuly(false);
+
+  const uploadDevices = () => {
+    const selectedArray = Object.entries(selectedDevices)?.map(
+      ([key, value]) => value
+    );
+
+    if (selectedArray?.length < 1) {
+      return;
+    }
+
+    postDevices(onUploadSuccess, onErrorUpload);
   };
 
   const selectAllDevices = () => {
@@ -1188,6 +1357,8 @@ export const UploadBulkDevices = () => {
 
     setUploadedData(allDevice);
   };
+
+  const clearErrors = () => setErrorLogs([]);
 
   const onDelete = (device) => {
     setUploadedData((prevData) =>
@@ -1253,7 +1424,11 @@ export const UploadBulkDevices = () => {
                       color="green"
                       size="small"
                       onClick={uploadDevices}
-                      disabled={submitState.uploading}
+                      disabled={
+                        Object.keys(selectedDevices)?.length < 1
+                          ? true
+                          : false || postingDevices
+                      }
                     >
                       <Icon name="cloud upload" /> Upload devices
                     </Button>
@@ -1270,7 +1445,7 @@ export const UploadBulkDevices = () => {
           )}
         </div>
         <AnimatePresence>
-          {submitState.success && (
+          {uploadedSuccessfuly.success && (
             <>
               <br />
               <motion.div
@@ -1292,6 +1467,90 @@ export const UploadBulkDevices = () => {
             </>
           )}
         </AnimatePresence>
+        <AnimatePresence>
+          {postDevicesError && (
+            <>
+              <br />
+              <motion.div
+                initial={{
+                  y: -100,
+                  opacity: 0,
+                }}
+                animate={{
+                  y: -0,
+                  opacity: 1,
+                }}
+                exit={{
+                  y: -100,
+                  opacity: 0,
+                }}
+              >
+                <Message
+                  error
+                  content="There was an error uploading your devices, please try again"
+                />
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {noUploadedDevices && (
+            <>
+              <br />
+              <motion.div
+                initial={{
+                  y: -100,
+                  opacity: 0,
+                }}
+                animate={{
+                  y: -0,
+                  opacity: 1,
+                }}
+                exit={{
+                  y: -100,
+                  opacity: 0,
+                }}
+              >
+                <Message warning content="No devices were uploaded" />
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+        <br />
+        <Table compact celled className={css["error-table"]}>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell colSpan={2}>Error logs</Table.HeaderCell>
+            </Table.Row>
+            <Table.Row>
+              <Table.HeaderCell collapsing>Device IMEI number</Table.HeaderCell>
+              <Table.HeaderCell>Error message</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {errorLogs?.map((error) => (
+              <>
+                <Table.Row key={error?.imei}>
+                  <Table.Cell>{error?.imei}</Table.Cell>
+                  <Table.Cell>{error?.error}</Table.Cell>
+                </Table.Row>
+              </>
+            ))}
+          </Table.Body>
+          <Table.Footer>
+            <Table.Row>
+              <Table.Cell
+                className={`${css["actions"]}`}
+                colSpan={2}
+                textAlign="right"
+              >
+                <Button negative onClick={clearErrors}>
+                  Clear all
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          </Table.Footer>
+        </Table>
       </Main>
     </section>
   );

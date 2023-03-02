@@ -1,6 +1,7 @@
 import React from "react";
 import { Icon } from "semantic-ui-react";
 import css from "../styles/profileContainer/ProfileContainer.module.scss";
+import dummy from "../assets/img/dummy_profile_pic.png";
 
 const ProfileContainer = ({ profilePic, name, phone, email, className }) => {
   return (
@@ -9,7 +10,7 @@ const ProfileContainer = ({ profilePic, name, phone, email, className }) => {
       <div className={css["details-container"]}>
         <div className={css.details}>
           <div className={css["img-container"]}>
-            <img src={profilePic} alt="Profile" />
+            <img src={profilePic || dummy} alt="Profile" />
           </div>
           <em>{name}</em>
           <a href={`mailto:${email}`}>
