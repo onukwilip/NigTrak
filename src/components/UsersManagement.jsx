@@ -1853,11 +1853,13 @@ export const UploadBulkUsers = () => {
                       size="small"
                       onClick={uploadUsers}
                       disabled={
-                        Object.keys(selectedUsers)?.length < 1 ? true : false
+                        Object.keys(selectedUsers)?.length < 1
+                          ? true
+                          : false || postingUsers
                       }
-                      // disabled={submitState.uploading}
                     >
-                      <Icon name="cloud upload" /> Upload users
+                      <Icon name="cloud upload" />{" "}
+                      {postingUsers ? "Loading..." : "Upload users"}
                     </Button>
                     <Button size="small" primary onClick={approveAll}>
                       Approve All

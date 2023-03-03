@@ -1452,7 +1452,8 @@ export const UploadBulkDevices = () => {
                           : false || postingDevices
                       }
                     >
-                      <Icon name="cloud upload" /> Upload devices
+                      <Icon name="cloud upload" />{" "}
+                      {postingDevices ? "Loading..." : "Upload devices"}
                     </Button>
                     <Button size="small" primary onClick={approveAll}>
                       Approve All
