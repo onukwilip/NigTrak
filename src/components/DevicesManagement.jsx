@@ -232,8 +232,8 @@ export const AllDevices = () => {
           {socketDevice ? (
             <Map
               newCenter={{
-                lat: socketDevice?.lat || mapCenter.lat,
-                lng: socketDevice?.lng || mapCenter.lng,
+                lat: parseFloat(socketDevice?.lat) || mapCenter.lat,
+                lng: parseFloat(socketDevice?.lng) || mapCenter.lng,
               }}
               zoom={10}
             />

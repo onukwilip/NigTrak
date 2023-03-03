@@ -74,7 +74,10 @@ const MapTab = ({ position }) => {
             if (device)
               return (
                 <Marker
-                  position={{ lat: socketDevice?.lat, lng: socketDevice?.lng }}
+                  position={{
+                    lat: parseFloat(socketDevice?.lat),
+                    lng: parseFloat(socketDevice?.lng),
+                  }}
                   // icon={
                   //   window.google && {
                   //     url: ranks[user.rank],
@@ -84,8 +87,8 @@ const MapTab = ({ position }) => {
                   onClick={() =>
                     setShowInfo({
                       ...device,
-                      lat: socketDevice?.lat,
-                      lng: socketDevice?.lng,
+                      lat: parseFloat(socketDevice?.lat),
+                      lng: parseFloat(socketDevice?.lng),
                     })
                   }
                 />
@@ -95,7 +98,10 @@ const MapTab = ({ position }) => {
           })}
           {showInfo && (
             <InfoWindow
-              position={{ lat: showInfo?.lat, lng: showInfo?.lng }}
+              position={{
+                lat: parseFloat(showInfo?.lat),
+                lng: parseFloat(showInfo?.lng),
+              }}
               onCloseClick={() => setShowInfo(null)}
             >
               <div className="info">

@@ -337,8 +337,8 @@ export const AllUsers = ({ position }) => {
                 <>
                   <Marker
                     position={{
-                      lat: socketDevice?.lat,
-                      lng: socketDevice?.lng,
+                      lat: parseFloat(socketDevice?.lat),
+                      lng: parseFloat(socketDevice?.lng),
                     }}
                   />
                 </>
