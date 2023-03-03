@@ -30,6 +30,7 @@ import * as XLSX from "xlsx";
 import useAjaxHook from "use-ajax-request";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import CustomLoader from "./CustomLoader";
 
 const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
 
@@ -173,22 +174,27 @@ export const AllDevices = () => {
           <div className={css.details}>
             <ul>
               <li>
-                <em>IMEI number</em>: <em>{device?.IMEI_Number}</em>
+                <em>IMEI number</em>: <em>{device?.IMEI_Number || "Nil"}</em>
               </li>
               <li>
-                <em>Registered</em>: <em>{new Date()?.toUTCString()}</em>
+                <em>Registered</em>:{" "}
+                <em>
+                  {new Date(device?.DateRegistered)?.toUTCString() || "Nil"}
+                </em>
               </li>{" "}
               <li>
-                <em>Serial number</em>: <em>{device?.Serial_Number}</em>
+                <em>Serial number</em>:{" "}
+                <em>{device?.Serial_Number || "Nil"}</em>
               </li>{" "}
               <li>
-                <em>Device model</em>: <em>{device?.Device_Model}</em>
+                <em>Device model</em>: <em>{device?.Device_Model || "Nil"}</em>
               </li>{" "}
               <li>
                 <em>Status</em>:{" "}
                 <em>
-                  <span className={socketDevice ? "online" : "offline"}></span>{" "}
-                  {socketDevice ? "Online" : "Offline"}
+                  <span className={socketDevice ? "online" : "offline"}>
+                    {socketDevice ? "Online" : "Offline"}
+                  </span>{" "}
                 </em>
               </li>{" "}
               {/* <li>
@@ -247,11 +253,27 @@ export const AllDevices = () => {
             }}
           />
         </div>
-        <DevicesList
-          devices={devices}
-          onViewMore={setDevice}
-          className={css.users}
-        />
+        {gettingDevices ? (
+          <CustomLoader />
+        ) : getDevicesError ? (
+          <>
+            <Message
+              icon="page4"
+              content="There was an error getting devices, please retry"
+              warning
+            />
+          </>
+        ) : devices?.length > 0 ? (
+          <DevicesList
+            devices={devices}
+            onViewMore={setDevice}
+            className={css.users}
+          />
+        ) : (
+          <>
+            <Message icon="page4" content="No devices are available" warning />
+          </>
+        )}
       </div>
     </section>
   );

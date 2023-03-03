@@ -39,6 +39,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDeviceAction } from "../store/devicesReducer";
 import { Marker } from "@react-google-maps/api";
 import dummy from "../assets/img/dummy_profile_pic.png";
+import CustomLoader from "./CustomLoader";
 
 const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
 
@@ -219,10 +220,13 @@ export const AllUsers = ({ position }) => {
           <div className={css.details}>
             <ul className={css["list"]}>
               <li>
-                <em>Address</em>: <em>{userProfile?.Address}</em>
+                <em>Address</em>: <em> {userProfile?.Address || "Nil"}</em>
               </li>
               <li>
-                <em>Joined</em>: <em>{new Date()?.toUTCString()}</em>
+                <em>Joined</em>:{" "}
+                <em>
+                  {new Date(userProfile?.DateJoined)?.toUTCString() || "Nil"}
+                </em>
               </li>{" "}
               <li>
                 <em>Status</em>:{" "}
@@ -246,14 +250,14 @@ export const AllUsers = ({ position }) => {
                     src={ranks[userProfile?.RankName]}
                     className="rank"
                   />{" "}
-                  {userProfile?.Rank}
+                  {userProfile?.Rank || "Nil"}
                 </em>
               </li>
               <li>
-                <em>Station</em>: <em>{userProfile?.Station}</em>
+                <em>Station</em>: <em>{userProfile?.Station || "Nil"}</em>
               </li>
               <li>
-                <em>Devices</em>:{" "}
+                <em>Devices</em>: {!userProfile && "Nil"}
                 {userProfile?.Devices &&
                   userProfile?.Devices?.length < 1 &&
                   "Nil"}
@@ -279,7 +283,7 @@ export const AllUsers = ({ position }) => {
                 </ul>
               </li>
               <li>
-                <em>Accessories</em>:{" "}
+                <em>Accessories</em>: {!userProfile && "Nil"}
                 {userProfile?.Accessories &&
                   userProfile?.Accessories?.length < 1 &&
                   "Nil"}
@@ -292,7 +296,7 @@ export const AllUsers = ({ position }) => {
                 </ul>
               </li>
               <li>
-                <em>Ammunition</em>:{" "}
+                <em>Ammunition</em>: {!userProfile && "Nil"}
                 {userProfile?.Ammunition &&
                   userProfile?.Ammunition?.length < 1 &&
                   "Nil"}
@@ -356,11 +360,31 @@ export const AllUsers = ({ position }) => {
             }}
           />
         </div>
-        <UsersList
-          users={militaints}
-          onViewMore={setUserProfile}
-          className={css.users}
-        />
+        {gettingUsers ? (
+          <CustomLoader />
+        ) : getUsersError ? (
+          <>
+            <Message
+              icon="page4"
+              content="There was an error getting users, please retry"
+              warning
+            />
+          </>
+        ) : militaints?.length > 0 ? (
+          <UsersList
+            users={militaints}
+            onViewMore={setUserProfile}
+            className={css.users}
+          />
+        ) : (
+          <>
+            <Message
+              icon="page4"
+              content="No militants are available"
+              warning
+            />
+          </>
+        )}
       </div>
     </section>
   );

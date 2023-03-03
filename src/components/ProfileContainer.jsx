@@ -12,12 +12,12 @@ const ProfileContainer = ({ profilePic, name, phone, email, className }) => {
           <div className={css["img-container"]}>
             <img src={profilePic || dummy} alt="Profile" />
           </div>
-          <em>{name}</em>
+          <em>{name || "Nil"}</em>
           <a href={`mailto:${email}`}>
-            <Icon name="mail" /> {email}
+            <Icon name="mail" /> {email || "Nil"}
           </a>
           <a href={`tel:${phone}`}>
-            <Icon name="phone" /> {phone}
+            <Icon name="phone" /> {phone || "Nil"}
           </a>
         </div>
       </div>

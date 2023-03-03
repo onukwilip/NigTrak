@@ -130,7 +130,11 @@ const MapTab = ({ position }) => {
           )}
         </Map>
       ) : (
-        <Message content="Please enable your location" warning />
+        <Message
+          className="my-message"
+          content="Please enable your location"
+          warning
+        />
       )}
     </div>
   );
