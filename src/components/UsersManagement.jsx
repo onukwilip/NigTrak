@@ -40,6 +40,7 @@ import { getDeviceAction } from "../store/devicesReducer";
 import { Marker } from "@react-google-maps/api";
 import dummy from "../assets/img/dummy_profile_pic.png";
 import CustomLoader from "./CustomLoader";
+import { getRanksAction } from "../store/ranksReducer";
 
 const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
 
@@ -76,11 +77,22 @@ const Card = ({ item, onCancel, src }) => {
 };
 
 export const UserCard = ({ user, onViewMore = () => {}, index }) => {
+  const socketDevices = useSelector((state) => state?.socketDevices);
   const [ref, inView] = useInView();
   const control = useAnimation();
   const variants = {
     far: { opacity: 0, x: "100px" },
     current: { opacity: 1, x: "0px" },
+  };
+
+  const userSocketDevicesToArray = () => {
+    const arr = [];
+    user?.Devices?.forEach((device) => {
+      if (socketDevices[device?.IMEI_Number]) {
+        arr.push(socketDevices[device?.IMEI_Number]);
+      }
+    });
+    return arr;
   };
 
   useEffect(() => {
@@ -102,14 +114,19 @@ export const UserCard = ({ user, onViewMore = () => {}, index }) => {
       className={css["user-card"]}
       ref={ref}
     >
+      <div
+        className={
+          userSocketDevicesToArray()?.length > 0 ? "online-dot" : "offline-dot"
+        }
+      ></div>
       <div className={css["img-container"]}>
-        <img src={user?.image || dummy} alt="" />
+        <img src={user?.Image || dummy} alt="" />
       </div>
       <div className={css.details}>
         <em>{user?.Name}</em>
         <em>
           {" "}
-          <img src={ranks[user["rank"]]} className="rank" /> {user?.Rank}
+          <img src={user?.RankImage} className="rank" /> {user?.RankName}
         </em>
       </div>
       <div className={css.actions}>
@@ -246,11 +263,8 @@ export const AllUsers = ({ position }) => {
                 <em> Rank</em>:{" "}
                 <em>
                   {" "}
-                  <img
-                    src={ranks[userProfile?.RankName]}
-                    className="rank"
-                  />{" "}
-                  {userProfile?.Rank || "Nil"}
+                  <img src={userProfile?.RankImage} className="rank" />{" "}
+                  {userProfile?.RankName || "Nil"}
                 </em>
               </li>
               <li>
@@ -395,19 +409,14 @@ export const CreateEditUser = () => {
   const params = useParams();
   const id = params.id;
   const devices = useSelector((state) => state.devices.devices);
+  const ranks = useSelector((state) => state.ranks.ranks);
+  const [rankOptions, setRankOptions] = useState([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [selectedDevices, setSelectedDevices] = useState([]);
   const [selectedAmmos, setSelectedAmmos] = useState([]);
   const [selectedAccessories, setSelectedAccessories] = useState([]);
-  const [devicesOptions, setDevicesOptions] = useState(
-    devices
-      ?.filter((device) => device?.UserID === null)
-      ?.map((device) => ({
-        key: device?.IMEI_Number,
-        value: device?.IMEI_Number,
-        text: device?.IMEI_Number,
-      }))
-  );
+  const [devicesOptions, setDevicesOptions] = useState();
+  const [previousImage, setPreviousImage] = useState(null);
   const [ammunition, setAmmunition] = useState([
     {
       key: 0,
@@ -472,7 +481,6 @@ export const CreateEditUser = () => {
       text: "Bulletproof",
     },
   ]);
-  const fileRef = useRef();
   const dispatch = useDispatch();
 
   const {
@@ -581,6 +589,13 @@ export const CreateEditUser = () => {
     reset: resetAccessory,
   } = useInput((value) => true);
 
+  const {
+    value: image,
+    onBlur: onImageBlur,
+    onChange: onImageChange,
+    reset: resetImage,
+  } = useInput((value) => true);
+
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [
       onNameBlur,
@@ -600,6 +615,7 @@ export const CreateEditUser = () => {
       resetDevice,
       resetAmmo,
       resetAccessory,
+      resetImage,
       () => setSelectedDevices([]),
       () => setSelectedAccessories([]),
       () => setSelectedAmmos([]),
@@ -614,7 +630,8 @@ export const CreateEditUser = () => {
       stationIsValid,
   });
 
-  if (!devices) dispatch(getDeviceAction());
+  if (!devices || devices?.length < 1) dispatch(getDeviceAction());
+  if (!ranks || ranks?.length < 1) dispatch(getRanksAction());
 
   const formData = new FormData();
 
@@ -628,7 +645,7 @@ export const CreateEditUser = () => {
   formData.append("devices", JSON.stringify(selectedDevices));
   formData.append("ammos", JSON.stringify(selectedAmmos));
   formData.append("accessories", JSON.stringify(selectedAccessories));
-  formData.append("image", fileRef.current?.files[0]);
+  formData.append("image", image || previousImage || "");
 
   const {
     sendRequest: postUser,
@@ -661,6 +678,7 @@ export const CreateEditUser = () => {
 
   const onFileChange = (e) => {
     const file = e.target.files[0];
+    onImageChange(file);
     setUploaded(URL.createObjectURL(file));
   };
 
@@ -741,42 +759,10 @@ export const CreateEditUser = () => {
       devices: selectedDevices,
       ammos: selectedAmmos,
       accessories: selectedAccessories,
+      image: image,
     });
     postUser(onSuccessPost);
   };
-
-  const ranks = [
-    {
-      key: 0,
-      value: "General",
-      text: "General",
-    },
-    {
-      key: 1,
-      value: "Major General",
-      text: "Major General",
-    },
-    {
-      key: 2,
-      value: "Coloniel",
-      text: "Coloniel",
-    },
-    {
-      key: 3,
-      value: "Leutenant Coloniel",
-      text: "Leuenant Coloniel",
-    },
-    {
-      key: 4,
-      value: "Sergent",
-      text: "Sergent",
-    },
-    {
-      key: 5,
-      value: "Officer",
-      text: "Officer",
-    },
-  ];
 
   const stations = [
     {
@@ -811,18 +797,12 @@ export const CreateEditUser = () => {
     },
   ];
 
-  // const devicesOptions = data.devices.map((device) => ({
-  //   key: device._id,
-  //   value: device,
-  //   text: device._id,
-  // }));
-
   const onSuccessGet = ({ data }) => {
     onNameChange(data?.Name);
     onEmailChange(data?.Email);
     onAddressChange(data?.Address);
     onPhoneChange(data?.Phone);
-    onRankChange(data?.RankName);
+    onRankChange(data?.RankId);
     onStationChange(data?.Station);
     setSelectedDevices(
       data?.Devices?.map((eachDevice) => eachDevice?.IMEI_Number)
@@ -831,19 +811,32 @@ export const CreateEditUser = () => {
     setSelectedAccessories(
       data?.Accessories?.map((eachAccessory) => eachAccessory)
     );
+    setPreviousImage(data?.Image);
   };
 
   useEffect(() => {
-    setDevicesOptions(
-      devices
-        ?.filter((device) => device?.UserID === null)
-        ?.map((device) => ({
-          key: device?.IMEI_Number,
-          value: device?.IMEI_Number,
-          text: device?.IMEI_Number,
-        }))
-    );
+    if (!devicesOptions || devicesOptions?.length < 1)
+      setDevicesOptions(
+        devices
+          ?.filter((device) => device?.UserID === null)
+          ?.map((device) => ({
+            key: device?.IMEI_Number,
+            value: device?.IMEI_Number,
+            text: device?.IMEI_Number,
+          }))
+      );
   }, [devices]);
+
+  useEffect(() => {
+    if (!rankOptions || rankOptions?.length < 1)
+      setRankOptions(
+        ranks?.map((rank) => ({
+          key: rank?.RankId,
+          value: rank?.RankId,
+          text: rank?.RankName,
+        }))
+      );
+  }, [ranks]);
 
   useEffect(() => {
     if (id) getUser(onSuccessGet);
@@ -943,7 +936,7 @@ export const CreateEditUser = () => {
                 <Form.Select
                   placeholder="Rank..."
                   label="Rank"
-                  options={ranks}
+                  options={rankOptions}
                   value={rank}
                   onChange={(e, { value }) => onRankChange(value)}
                   onBlur={onRankBlur}
@@ -1093,28 +1086,22 @@ export const CreateEditUser = () => {
               </div>
             </div>
             <div className={css["img-upload"]}>
-              {uploaded ? (
+              {uploaded || previousImage ? (
                 <div className={css["img-container"]}>
-                  <img
-                    src={uploaded}
-                    alt={fileRef.current?.files[0]?.filename}
-                  />
+                  <img src={uploaded || previousImage} alt={image?.filename} />
                   <Icon
                     className={css.edit}
                     name="cancel"
                     onClick={() => {
                       setUploaded(null);
+                      setPreviousImage(null);
+                      onImageChange(null);
                     }}
                   />
                 </div>
               ) : (
                 <label>
-                  <input
-                    type="file"
-                    hidden
-                    ref={fileRef}
-                    onChange={onFileChange}
-                  />
+                  <input type="file" hidden onChange={onFileChange} />
                   <Icon name="cloud upload" />
                   <em>Upload picture</em>
                 </label>
@@ -1140,6 +1127,22 @@ const EachTableRow = ({
   const [selectedDevices, setSelectedDevices] = useState([]);
   const [selectedAmmos, setSelectedAmmos] = useState([]);
   const [selectedAccessories, setSelectedAccessories] = useState([]);
+  const devices = useSelector((state) => state.devices.devices);
+  const [devicesOptions, setDevicesOptions] = useState();
+  const [ammunitionOptions, setAmmunitionOptions] = useState(
+    data.ammunition?.map(
+      (eachAmmo) =>
+        new SelectClass(eachAmmo?._id, eachAmmo?.name, eachAmmo?.name)
+    )
+  );
+  const [accessories, setAccessories] = useState(
+    data.accessories?.map(
+      (accessory) =>
+        new SelectClass(accessory?._id, accessory?.name, accessory?.name)
+    )
+  );
+
+  const dispatch = useDispatch();
 
   const {
     value: name,
@@ -1261,6 +1264,8 @@ const EachTableRow = ({
       genderIsValid,
   });
 
+  if (!devices) dispatch(getDeviceAction());
+
   const addDevice = (e, { value }) =>
     setSelectedDevices((prev) => [...prev, value]);
 
@@ -1282,19 +1287,6 @@ const EachTableRow = ({
     setSelectedAccessories((prev) =>
       prev.filter((prevAccessories) => prevAccessories !== accessory)
     );
-
-  const devices = data.devices?.map(
-    (device) => new SelectClass(device?._id, device?._id, device?._id)
-  );
-
-  const accessories = data.accessories?.map(
-    (accessory) =>
-      new SelectClass(accessory?._id, accessory?.name, accessory?.name)
-  );
-
-  const ammunitionOptions = data.ammunition?.map(
-    (eachAmmo) => new SelectClass(eachAmmo?._id, eachAmmo?.name, eachAmmo?.name)
-  );
 
   const update = () => {
     if (!formIsValid) return executeBlurHandlers();
@@ -1341,6 +1333,19 @@ const EachTableRow = ({
     setSelectedAccessories(userData?.accessories?.split(",")?.map(mapValidate));
     setSelectedAmmos(userData?.ammunition?.split(",")?.map(mapValidate));
   }, [editingRow]);
+
+  useEffect(() => {
+    if (!devicesOptions || devicesOptions?.length < 1)
+      setDevicesOptions(
+        devices
+          ?.filter((device) => device?.UserID === null)
+          ?.map((device) => ({
+            key: device?.IMEI_Number,
+            value: device?.IMEI_Number,
+            text: device?.IMEI_Number,
+          }))
+      );
+  }, [devices]);
 
   if (editingRow) {
     return (
@@ -1413,7 +1418,7 @@ const EachTableRow = ({
           <Select
             label="Select a device"
             placeholder="Select device"
-            options={devices}
+            options={devicesOptions}
             value={device}
             onChange={(e, { value }) => {
               addDevice(e, { value: value });
@@ -1946,7 +1951,7 @@ export const UploadBulkUsers = () => {
           )}
         </AnimatePresence>
         <br />
-        <Table compact celled className={css["error-table"]}>
+        <Table compact celled className={"error-table"}>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan={2}>Error logs</Table.HeaderCell>
@@ -1968,11 +1973,7 @@ export const UploadBulkUsers = () => {
           </Table.Body>
           <Table.Footer>
             <Table.Row>
-              <Table.Cell
-                className={`${css["actions"]}`}
-                colSpan={2}
-                textAlign="right"
-              >
+              <Table.Cell className={"actions"} colSpan={2} textAlign="right">
                 <Button negative onClick={clearErrors}>
                   Clear all
                 </Button>

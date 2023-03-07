@@ -12,6 +12,16 @@ const mapContainerStyle = {
   height: "100%",
 };
 
+const getGeocode = async (position) => {
+  const geoCoder = new window.google.maps.Geocoder();
+  const loc = position;
+  const response = await geoCoder.geocode({ location: loc });
+  console.log("Marker is long lat is:", loc);
+  console.log("E is: ", position);
+  console.log("Response is: ", response?.results);
+  return response?.results[0]?.formatted_address;
+};
+
 const center = {
   lat: 9.082,
   lng: 8.6753,

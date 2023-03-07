@@ -14,6 +14,11 @@ const socketDeviceSlice = createSlice({
       const { payload: device } = action;
       delete devices[device?.imei];
     },
+    deleteAll(devices) {
+      for (const key in devices) {
+        delete devices[key];
+      }
+    },
   },
 });
 

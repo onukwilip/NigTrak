@@ -56,11 +56,13 @@
     }
   }
   .actions {
-    button {
-      @include button();
-      &:hover {
-        @include button-inverse();
-      }
+    width: 100%;
+    @include flex(center, space-between, 10px, row);
+    .badge {
+      @include flex(center, center, 5px, row);
+    }
+    .button-container {
+      @include flex(center, center, 10px, row);
     }
   }
 }

@@ -48,6 +48,11 @@ export const manageSocketDevicesConnection = ({ ws, dispatch }) => {
 
   ws.onclose = (e) => {
     console.log("Websocket closed", e);
+    dispatch(sockeDeviceActions.deleteAll());
+  };
+
+  ws.onerror = (e) => {
+    console.log("ERROR", e);
   };
 };
 

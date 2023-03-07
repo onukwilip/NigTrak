@@ -10,29 +10,83 @@ import {
   Message,
   Table,
   Checkbox,
-  Select,
 } from "semantic-ui-react";
 import css from "../styles/ranks/Ranks.module.scss";
 import data from "../data.json";
 import Map from "./Map";
 import { Marker, InfoWindow } from "@react-google-maps/api";
-import { ranks as rankImgs } from "./UsersManagement";
 import Main from "./Main";
 import { FileUpload, ImgUpload } from "./FileUpload";
 import * as XLSX from "xlsx";
-import { SelectClass, clearSimilarArrayObjects, mapCenter } from "../utils";
+import {
+  clearSimilarArrayObjects,
+  mapCenter,
+  manageSocketDevicesConnection,
+} from "../utils";
+import useAjaxHook from "use-ajax-request";
+import axios from "axios";
+import CustomLoader from "./CustomLoader";
+import { useDispatch, useSelector } from "react-redux";
+import dummy from "../assets/img/dummy_profile_pic.png";
+import { useNavigate, useParams } from "react-router-dom";
 
-export const RankCard = ({ rank, onView = () => {}, index }) => {
+const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
+
+const getDevicesToShowOnMap = (
+  /**@type  Array*/ mappedMembers,
+  /**@type Object */ socketDevices
+) => {
+  const onlineDevices = {};
+  for (const member of mappedMembers) {
+    if (member?.Devices?.length < 1) continue;
+    for (const device of member?.Devices) {
+      if (socketDevices[device])
+        onlineDevices[device] = {
+          ...member,
+          IMEI_Number: device,
+          location: {
+            lat: socketDevices[device]?.lat,
+            lng: socketDevices[device]?.lng,
+          },
+        };
+    }
+  }
+
+  return Object.entries(onlineDevices)?.map(([key, device]) => device);
+};
+
+export const RankCard = ({ rank, onView = () => {}, index, socketDevices }) => {
   const [ref, inView] = useInView();
+  const [onlineMembers, setOnlineMembers] = useState(0);
   const control = useAnimation();
+  const navigate = useNavigate();
+  const params = useParams();
   const variants = {
     far: { opacity: 0, x: "-100px" },
     current: { opacity: 1, x: "0px" },
   };
-  const mappedMembers = rank?.members?.map((member) => ({
+  const mappedMembers = rank?.Members?.map((member) => ({
     ...member,
-    rank: rank.rank,
+    rankImage: rank?.Image,
   }));
+
+  const getOnlineMembers = () => {
+    const onlineMembers = {};
+    for (const member of mappedMembers) {
+      if (member?.Devices?.length < 1) continue;
+      for (const device of member?.Devices) {
+        if (socketDevices[device]) onlineMembers[member?.UserId] = { member };
+      }
+    }
+
+    setOnlineMembers(
+      Object.entries(onlineMembers)?.map(([key, member]) => member)?.length
+    );
+  };
+
+  const onEditClick = () => {
+    navigate(`/home/ranks/edit/${rank?.RankId}`);
+  };
 
   useEffect(() => {
     if (inView) {
@@ -41,6 +95,10 @@ export const RankCard = ({ rank, onView = () => {}, index }) => {
       control.start("far");
     }
   }, [control, inView]);
+
+  useEffect(() => {
+    getOnlineMembers();
+  }, [socketDevices]);
 
   return (
     <motion.div
@@ -54,49 +112,118 @@ export const RankCard = ({ rank, onView = () => {}, index }) => {
       ref={ref}
     >
       <div className={css["img-container"]}>
-        <img src={rankImgs[rank.rank]} alt="" />
+        <img src={rank?.Image} alt="" />
       </div>
       <div className={css.details}>
         <em>
           <b>ID: </b>
-          {rank?._id}
+          {rank?.RankId}
         </em>
         <em>
-          <b>Rank:</b> {rank?.rank}
+          <b>Rank:</b> {rank?.RankName}
         </em>
         <em>
-          <b>Total members:</b> {rank?.members?.length}
+          <b>Total members:</b> {rank?.Members?.length}
         </em>
       </div>
-      <div className={css.actions}>
-        <Button
-          onClick={() => {
-            onView(mappedMembers);
-          }}
-        >
-          View on map
-        </Button>
+      <div className={`actions ${css.actions}`}>
+        <div className={css["button-container"]}>
+          <Button
+            onClick={() => {
+              onView(
+                getDevicesToShowOnMap(mappedMembers, socketDevices),
+                mappedMembers
+              );
+            }}
+          >
+            View on map
+          </Button>
+          <Button onClick={onEditClick}>Edit</Button>
+        </div>
+
+        <div className={css["badge-container"]}>
+          <p className={css.badge}>
+            <span className="online-dot"></span> {onlineMembers}
+          </p>
+          <p className={css.badge}>
+            <span className="offline-dot"></span>{" "}
+            {mappedMembers?.length - onlineMembers}
+          </p>
+        </div>
       </div>
     </motion.div>
   );
 };
 
 export const Ranks = () => {
-  const [ranks, setRanks] = useState(/**@type data.ranks */ data.ranks);
+  const [ranks, setRanks] = useState(/**@type data.ranks */ []);
+  const [onlineDevices, setOnlineDevices] = useState([]);
   const [rankMembers, setRankMembers] = useState([]);
+  const socketDevices = useSelector((state) => state?.socketDevices);
   const [showInfo, setShowInfo] = useState(false);
   const map = useRef();
-  const onSearch = (value) => {
-    const filtered = data.ranks.filter((rank) =>
-      rank.rank.toLowerCase().includes(value.toLowerCase())
-    );
+  const dispatch = useDispatch();
 
+  const {
+    sendRequest: getRanks,
+    error: getRanksError,
+    loading: gettingRanks,
+    data: allRanks,
+  } = useAjaxHook({
+    instance: axios,
+    options: {
+      url: `${process.env.REACT_APP_API_DOMAIN}/api/ranks`,
+      method: "GET",
+    },
+  });
+
+  manageSocketDevicesConnection({ ws, dispatch });
+
+  const onSearch = (value) => {
+    const filtered = allRanks.filter((rank) =>
+      rank?.RankName?.toLowerCase()?.includes(value?.toLowerCase())
+    );
     setRanks(filtered);
   };
-  const onViewClick = (/**@type data.ranks.members */ members) => {
+  const onViewClick = (
+    /**@type Array */ onlineDevices,
+    /**@type Array */ members
+  ) => {
     map.current?.setZoom(6.3);
+    setOnlineDevices(onlineDevices);
     setRankMembers(members);
   };
+
+  const onGetRanksSuccess = ({ data }) => {
+    setRanks(data);
+    if (rankMembers?.length < 1) {
+      const members = [];
+      const onlineDevices = [];
+      for (const rank of data) {
+        members.push(
+          ...rank?.Members?.map((member) => ({
+            ...member,
+            rankImage: rank?.Image,
+          }))
+        );
+        onlineDevices.push(
+          ...getDevicesToShowOnMap(rank?.Members, socketDevices)
+        );
+      }
+      setRankMembers(members);
+      setOnlineDevices(onlineDevices);
+      console.log("ONLINE DEVICES", onlineDevices);
+    }
+  };
+
+  useEffect(() => {
+    getRanks(onGetRanksSuccess);
+  }, []);
+
+  useEffect(() => {
+    if (rankMembers?.length > 0)
+      setOnlineDevices(getDevicesToShowOnMap(rankMembers, socketDevices));
+  }, [socketDevices]);
 
   return (
     <section className={css.ranks}>
@@ -111,9 +238,34 @@ export const Ranks = () => {
         <div className={css["ranks-list-container"]}>
           <h3>Ranks</h3>
           <div className={css["ranks-list"]}>
-            {ranks.map((eachStation, i) => (
-              <RankCard rank={eachStation} key={i} onView={onViewClick} />
-            ))}
+            {gettingRanks ? (
+              <CustomLoader />
+            ) : getRanksError ? (
+              <>
+                <Message
+                  icon="page4"
+                  content="There was an error getting ranks, please retry"
+                  warning
+                />
+              </>
+            ) : ranks?.length > 0 ? (
+              ranks.map((eachRank, i) => (
+                <RankCard
+                  rank={eachRank}
+                  key={i}
+                  onView={onViewClick}
+                  socketDevices={socketDevices}
+                />
+              ))
+            ) : (
+              <>
+                <Message
+                  icon="page4"
+                  content="No ranks are available"
+                  warning
+                />
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -125,10 +277,10 @@ export const Ranks = () => {
             reference={map}
             showMarker={false}
           >
-            {rankMembers.map((/**@type data.ranks.members */ member) => (
+            {onlineDevices.map((/**@type data.ranks.members */ member) => (
               <Marker
                 icon={{
-                  url: rankImgs[member.rank],
+                  url: member?.rankImage,
                   scaledSize: new window.google.maps.Size(40, 40),
                 }}
                 position={member?.location}
@@ -146,23 +298,20 @@ export const Ranks = () => {
               >
                 <div className={css.info}>
                   <div className={css["img-container"]}>
-                    <img
-                      src="https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
-                      alt="Militant"
-                    />
+                    <img src={showInfo?.UserImage || dummy} alt="Militant" />
                   </div>
                   <div className={css.details}>
                     <em>
-                      <b>ID:</b> {showInfo?._id}
+                      <b>ID:</b> {showInfo?.UserId}
                     </em>
                     <em>
-                      <b>Name:</b> {showInfo?.name}
+                      <b>Name:</b> {showInfo?.Name}
                     </em>
                     <em>
-                      <b>Station:</b> {showInfo?.station}
+                      <b>Station:</b> {showInfo?.Station || "Nill"}
                     </em>
                     <em>
-                      <b>State:</b> {showInfo?.state}
+                      <b>Device ID:</b> {showInfo?.IMEI_Number || "Nil"}
                     </em>
                   </div>
                 </div>
@@ -177,6 +326,10 @@ export const Ranks = () => {
 
 const AddEditRankSection = () => {
   const [resetFileImage, setResetFileImage] = useState(false);
+  const [previousImage, setPreviousImage] = useState(null);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const params = useParams();
+  const id = params.id;
   const {
     value: name,
     isValid: nameIsValid,
@@ -193,7 +346,40 @@ const AddEditRankSection = () => {
     onChange: onFileChange,
     onBlur: onFileBlur,
     reset: resetFile,
-  } = useInput((value) => typeof value === "object");
+  } = useInput((value) => previousImage || typeof value === "object");
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("image", file || previousImage || "");
+
+  const {
+    sendRequest: postRank,
+    data: rankResponse,
+    loading: postingRank,
+    error: postRankError,
+  } = useAjaxHook({
+    instance: axios,
+    options: {
+      url: id
+        ? `${process.env.REACT_APP_API_DOMAIN}/api/ranks/${id}`
+        : `${process.env.REACT_APP_API_DOMAIN}/api/ranks`,
+      method: id ? "PUT" : "POST",
+      data: formData,
+    },
+  });
+
+  const {
+    sendRequest: getRank,
+    data: fetchedRank,
+    loading: gettingRank,
+    error: getRankError,
+  } = useAjaxHook({
+    instance: axios,
+    options: {
+      url: `${process.env.REACT_APP_API_DOMAIN}/api/ranks/${id}`,
+      method: "GET",
+    },
+  });
 
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [onNameBlur, onFileBlur],
@@ -205,25 +391,57 @@ const AddEditRankSection = () => {
     validateOptions: () => nameIsValid && fileIsValid,
   });
 
+  const onPostSuccess = ({ data }) => {
+    if (!id) reset();
+    setShowSuccessMessage(true);
+
+    setTimeout(() => setShowSuccessMessage(false), 1000 * 10);
+  };
+
   const submitHandler = () => {
     if (!formIsValid) return executeBlurHandlers();
 
-    const data = new FormData();
-    data.append("name", name);
-    data.append("file", file);
+    console.log("SUCCESS", { name, image: file || previousImage });
 
-    console.log("SUCCESS", data);
-    reset();
+    postRank(onPostSuccess);
   };
+
+  useEffect(() => {
+    if (id) {
+      const onRankSuccess = ({ data }) => {
+        onNameChange(data?.RankName);
+        setPreviousImage(data?.Image);
+      };
+      getRank(onRankSuccess);
+    }
+  }, []);
 
   return (
     <>
       <Main header={"Create rank"}>
+        {" "}
+        {showSuccessMessage && (
+          <>
+            <Message content="Rank posted successfully" success />
+            <br />
+          </>
+        )}
+        {postRankError && (
+          <>
+            <Message
+              content={"There was an error posting the rank please try again"}
+              error
+            />
+            <br />
+          </>
+        )}
         <Form onSubmit={submitHandler}>
           <div className={"upload-container"}>
             <ImgUpload
               className="upload"
               value={file}
+              initialImage={previousImage}
+              removeInitialImage={setPreviousImage}
               onChange={(e) => {
                 onFileBlur();
                 onFileChange(e?.target?.files[0]);
@@ -252,8 +470,8 @@ const AddEditRankSection = () => {
             />
           </Form.Group>
           <div className={`actions ${css.actions}`}>
-            <Button type="submit" disabled={!formIsValid}>
-              Submit
+            <Button type="submit" disabled={!formIsValid || postingRank}>
+              {postingRank ? "Loading..." : "Submit"}
             </Button>
             <Button type="reset" onClick={() => reset()}>
               Reset
@@ -368,10 +586,23 @@ const UploadBulkRanksSection = () => {
   const [selectedRanks, setSelectedRanks] = useState({});
   const [approvedState, setApprovedState] = useState(false);
   const [refreshCheckedState, setRefreshCheckedState] = useState(false);
-  const [submitState, setSubmitState] = useState({
-    uploading: false,
-    success: false,
-    error: false,
+  const [noUploadedRanks, setNoUploadedRanks] = useState(false);
+  const [errorLogs, setErrorLogs] = useState([]);
+  const [uploadedSuccessfuly, setUploadedSuccessfuly] = useState(false);
+  const {
+    sendRequest: postRanks,
+    error: postRanksError,
+    loading: postingRanks,
+    data: postRanksData,
+  } = useAjaxHook({
+    instance: axios,
+    options: {
+      url: `${process.env.REACT_APP_API_DOMAIN}/api/ranks/bulk`,
+      method: "POST",
+      data: Object.entries(selectedRanks)?.map(([key, eachRank]) => ({
+        name: eachRank["name"],
+      })),
+    },
   });
 
   const getExention = (/**@type String */ string) => {
@@ -394,18 +625,10 @@ const UploadBulkRanksSection = () => {
   );
 
   const onSuccessUpload = () => {
-    setSubmitState((prev) => ({
-      ...prev,
-      success: true,
-      uploading: false,
-    }));
+    setUploadedSuccessfuly(true);
 
     setTimeout(() => {
-      setSubmitState((prev) => ({
-        ...prev,
-        success: false,
-        uploading: false,
-      }));
+      setUploadedSuccessfuly(false);
     }, 1000 * 10);
   };
 
@@ -480,24 +703,21 @@ const UploadBulkRanksSection = () => {
     }
   };
 
-  const uploadRanks = () => {
-    setSubmitState((prev) => ({ ...prev, uploading: true }));
+  const onNoUploadedRanks = () => {
+    setNoUploadedRanks(true);
 
-    const selectedArray = Object.entries(selectedRanks)?.map(
-      ([key, value]) => value
-    );
+    setTimeout(() => setNoUploadedRanks(false), 1000 * 10);
+  };
 
-    if (selectedArray?.length < 1) {
-      setSubmitState((prev) => ({ ...prev, uploading: false }));
-      return;
-    }
-
+  const onUploadSuccess = ({ data }) => {
+    const { uploadedRanks, errorLogs } = data;
+    console.info(data);
     const currentRanks = {};
-    uploadedData.forEach((eachDevice) => {
-      currentRanks[eachDevice["id"]] = eachDevice;
+    uploadedData.forEach((eachRank) => {
+      currentRanks[eachRank["name"]] = eachRank;
     });
 
-    for (const key in selectedRanks) {
+    for (const key in uploadedRanks) {
       delete currentRanks[key];
     }
 
@@ -506,9 +726,28 @@ const UploadBulkRanksSection = () => {
     );
 
     setUploadedData(currentRanksArray);
+    setErrorLogs(errorLogs);
     setSelectedRanks({});
-    onSuccessUpload();
-    console.log("SELECTED ARRAY", selectedArray);
+    disApproveAll();
+    if (Object?.keys(uploadedRanks)?.length > 0) {
+      onSuccessUpload();
+    } else {
+      onNoUploadedRanks();
+    }
+  };
+
+  const onErrorUpload = () => setUploadedSuccessfuly(false);
+
+  const uploadRanks = () => {
+    const selectedArray = Object.entries(selectedRanks)?.map(
+      ([key, value]) => value
+    );
+
+    if (selectedArray?.length < 1) {
+      return;
+    }
+
+    postRanks(onUploadSuccess, onErrorUpload);
   };
 
   const selectAllRanks = () => {
@@ -549,6 +788,8 @@ const UploadBulkRanksSection = () => {
       prevData?.filter((eachRank) => eachRank["id"] !== rank["id"])
     );
   };
+
+  const clearErrors = () => setErrorLogs([]);
 
   // console.log("UPLOADED DATA", uploadedData);
 
@@ -606,11 +847,14 @@ const UploadBulkRanksSection = () => {
                     size="small"
                     onClick={uploadRanks}
                     disabled={
-                      Object.keys(selectedRanks)?.length < 1 ? true : false
+                      Object.keys(selectedRanks)?.length < 1
+                        ? true
+                        : false || postingRanks
                     }
                     // disabled={submitState.uploading}
                   >
-                    <Icon name="cloud upload" /> Upload ranks
+                    <Icon name="cloud upload" />{" "}
+                    {postingRanks ? "Loading..." : "Upload ranks"}
                   </Button>
                   <Button size="small" primary onClick={approveAll}>
                     Approve All
@@ -625,7 +869,7 @@ const UploadBulkRanksSection = () => {
         )}
       </div>
       <AnimatePresence>
-        {submitState.success && (
+        {uploadedSuccessfuly && (
           <>
             <br />
             <motion.div
@@ -647,6 +891,86 @@ const UploadBulkRanksSection = () => {
           </>
         )}
       </AnimatePresence>
+      <AnimatePresence>
+        {postRanksError && (
+          <>
+            <br />
+            <motion.div
+              initial={{
+                y: -100,
+                opacity: 0,
+              }}
+              animate={{
+                y: -0,
+                opacity: 1,
+              }}
+              exit={{
+                y: -100,
+                opacity: 0,
+              }}
+            >
+              <Message
+                error
+                content="There was an error uploading your ranks, please try again"
+              />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {noUploadedRanks && (
+          <>
+            <br />
+            <motion.div
+              initial={{
+                y: -100,
+                opacity: 0,
+              }}
+              animate={{
+                y: -0,
+                opacity: 1,
+              }}
+              exit={{
+                y: -100,
+                opacity: 0,
+              }}
+            >
+              <Message warning content="No ranks were uploaded" />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+      <br />
+      <Table compact celled className={"error-table"}>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell colSpan={2}>Error logs</Table.HeaderCell>
+          </Table.Row>
+          <Table.Row>
+            <Table.HeaderCell collapsing>Rank name</Table.HeaderCell>
+            <Table.HeaderCell>Error message</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {errorLogs?.map((error) => (
+            <>
+              <Table.Row key={error?.name}>
+                <Table.Cell>{error?.name}</Table.Cell>
+                <Table.Cell>{error?.error}</Table.Cell>
+              </Table.Row>
+            </>
+          ))}
+        </Table.Body>
+        <Table.Footer>
+          <Table.Row>
+            <Table.Cell className={"actions"} colSpan={2} textAlign="right">
+              <Button negative onClick={clearErrors}>
+                Clear all
+              </Button>
+            </Table.Cell>
+          </Table.Row>
+        </Table.Footer>
+      </Table>
     </Main>
   );
 };

@@ -3,7 +3,6 @@ import { useInView } from "react-intersection-observer";
 import Map from "../components/Map";
 import {
   Button,
-  Divider,
   Form,
   Input,
   Message,
@@ -35,6 +34,8 @@ import CustomLoader from "./CustomLoader";
 const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
 
 export const DeviceCard = ({ device, onViewMore = () => {}, index }) => {
+  const socketDevices = useSelector((state) => state?.socketDevices);
+  const [socketDevice, setSocketDevice] = useState(null);
   const [ref, inView] = useInView();
   const control = useAnimation();
   const variants = {
@@ -50,6 +51,11 @@ export const DeviceCard = ({ device, onViewMore = () => {}, index }) => {
     }
   }, [control, inView]);
 
+  useEffect(() => {
+    if (device && socketDevices)
+      setSocketDevice(socketDevices[device?.IMEI_Number]);
+  }, [device, socketDevices]);
+
   return (
     <motion.div
       variants={variants}
@@ -61,6 +67,7 @@ export const DeviceCard = ({ device, onViewMore = () => {}, index }) => {
       className={css["device-card"]}
       ref={ref}
     >
+      <div className={socketDevice ? "online-dot" : "offline-dot"}></div>
       <div className={css["img-container"]}>
         <img src={walkieTalkieTrans} alt="" />
       </div>
@@ -75,7 +82,7 @@ export const DeviceCard = ({ device, onViewMore = () => {}, index }) => {
             device?.IMEI_Number
           )}
         </em>
-        <em>{device?.Name || "Nil"}</em>
+        <em>{device?.Name || <em className="warning">Unassigned</em>}</em>
       </div>
       <div className={css.actions}>
         <Button
@@ -210,11 +217,16 @@ export const AllDevices = () => {
                 <em>Station</em>: <em>{device["station"]}</em>
               </li> */}
               <li>
-                <em>Militant ID</em>: <em>{device?.UserId || "Nil"}</em>
+                <em>Militant ID</em>:{" "}
+                <em>
+                  {device?.UserID || <em className="warning">Unassigned</em>}
+                </em>
               </li>
-              <li>
-                <em>Militant name</em>: <em>{device?.Name || "Nil"}</em>
-              </li>
+              {device?.UserID && (
+                <li>
+                  <em>Militant name</em>: <em>{device?.Name || "Nil"}</em>
+                </li>
+              )}
             </ul>
             <br />
             <div className="actions">
@@ -1468,7 +1480,7 @@ export const UploadBulkDevices = () => {
           )}
         </div>
         <AnimatePresence>
-          {uploadedSuccessfuly.success && (
+          {uploadedSuccessfuly && (
             <>
               <br />
               <motion.div
@@ -1540,7 +1552,7 @@ export const UploadBulkDevices = () => {
           )}
         </AnimatePresence>
         <br />
-        <Table compact celled className={css["error-table"]}>
+        <Table compact celled className={"error-table"}>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell colSpan={2}>Error logs</Table.HeaderCell>
@@ -1562,11 +1574,7 @@ export const UploadBulkDevices = () => {
           </Table.Body>
           <Table.Footer>
             <Table.Row>
-              <Table.Cell
-                className={`${css["actions"]}`}
-                colSpan={2}
-                textAlign="right"
-              >
+              <Table.Cell className={`actions`} colSpan={2} textAlign="right">
                 <Button negative onClick={clearErrors}>
                   Clear all
                 </Button>

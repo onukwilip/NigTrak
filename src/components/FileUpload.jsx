@@ -20,6 +20,8 @@ export const ImgUpload = ({
   label,
   className,
   triggerReset,
+  initialImage,
+  removeInitialImage,
 }) => {
   const fileRef = useRef();
   const [uploaded, setUploaded] = useState("");
@@ -36,15 +38,20 @@ export const ImgUpload = ({
 
   return (
     <div className={`${css["img-upload"]} ${className}`}>
-      {uploaded ? (
+      {uploaded || initialImage ? (
         <div className={css["img-container"]}>
-          <img src={uploaded} alt={fileRef.current?.files[0]?.filename} />
+          <img
+            src={uploaded || initialImage}
+            alt={fileRef.current?.files[0]?.filename}
+          />
           <Icon
             className={css.edit}
             name="cancel"
             onClick={() => {
               onChange(null);
               setUploaded(null);
+              removeInitialImage(null);
+              onChange(null);
             }}
           />
         </div>

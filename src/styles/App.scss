@@ -91,12 +91,17 @@
   }
 }
 
-.online {
-  color: green;
+.online,
+.offline,
+.warning {
   padding: 5px;
   border-radius: 10px;
   font-weight: bold;
   font-size: 14px;
+}
+
+.online {
+  color: green;
   background: lighten(green, 65);
 }
 .offline {
@@ -107,8 +112,56 @@
   font-size: 14px;
   background: lighten(orangered, 40);
 }
+.online-dot,
+.offline-dot {
+  padding: 10px;
+  border-radius: 10px;
+  @include flex(center, center, 0, row);
+  &::before {
+    padding: 5px;
+    position: absolute;
+    content: "";
+    border-radius: 10px;
+    z-index: 1;
+  }
+}
+
+.online-dot {
+  background-color: lightgreen;
+  &::before {
+    background: darkgreen;
+  }
+}
+
+.offline-dot {
+  background-color: lighten(orangered, 30);
+  &::before {
+    background: red;
+  }
+}
+
+.warning {
+  color: lighten(orangered, 20);
+  background: lighten(orange, 40);
+}
 
 .my-message {
   margin: 10px !important;
   max-width: 98vw !important;
+}
+
+.error-table {
+  color: darkred !important;
+  thead tr th {
+    background: lighten(orangered, 45) !important;
+    color: darkred !important;
+  }
+  tbody tr td {
+    background: lighten(orangered, 48) !important;
+    color: red !important;
+  }
+  tfoot tr td {
+    background: lighten(orangered, 45) !important;
+    color: darkred !important;
+  }
 }

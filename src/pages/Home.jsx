@@ -78,12 +78,12 @@ const MapTab = ({ position }) => {
                     lat: parseFloat(socketDevice?.lat),
                     lng: parseFloat(socketDevice?.lng),
                   }}
-                  // icon={
-                  //   window.google && {
-                  //     url: ranks[user.rank],
-                  //     scaledSize: new window.google.maps.Size(35, 35),
-                  //   }
-                  // }
+                  icon={
+                    window.google && {
+                      url: device?.RankImage,
+                      scaledSize: new window.google.maps.Size(35, 35),
+                    }
+                  }
                   onClick={() =>
                     setShowInfo({
                       ...device,
