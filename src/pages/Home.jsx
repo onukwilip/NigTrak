@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Divider, Icon, Input, Message } from "semantic-ui-react";
+import { Icon, Message } from "semantic-ui-react";
 import Map from "../components/Map";
 import css from "../styles/home/Home.module.scss";
 import { CSSTransition } from "react-transition-group";
@@ -9,54 +9,44 @@ import Profile from "../components/Profile";
 import {
   AllUsers,
   CreateEditUser,
-  ranks,
   UploadBulkUsers,
 } from "../components/UsersManagement";
 import {
   AllDevices,
   CreateDevice,
-  EditDevice,
   UploadBulkDevices,
 } from "../components/DevicesManagement";
 import { Analytics } from "../components/Analytics";
 import { CreateEditRank, Ranks } from "../components/Ranks";
 import { CreateEditStation, Stations } from "../components/Stations";
-import data from "../data.json";
 import { InfoWindow, Marker } from "@react-google-maps/api";
 import armyLogo from "../assets/img/nig-army.png";
 import airforceLogo from "../assets/img/nig-airforce-2.png";
 import navyLogo from "../assets/img/nig-navy.png";
 import policeLogo from "../assets/img/nig-police.png";
 import { useDispatch, useSelector } from "react-redux";
-import { sockeDeviceActions } from "../store/store";
-import useAjaxHook from "use-ajax-request";
-import axios from "axios";
-import { manageSocketDevicesConnection, mapCenter } from "../utils";
+import {
+  manageMqttEvents,
+  manageSocketDevicesConnection,
+  mapCenter,
+  mqttConfig,
+} from "../utils";
 import { getDeviceAction } from "../store/devicesReducer";
 
 const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
+const client = window.mqtt.connect("ws://broker.emqx.io:8083/mqtt", mqttConfig);
 
 const MapTab = ({ position }) => {
   const [showInfo, setShowInfo] = useState(/**@type data.users[0] */ null);
   const socketDevices = useSelector((state) => state?.socketDevices);
+  const devices = useSelector((state) => state.devices.devices);
   const dispatch = useDispatch();
-  const {
-    sendRequest: getDevices,
-    data: devices,
-    error: devicesError,
-    loading: loadingDevices,
-  } = useAjaxHook({
-    instance: axios,
-    options: {
-      url: `${process.env.REACT_APP_API_DOMAIN}/api/device`,
-      method: "GET",
-    },
-  });
 
   manageSocketDevicesConnection({ ws, dispatch });
+  manageMqttEvents({ client, dispatch });
 
   useEffect(() => {
-    getDevices();
+    if (!devices) dispatch(getDeviceAction());
   }, []);
 
   useEffect(() => {
@@ -146,14 +136,14 @@ const MapTab = ({ position }) => {
   );
 };
 
+React.memo(MapTab);
+
 const Home = () => {
   const [position, setPosition] = useState(null);
   const [showProfile, setShowProfile] = useState(true);
   const [showMenu, setShowMenu] = useState(true);
   const force = sessionStorage.getItem("force");
   const profileRef = useRef();
-  const dispatch = useDispatch();
-  dispatch(getDeviceAction());
 
   const onSuccess = (pos) => {
     const crd = pos.coords;

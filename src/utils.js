@@ -56,4 +56,24 @@ export const manageSocketDevicesConnection = ({ ws, dispatch }) => {
   };
 };
 
+export const mqttConfig = {
+  protocol: "ws",
+  clientId: "mqttjs_" + Math.random().toString(16).substr(2, 8),
+  username: "",
+  password: "",
+  reconnectPeriod: 1000,
+  keepalive: 10,
+  will: {
+    topic: "nigtrak/devices",
+    payload: `Subscriber disconnected`,
+    qos: 1,
+  },
+};
+
+export const manageMqttEvents = ({ client, dispatch }) => {
+  client?.on("connect", (e) => {
+    alert("connected to Mqtt broker");
+  });
+};
+
 export const mapCenter = { lat: 9.082, lng: 8.6753 };

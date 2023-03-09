@@ -4,7 +4,7 @@ import { clearSimilarArrayObjects } from "../utils";
 import { rankActions } from "./store";
 
 const initialState = {
-  ranks: [],
+  ranks: null,
 };
 
 const rankSlice = createSlice({
@@ -12,8 +12,12 @@ const rankSlice = createSlice({
   initialState: initialState,
   reducers: {
     addRank(state, { payload }) {
-      const newRanksObject = clearSimilarArrayObjects(payload, "RankId");
-      const oldRanksObject = clearSimilarArrayObjects(state.ranks, "RankId");
+      const newRanksObject = Array.isArray(payload)
+        ? clearSimilarArrayObjects(payload, "RankId")
+        : {};
+      const oldRanksObject = Array.isArray(state.ranks)
+        ? clearSimilarArrayObjects(state.ranks, "RankId")
+        : {};
       const combinedRanks = { ...oldRanksObject, ...newRanksObject };
       const ranksToArray = [
         ...Object.entries(combinedRanks).map(([key, rank]) => rank),

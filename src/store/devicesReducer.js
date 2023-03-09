@@ -4,7 +4,7 @@ import { clearSimilarArrayObjects } from "../utils";
 import { deviceActions } from "./store";
 
 const initialState = {
-  devices: [],
+  devices: null,
 };
 
 const deviceSlice = createSlice({
@@ -12,11 +12,12 @@ const deviceSlice = createSlice({
   initialState: initialState,
   reducers: {
     addDevice(state, { payload }) {
-      const newDevicesObject = clearSimilarArrayObjects(payload, "IMEI_Number");
-      const oldDevicesObject = clearSimilarArrayObjects(
-        state.devices,
-        "IMEI_Number"
-      );
+      const newDevicesObject = Array.isArray(payload)
+        ? clearSimilarArrayObjects(payload, "IMEI_Number")
+        : {};
+      const oldDevicesObject = Array.isArray(state.devices)
+        ? clearSimilarArrayObjects(state.devices, "IMEI_Number")
+        : {};
       const combinedDevices = { ...oldDevicesObject, ...newDevicesObject };
       const devicesToArray = [
         ...Object.entries(combinedDevices).map(([key, device]) => device),

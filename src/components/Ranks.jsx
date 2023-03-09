@@ -60,7 +60,6 @@ export const RankCard = ({ rank, onView = () => {}, index, socketDevices }) => {
   const [onlineMembers, setOnlineMembers] = useState(0);
   const control = useAnimation();
   const navigate = useNavigate();
-  const params = useParams();
   const variants = {
     far: { opacity: 0, x: "-100px" },
     current: { opacity: 1, x: "0px" },

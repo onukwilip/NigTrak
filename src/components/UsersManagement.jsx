@@ -41,6 +41,8 @@ import { Marker } from "@react-google-maps/api";
 import dummy from "../assets/img/dummy_profile_pic.png";
 import CustomLoader from "./CustomLoader";
 import { getRanksAction } from "../store/ranksReducer";
+import useDevices from "../hooks/useDevices";
+import useRanks from "../hooks/useRanks";
 
 const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
 
@@ -408,14 +410,14 @@ export const CreateEditUser = () => {
   const [uploaded, setUploaded] = useState(null);
   const params = useParams();
   const id = params.id;
-  const devices = useSelector((state) => state.devices.devices);
-  const ranks = useSelector((state) => state.ranks.ranks);
-  const [rankOptions, setRankOptions] = useState([]);
+  const [rankOptions, setRankOptions] = useState();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [selectedDevices, setSelectedDevices] = useState([]);
   const [selectedAmmos, setSelectedAmmos] = useState([]);
   const [selectedAccessories, setSelectedAccessories] = useState([]);
   const [devicesOptions, setDevicesOptions] = useState();
+  useDevices({ devicesOptions, setDevicesOptions });
+  useRanks({ rankOptions, setRankOptions });
   const [previousImage, setPreviousImage] = useState(null);
   const [ammunition, setAmmunition] = useState([
     {
@@ -630,9 +632,6 @@ export const CreateEditUser = () => {
       stationIsValid,
   });
 
-  if (!devices || devices?.length < 1) dispatch(getDeviceAction());
-  if (!ranks || ranks?.length < 1) dispatch(getRanksAction());
-
   const formData = new FormData();
 
   formData.append("name", name);
@@ -814,29 +813,29 @@ export const CreateEditUser = () => {
     setPreviousImage(data?.Image);
   };
 
-  useEffect(() => {
-    if (!devicesOptions || devicesOptions?.length < 1)
-      setDevicesOptions(
-        devices
-          ?.filter((device) => device?.UserID === null)
-          ?.map((device) => ({
-            key: device?.IMEI_Number,
-            value: device?.IMEI_Number,
-            text: device?.IMEI_Number,
-          }))
-      );
-  }, [devices]);
+  // useEffect(() => {
+  //   if (!devicesOptions || devicesOptions?.length < 1)
+  //     setDevicesOptions(
+  //       devices
+  //         ?.filter((device) => device?.UserID === null)
+  //         ?.map((device) => ({
+  //           key: device?.IMEI_Number,
+  //           value: device?.IMEI_Number,
+  //           text: device?.IMEI_Number,
+  //         }))
+  //     );
+  // }, [devices]);
 
-  useEffect(() => {
-    if (!rankOptions || rankOptions?.length < 1)
-      setRankOptions(
-        ranks?.map((rank) => ({
-          key: rank?.RankId,
-          value: rank?.RankId,
-          text: rank?.RankName,
-        }))
-      );
-  }, [ranks]);
+  // useEffect(() => {
+  //   if (!rankOptions || rankOptions?.length < 1)
+  //     setRankOptions(
+  //       ranks?.map((rank) => ({
+  //         key: rank?.RankId,
+  //         value: rank?.RankId,
+  //         text: rank?.RankName,
+  //       }))
+  //     );
+  // }, [ranks]);
 
   useEffect(() => {
     if (id) getUser(onSuccessGet);
@@ -1128,6 +1127,8 @@ const EachTableRow = ({
   const [selectedAmmos, setSelectedAmmos] = useState([]);
   const [selectedAccessories, setSelectedAccessories] = useState([]);
   const devices = useSelector((state) => state.devices.devices);
+  const ranks = useSelector((state) => state.ranks.ranks);
+  const [rankOptions, setRankOptions] = useState([]);
   const [devicesOptions, setDevicesOptions] = useState();
   const [ammunitionOptions, setAmmunitionOptions] = useState(
     data.ammunition?.map(
@@ -1265,6 +1266,7 @@ const EachTableRow = ({
   });
 
   if (!devices) dispatch(getDeviceAction());
+  if (!ranks) dispatch(getRanksAction());
 
   const addDevice = (e, { value }) =>
     setSelectedDevices((prev) => [...prev, value]);
@@ -1347,6 +1349,17 @@ const EachTableRow = ({
       );
   }, [devices]);
 
+  useEffect(() => {
+    if (!rankOptions || rankOptions?.length < 1)
+      setRankOptions(
+        ranks?.map((rank) => ({
+          key: rank?.RankId,
+          value: rank?.RankId,
+          text: rank?.RankName,
+        }))
+      );
+  }, [ranks]);
+
   if (editingRow) {
     return (
       <Table.Row>
@@ -1397,10 +1410,11 @@ const EachTableRow = ({
           />
         </Table.HeaderCell>
         <Table.HeaderCell>
-          <Input
+          <Select
             placeholder="Rank..."
             value={rank}
-            onChange={(e) => onRankChange(e.target.value)}
+            options={rankOptions}
+            onChange={(e, { value }) => onRankChange(value)}
             onBlur={onRankBlur}
             error={rankInputIsInValid}
           />
