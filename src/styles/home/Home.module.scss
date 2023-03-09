@@ -9,8 +9,8 @@ $transition-length: 500ms;
     position: fixed;
     top: 0;
     right: 0;
+    z-index: 6;
     .toogle-container {
-      // width: auto;
       @include flex(center, flex-end, 10px, row);
       padding: 10px;
     }

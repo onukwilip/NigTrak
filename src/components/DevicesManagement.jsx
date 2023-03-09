@@ -17,7 +17,7 @@ import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import walkieTalkieTrans from "../assets/img/walkie-talkie-trans.png";
 import {
   clearSimilarArrayObjects,
-  manageSocketDevicesConnection,
+  manageMqttEvents,
   mapCenter,
   SelectClass,
 } from "../utils";
@@ -30,8 +30,7 @@ import useAjaxHook from "use-ajax-request";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import CustomLoader from "./CustomLoader";
-
-const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
+import { client } from "../pages/Home";
 
 export const DeviceCard = ({ device, onViewMore = () => {}, index }) => {
   const socketDevices = useSelector((state) => state?.socketDevices);
@@ -133,7 +132,8 @@ export const AllDevices = () => {
     },
   });
 
-  manageSocketDevicesConnection({ ws, dispatch });
+  // manageSocketDevicesConnection({ ws, dispatch });
+  manageMqttEvents({ client, dispatch });
 
   const onSearch = (/**@type String */ value) => {
     const filtered = allDevice.filter(

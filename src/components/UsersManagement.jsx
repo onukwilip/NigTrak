@@ -29,7 +29,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import * as XLSX from "xlsx";
 import {
   clearSimilarArrayObjects,
-  manageSocketDevicesConnection,
+  manageMqttEvents,
   SelectClass,
 } from "../utils";
 import Main from "./Main";
@@ -43,8 +43,7 @@ import CustomLoader from "./CustomLoader";
 import { getRanksAction } from "../store/ranksReducer";
 import useDevices from "../hooks/useDevices";
 import useRanks from "../hooks/useRanks";
-
-const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
+import { client } from "../pages/Home";
 
 export const ranks = {
   General: mRank,
@@ -183,7 +182,8 @@ export const AllUsers = ({ position }) => {
     navigate(`/home/users/edit/${userProfile?.UserId}`);
   };
 
-  manageSocketDevicesConnection({ ws, dispatch });
+  // manageSocketDevicesConnection({ ws, dispatch });
+  manageMqttEvents({ client, dispatch });
 
   const onSearch = (/**@type String */ value) => {
     const filtered = data.users.filter(

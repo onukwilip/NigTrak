@@ -21,7 +21,7 @@ import * as XLSX from "xlsx";
 import {
   clearSimilarArrayObjects,
   mapCenter,
-  manageSocketDevicesConnection,
+  manageMqttEvents,
 } from "../utils";
 import useAjaxHook from "use-ajax-request";
 import axios from "axios";
@@ -29,8 +29,7 @@ import CustomLoader from "./CustomLoader";
 import { useDispatch, useSelector } from "react-redux";
 import dummy from "../assets/img/dummy_profile_pic.png";
 import { useNavigate, useParams } from "react-router-dom";
-
-const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
+import { client } from "../pages/Home";
 
 const getDevicesToShowOnMap = (
   /**@type  Array*/ mappedMembers,
@@ -176,7 +175,8 @@ export const Ranks = () => {
     },
   });
 
-  manageSocketDevicesConnection({ ws, dispatch });
+  // manageSocketDevicesConnection({ ws, dispatch });
+  manageMqttEvents({ client, dispatch });
 
   const onSearch = (value) => {
     const filtered = allRanks.filter((rank) =>

@@ -1,7 +1,11 @@
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import {} from "redux";
-import { deviceActions, sockeDeviceActions } from "./store/store";
+import {
+  deviceActions,
+  offlineActions,
+  sockeDeviceActions,
+} from "./store/store";
 
 export class SelectClass {
   constructor(key, value, text) {
@@ -71,8 +75,33 @@ export const mqttConfig = {
 };
 
 export const manageMqttEvents = ({ client, dispatch }) => {
+  client?.subscribe("nigtrak/devices", { qos: 1 });
+
   client?.on("connect", (e) => {
-    alert("connected to Mqtt broker");
+    console.log("connected to broker successfully");
+    dispatch(offlineActions.toogleOffline(false));
+  });
+
+  client?.on("offline", () => {
+    console.log("You are offline");
+    dispatch(sockeDeviceActions.deleteAll());
+    dispatch(offlineActions.toogleOffline(true));
+  });
+
+  client?.on("message", (topic, message) => {
+    {
+      const parsedMessage = JSON.parse(message);
+      const { data, type } = parsedMessage;
+      if (type === "device") {
+        dispatch(sockeDeviceActions.putDevice(data));
+      } else if (type === "disconnect") {
+        dispatch(sockeDeviceActions.deleteDevice(data));
+      }
+
+      console.log("TYPE", type);
+
+      console.log("MQTT message", data);
+    }
   });
 };
 

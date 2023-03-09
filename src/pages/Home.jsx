@@ -25,16 +25,16 @@ import airforceLogo from "../assets/img/nig-airforce-2.png";
 import navyLogo from "../assets/img/nig-navy.png";
 import policeLogo from "../assets/img/nig-police.png";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  manageMqttEvents,
-  manageSocketDevicesConnection,
-  mapCenter,
-  mqttConfig,
-} from "../utils";
+import { manageMqttEvents, mapCenter, mqttConfig } from "../utils";
 import { getDeviceAction } from "../store/devicesReducer";
+import dummy from "../assets/img/dummy_profile_pic.png";
+import { AnimatePresence, motion } from "framer-motion";
 
-const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
-const client = window.mqtt.connect("ws://broker.emqx.io:8083/mqtt", mqttConfig);
+// const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
+export const client = window.mqtt?.connect(
+  process.env.REACT_APP_MQTT_DOMAIN,
+  mqttConfig
+);
 
 const MapTab = ({ position }) => {
   const [showInfo, setShowInfo] = useState(/**@type data.users[0] */ null);
@@ -42,7 +42,7 @@ const MapTab = ({ position }) => {
   const devices = useSelector((state) => state.devices.devices);
   const dispatch = useDispatch();
 
-  manageSocketDevicesConnection({ ws, dispatch });
+  // manageSocketDevicesConnection({ ws, dispatch });
   manageMqttEvents({ client, dispatch });
 
   useEffect(() => {
@@ -96,10 +96,7 @@ const MapTab = ({ position }) => {
             >
               <div className="info">
                 <div className={"img-container"}>
-                  <img
-                    src="https://images.unsplash.com/photo-1579912437766-7896df6d3cd3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
-                    alt="Militant"
-                  />
+                  <img src={showInfo?.Image || dummy} alt="Militant" />
                 </div>
                 <div className={"details"}>
                   <em>
@@ -116,6 +113,12 @@ const MapTab = ({ position }) => {
                   </em>
                   <em>
                     <b>Holder rank:</b> {showInfo?.Rank || "Nil"}
+                  </em>
+                  <em>
+                    <b>Holder location:</b>
+                    <br />
+                    latitude: {showInfo?.lat || "Nil"} <br /> longitude:{" "}
+                    {showInfo?.lng || "Nil"}
                   </em>
                   {/* <em>
                     <b>State:</b> {showInfo?.state}
@@ -144,6 +147,7 @@ const Home = () => {
   const [showMenu, setShowMenu] = useState(true);
   const force = sessionStorage.getItem("force");
   const profileRef = useRef();
+  const isOffline = useSelector((state) => state.offline.isOffline);
 
   const onSuccess = (pos) => {
     const crd = pos.coords;
@@ -181,6 +185,35 @@ const Home = () => {
 
   return (
     <section className={css.home}>
+      <AnimatePresence>
+        {isOffline && (
+          <motion.div
+            initial={{ y: -100, opacity: 0.5 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -100, opacity: 0 }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "98%",
+              zIndex: 2,
+              margin: 5,
+            }}
+          >
+            <Message
+              content={
+                isOffline
+                  ? "Please turn on your internet connection or refresh the page"
+                  : "You are back online "
+              }
+              header={isOffline ? "You are offline" : "Online"}
+              icon="wifi"
+              warning={isOffline}
+              success={!isOffline}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className={css["force-img"]}>
         <img src={chooseForce(force)} alt="" />
         <em>Nigerian {force}</em>
