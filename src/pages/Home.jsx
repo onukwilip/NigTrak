@@ -41,6 +41,7 @@ const MapTab = ({ position }) => {
   const socketDevices = useSelector((state) => state?.socketDevices);
   const devices = useSelector((state) => state.devices.devices);
   const dispatch = useDispatch();
+  const mapRef = useRef();
 
   // manageSocketDevicesConnection({ ws, dispatch });
   manageMqttEvents({ client, dispatch });
@@ -50,13 +51,22 @@ const MapTab = ({ position }) => {
   }, []);
 
   useEffect(() => {
+    if (mapRef?.current) mapRef.current?.setZoom(6.3);
+  }, [mapRef?.current]);
+
+  useEffect(() => {
     console.log("Socket devices", socketDevices);
   }, [socketDevices]);
 
   return (
     <div className={css["map-tab"]}>
       {position ? (
-        <Map newCenter={mapCenter} zoom={6.5} showMarker={false}>
+        <Map
+          newCenter={mapCenter}
+          zoom={6.5}
+          showMarker={false}
+          reference={mapRef}
+        >
           {Object.entries(socketDevices).map(([key, socketDevice]) => {
             const device = devices?.find(
               (eachDevice) => eachDevice["IMEI_Number"] === key
@@ -103,7 +113,7 @@ const MapTab = ({ position }) => {
                     <b>IMEI number:</b> {showInfo?.["IMEI_Number"]}
                   </em>
                   <em>
-                    <b>Holder Id:</b> {showInfo?.UserId || "Nil"}
+                    <b>Holder Id:</b> {showInfo?.UserID || "Nil"}
                   </em>
                   <em>
                     <b>Holder name:</b> {showInfo?.Name || "Nil"}
@@ -112,7 +122,7 @@ const MapTab = ({ position }) => {
                     <b>Holder station:</b> {showInfo?.Station || "Nil"}
                   </em>
                   <em>
-                    <b>Holder rank:</b> {showInfo?.Rank || "Nil"}
+                    <b>Holder rank:</b> {showInfo?.RankName || "Nil"}
                   </em>
                   <em>
                     <b>Holder location:</b>
