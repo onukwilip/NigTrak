@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { ranksState } from "src/types/types";
 import { clearSimilarArrayObjects } from "../utils";
 import { rankActions } from "./store";
 
@@ -11,7 +12,7 @@ const rankSlice = createSlice({
   name: "device",
   initialState: initialState,
   reducers: {
-    addRank(state, { payload }) {
+    addRank(state: ranksState, { payload }) {
       const newRanksObject = Array.isArray(payload)
         ? clearSimilarArrayObjects(payload, "RankId")
         : {};
@@ -20,7 +21,7 @@ const rankSlice = createSlice({
         : {};
       const combinedRanks = { ...oldRanksObject, ...newRanksObject };
       const ranksToArray = [
-        ...Object.entries(combinedRanks).map(([key, rank]) => rank),
+        ...Object.entries(combinedRanks).map((rankArr) => rankArr[1]),
       ];
       state.ranks = [...ranksToArray];
       console.log("RANK", state.ranks);
@@ -29,7 +30,7 @@ const rankSlice = createSlice({
 });
 
 export const getRanksAction = () => {
-  return async (dispatch) => {
+  return async (dispatch: Function) => {
     const response = await axios.get(
       `${process.env.REACT_APP_API_DOMAIN}/api/ranks/mini`
     );

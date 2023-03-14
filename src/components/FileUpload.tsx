@@ -1,12 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { LegacyRef, useEffect, useRef, useState } from "react";
 import { Icon } from "semantic-ui-react";
 import css from "../styles/fileUpload/FileUpload.module.scss";
+import { fileUploadPropsType, imgUploadPropsType } from "src/types/types";
 
-export const FileUpload = ({ onChange, value, label, className }) => {
+export const FileUpload = ({
+  onChange,
+  value,
+  label,
+  className,
+}: fileUploadPropsType) => {
   return (
     <div className={`${css["file-upload"]} ${className}`}>
       <label>
-        <input type="file" hidden value={value} onChange={onChange} />
+        <input type="file" hidden value={value as string} onChange={onChange} />
         <Icon name="cloud upload" />
         <em style={{ textAlign: "center" }}>{label ? label : "Upload file"}</em>
       </label>
@@ -22,11 +28,11 @@ export const ImgUpload = ({
   triggerReset,
   initialImage,
   removeInitialImage,
-}) => {
-  const fileRef = useRef();
-  const [uploaded, setUploaded] = useState("");
+}: imgUploadPropsType) => {
+  const fileRef = useRef<HTMLInputElement>()!;
+  const [uploaded, setUploaded] = useState<string | null>("");
 
-  const onFileChange = (e) => {
+  const onFileChange = (e: any) => {
     const file = e.target.files[0];
     setUploaded(URL.createObjectURL(file));
     onChange(e);
@@ -42,7 +48,7 @@ export const ImgUpload = ({
         <div className={css["img-container"]}>
           <img
             src={uploaded || initialImage}
-            alt={fileRef.current?.files[0]?.filename}
+            alt={fileRef?.current?.files?.[0]?.name}
           />
           <Icon
             className={css.edit}
@@ -60,7 +66,7 @@ export const ImgUpload = ({
           <input
             type="file"
             hidden
-            ref={fileRef}
+            ref={fileRef as LegacyRef<HTMLInputElement>}
             value={value?.filename}
             onChange={onFileChange}
           />

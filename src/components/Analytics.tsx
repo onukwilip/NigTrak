@@ -1,13 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import data from "../data.json";
 import { Doughnut, Line } from "react-chartjs-2";
-import { CategoryScale } from "chart.js";
-import { Chart as ChartJS } from "chart.js/auto";
 import css from "../styles/analytics/Analytics.module.scss";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import {
+  analyticsCardType,
+  chartJsDoughnutOptionsType,
+  chartJsLineOptionsType,
+} from "src/types/types";
 
-export const Card = ({ icon, className, header, value, delay }) => {
+export const Card = ({
+  icon,
+  className,
+  header,
+  value,
+  delay,
+}: analyticsCardType) => {
   const control = useAnimation();
   const [ref, inView] = useInView();
   const variant = {
@@ -46,7 +55,7 @@ export const Card = ({ icon, className, header, value, delay }) => {
 };
 
 export const Analytics = () => {
-  const [chartData, setChartData] = useState({
+  const [chartData] = useState({
     labels: data.analytics?.map((eachData) => eachData.label),
     datasets: [
       {
@@ -62,7 +71,7 @@ export const Analytics = () => {
       },
     ],
   });
-  const [doughnutData, setDoughnutData] = useState({
+  const [doughnutData] = useState({
     labels: data.doughnut?.map((eachData) => eachData.label),
     datasets: [
       {
@@ -106,7 +115,7 @@ export const Analytics = () => {
           data={chartData}
           width="auto"
           height="70"
-          options={lineChartOptions}
+          options={lineChartOptions as chartJsLineOptionsType}
         />
       </div>
       <div className={css["mobile-dashboard"]}>
@@ -114,7 +123,7 @@ export const Analytics = () => {
           data={chartData}
           width="auto"
           height="200"
-          options={lineChartOptions}
+          options={lineChartOptions as chartJsLineOptionsType}
         />
       </div>
       <div className={css.below}>
@@ -161,7 +170,7 @@ export const Analytics = () => {
             <Doughnut
               data={doughnutData}
               height="40vh"
-              options={doughnutChartOptions}
+              options={doughnutChartOptions as chartJsDoughnutOptionsType}
             />
           </div>
         </div>

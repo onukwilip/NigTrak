@@ -48,7 +48,11 @@ const Profile = () => {
           <em> Rank</em>:{" "}
           <em>
             {" "}
-            <img src={ranks[userProfile["rank"]]} className="rank" />{" "}
+            <img
+              src={ranks[userProfile["rank"] as "General"]}
+              className="rank"
+              alt="rank"
+            />{" "}
             {userProfile["rank"]}
           </em>
         </li>

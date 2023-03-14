@@ -6,13 +6,14 @@ import {
 } from "@react-google-maps/api";
 import React, { useCallback, useRef } from "react";
 import CustomLoader from "./CustomLoader";
+import { mapPropsType } from "src/types/types";
 
 const mapContainerStyle = {
   width: "100%",
   height: "100%",
 };
 
-const getGeocode = async (position) => {
+const getGeocode = async (position: any) => {
   const geoCoder = new window.google.maps.Geocoder();
   const loc = position;
   const response = await geoCoder.geocode({ location: loc });
@@ -34,7 +35,7 @@ const Map = ({
   reference,
   circles = [],
   showMarker = true,
-}) => {
+}: mapPropsType) => {
   const map = useRef();
 
   const { isLoaded } = useJsApiLoader({
@@ -42,7 +43,7 @@ const Map = ({
     googleMapsApiKey: "",
   });
 
-  const onLoad = useCallback((mapObj) => {
+  const onLoad = useCallback((mapObj: any) => {
     const bounds = new window.google.maps.LatLngBounds(newCenter);
     mapObj.fitBounds(bounds);
 

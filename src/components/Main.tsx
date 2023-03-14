@@ -1,7 +1,8 @@
 import React from "react";
 import css from "../styles/main/Main.module.scss";
+import { mainPropsType } from "src/types/types";
 
-const Main = ({ children, header, className }) => {
+const Main = ({ children, header, className }: mainPropsType) => {
   return (
     <>
       <div className={`${css["section-main"]} ${className}`}>

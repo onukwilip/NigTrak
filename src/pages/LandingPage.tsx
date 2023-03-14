@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay } from "swiper";
 import "swiper/css";
@@ -14,11 +14,12 @@ import armyLogo from "../assets/img/nig-army.png";
 import airforceLogo from "../assets/img/nig-airforce-2.png";
 import navyLogo from "../assets/img/nig-navy.png";
 import policeLogo from "../assets/img/nig-police.png";
+import { forceType } from "src/types/types";
 
 const LandingPage = () => {
-  const [force, setForce] = useState("");
+  const [force, setForce] = useState<forceType | any>("");
 
-  const chooseForce = (force) => {
+  const chooseForce = (force: forceType) => {
     if (force === "Army") {
       return armyLogo;
     } else if (force === "Air force") {
@@ -42,19 +43,19 @@ const LandingPage = () => {
         autoplay={{ delay: 5000, disableOnInteraction: false }}
       >
         <SwiperSlide>
-          <img src={map} />
+          <img src={map} alt="map" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={walkieTalkie} />
+          <img src={walkieTalkie} alt="walkie talkie" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={paperMap} />
+          <img src={paperMap} alt="paper map" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={googleEarth} />
+          <img src={googleEarth} alt="google map" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={buhariOnUniform} />
+          <img src={buhariOnUniform} alt="buhari on uniform" />
         </SwiperSlide>
       </Swiper>
       <div className={css.overlay}></div>

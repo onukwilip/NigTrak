@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import Map from "../components/Map";
+import Map from "./Map";
 import {
   Button,
   Form,
@@ -17,6 +17,8 @@ import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import walkieTalkieTrans from "../assets/img/walkie-talkie-trans.png";
 import {
   clearSimilarArrayObjects,
+  fileUploadValidator,
+  getExention,
   manageMqttEvents,
   mapCenter,
   SelectClass,
@@ -31,10 +33,34 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import CustomLoader from "./CustomLoader";
 import { client } from "../pages/Home";
+import {
+  deviceAccessoryType,
+  deviceAmmoType,
+  deviceCardPropsType,
+  deviceErrorLogsType,
+  deviceListPropsType,
+  deviceModelType,
+  deviceType,
+  eachTableRowPropsType,
+  selectedDevicesType,
+  selectedDeviceType,
+  selectorState,
+  socketDeviceType,
+  uploadedDeviceFileType,
+  uploadedDevicesResponseDataType,
+} from "src/types/types";
 
-export const DeviceCard = ({ device, onViewMore = () => {}, index }) => {
-  const socketDevices = useSelector((state) => state?.socketDevices);
-  const [socketDevice, setSocketDevice] = useState(null);
+export const DeviceCard = ({
+  device,
+  onViewMore = () => {},
+  index,
+}: deviceCardPropsType) => {
+  const socketDevices = useSelector(
+    (state: selectorState) => state?.socketDevices
+  );
+  const [socketDevice, setSocketDevice] = useState<socketDeviceType | null>(
+    null
+  );
   const [ref, inView] = useInView();
   const control = useAnimation();
   const variants = {
@@ -52,7 +78,7 @@ export const DeviceCard = ({ device, onViewMore = () => {}, index }) => {
 
   useEffect(() => {
     if (device && socketDevices)
-      setSocketDevice(socketDevices[device?.IMEI_Number]);
+      setSocketDevice(socketDevices[device?.IMEI_Number as "imei"]);
   }, [device, socketDevices]);
 
   return (
@@ -72,10 +98,10 @@ export const DeviceCard = ({ device, onViewMore = () => {}, index }) => {
       </div>
       <div className={css.details}>
         <em>
-          {device?.IMEI_Number > 10 ? (
+          {device?.IMEI_Number?.length > 10 ? (
             <>
               {device?.IMEI_Number?.substring(0, 5)}...
-              {device?.IMEI_Number?.substring(device?._id?.length, 21)}
+              {device?.IMEI_Number?.substring(device?.IMEI_Number?.length, 21)}
             </>
           ) : (
             device?.IMEI_Number
@@ -96,14 +122,18 @@ export const DeviceCard = ({ device, onViewMore = () => {}, index }) => {
   );
 };
 
-export const DevicesList = ({ devices, onViewMore, className }) => {
+export const DevicesList = ({
+  devices,
+  onViewMore,
+  className,
+}: deviceListPropsType) => {
   return (
     <div className={`${css["devices-list"]} ${className}`}>
       {devices.map((device, i) => (
         <DeviceCard
           device={device}
           onViewMore={onViewMore}
-          key={device._id}
+          key={device?.IMEI_Number}
           index={i}
         />
       ))}
@@ -112,10 +142,14 @@ export const DevicesList = ({ devices, onViewMore, className }) => {
 };
 
 export const AllDevices = () => {
-  const [devices, setDevices] = useState([]);
-  const [device, setDevice] = useState(devices[0]);
-  const socketDevices = useSelector((state) => state?.socketDevices);
-  const [socketDevice, setSocketDevice] = useState(null);
+  const [devices, setDevices] = useState<deviceType[]>([]);
+  const [device, setDevice] = useState<deviceType>(devices[0]);
+  const socketDevices = useSelector(
+    (state: selectorState) => state?.socketDevices
+  );
+  const [socketDevice, setSocketDevice] = useState<socketDeviceType | null>(
+    null
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -132,16 +166,13 @@ export const AllDevices = () => {
     },
   });
 
-  // manageSocketDevicesConnection({ ws, dispatch });
   manageMqttEvents({ client, dispatch });
 
-  const onSearch = (/**@type String */ value) => {
+  const onSearch = (value: string) => {
     const filtered = allDevice.filter(
-      (eachDevice) =>
+      (eachDevice: deviceType) =>
         eachDevice?.IMEI_Number.toLowerCase().includes(value.toLowerCase()) ||
-        eachDevice?.deviceHolderName
-          ?.toLowerCase()
-          .includes(value.toLowerCase()) ||
+        eachDevice?.Name?.toLowerCase().includes(value.toLowerCase()) ||
         eachDevice?.Serial_Number.toLowerCase().includes(value.toLowerCase()) ||
         eachDevice?.Device_Model.toLowerCase().includes(value.toLowerCase())
     );
@@ -153,11 +184,9 @@ export const AllDevices = () => {
     navigate(`/home/devices/edit/${device?.IMEI_Number}`);
   };
 
-  const onGetDevicesSuccess = ({ data }) => {
+  const onGetDevicesSuccess = ({ data }: { data: deviceType[] }) => {
     setDevices(data);
   };
-
-  console.log("SOCKET DEVICE", socketDevice);
 
   useEffect(() => {
     getDevices(onGetDevicesSuccess);
@@ -169,7 +198,7 @@ export const AllDevices = () => {
 
   useEffect(() => {
     if (device && socketDevices)
-      setSocketDevice(socketDevices[device?.IMEI_Number]);
+      setSocketDevice(socketDevices[device?.IMEI_Number as "imei"]);
   }, [device, socketDevices]);
 
   return (
@@ -185,9 +214,7 @@ export const AllDevices = () => {
               </li>
               <li>
                 <em>Registered</em>:{" "}
-                <em>
-                  {new Date(device?.DateRegistered)?.toUTCString() || "Nil"}
-                </em>
+                <em>{new Date()?.toUTCString() || "Nil"}</em>
               </li>{" "}
               <li>
                 <em>Serial number</em>:{" "}
@@ -244,8 +271,12 @@ export const AllDevices = () => {
           {socketDevice ? (
             <Map
               newCenter={{
-                lat: parseFloat(socketDevice?.lat) || mapCenter.lat,
-                lng: parseFloat(socketDevice?.lng) || mapCenter.lng,
+                lat:
+                  parseFloat(socketDevice?.lat as unknown as string) ||
+                  mapCenter.lat,
+                lng:
+                  parseFloat(socketDevice?.lng as unknown as string) ||
+                  mapCenter.lng,
               }}
               zoom={10}
             />
@@ -291,7 +322,7 @@ export const AllDevices = () => {
   );
 };
 
-const AddDeviceSection = ({ id }) => {
+const AddDeviceSection = ({ id }: { id: string }) => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const {
     value: IMEI,
@@ -300,7 +331,7 @@ const AddDeviceSection = ({ id }) => {
     onChange: onIMEIChange,
     onBlur: onIMEIBlur,
     reset: resetIMEI,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput((value: string) => value?.trim() !== "");
 
   const {
     value: serialNumber,
@@ -309,7 +340,7 @@ const AddDeviceSection = ({ id }) => {
     onChange: onSerialNumberChange,
     onBlur: onSerialNumberBlur,
     reset: resetSerialNumber,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput((value: string) => value?.trim() !== "");
 
   const {
     value: deviceModel,
@@ -318,7 +349,7 @@ const AddDeviceSection = ({ id }) => {
     onChange: onDeviceModelChange,
     onBlur: onDeviceModelBlur,
     reset: resetDeviceModel,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput((value: string) => value?.trim() !== "");
 
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [onIMEIBlur, onSerialNumberBlur, onDeviceModelBlur],
@@ -359,15 +390,15 @@ const AddDeviceSection = ({ id }) => {
   });
 
   const models = [
-    new SelectClass(0, "Samsung", "Samsung"),
-    new SelectClass(0, "Huwawei", "Huwawei"),
-    new SelectClass(0, "Infinix", "Infinix"),
+    new SelectClass("0", "Samsung", "Samsung"),
+    new SelectClass("1", "Huwawei", "Huwawei"),
+    new SelectClass("2", "Infinix", "Infinix"),
   ];
 
-  const onPostDeviceSuccess = ({ data }) => {
+  const onPostDeviceSuccess = () => {
     setShowSuccessMessage(true);
     if (!id) reset();
-    setTimeout(() => setShowSuccessMessage(false), [1000 * 10]);
+    setTimeout(() => setShowSuccessMessage(false), 1000 * 10);
   };
 
   const submitHandler = () => {
@@ -377,7 +408,7 @@ const AddDeviceSection = ({ id }) => {
     postDevice(onPostDeviceSuccess);
   };
 
-  const onGetDeviceSuccess = ({ data }) => {
+  const onGetDeviceSuccess = ({ data }: { data: deviceType }) => {
     onIMEIChange(data?.IMEI_Number);
     onSerialNumberChange(data?.Serial_Number);
     onDeviceModelChange(data?.Device_Model);
@@ -478,8 +509,12 @@ const AddDeviceSection = ({ id }) => {
 };
 
 const AddDeviceModelSection = () => {
-  const [models, setModels] = useState(data["device-models"]);
-  const [editingModel, setEditingModel] = useState(false);
+  const [models, setModels] = useState<deviceModelType[]>(
+    data["device-models"]
+  );
+  const [editingModel, setEditingModel] = useState<deviceModelType | null>(
+    null
+  );
   const {
     value: deviceModel,
     isValid: deviceModelIsValid,
@@ -487,7 +522,7 @@ const AddDeviceModelSection = () => {
     onChange: onDeviceModelChange,
     onBlur: onDeviceModelBlur,
     reset: resetDeviceModel,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput((value: string) => value?.trim() !== "");
 
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [onDeviceModelBlur],
@@ -495,7 +530,7 @@ const AddDeviceModelSection = () => {
     validateOptions: () => deviceModelIsValid,
   });
 
-  const editModel = (model) => {
+  const editModel = (model: deviceModelType) => {
     setEditingModel(model);
     onDeviceModelChange(model?.name);
   };
@@ -504,7 +539,7 @@ const AddDeviceModelSection = () => {
     if (!formIsValid) return executeBlurHandlers();
 
     const indexToUpdate = models.findIndex(
-      (model) => model._id === editingModel._id
+      (model) => model._id === editingModel?._id
     );
     const oldModels = [...models];
     oldModels[indexToUpdate] = {
@@ -521,14 +556,17 @@ const AddDeviceModelSection = () => {
   const addModel = () => {
     if (!formIsValid) return executeBlurHandlers();
 
-    const newModel = { id: models.length + 1, name: deviceModel };
+    const newModel: deviceModelType = {
+      _id: (models.length + 1)?.toString(),
+      name: deviceModel,
+    };
     setModels((prev) => [...prev, newModel]);
 
     setEditingModel(null);
     reset();
   };
 
-  const deleteModel = (model) => {
+  const deleteModel = (model: deviceModelType) => {
     setModels((prevModels) =>
       prevModels?.filter((eachModel) => eachModel?._id !== model?._id)
     );
@@ -655,8 +693,11 @@ const AddDeviceModelSection = () => {
 };
 
 const AddAccessoriesSection = () => {
-  const [accessories, setAccessories] = useState(data["accessories"]);
-  const [editingAccessory, setEditingAccessory] = useState(false);
+  const [accessories, setAccessories] = useState<deviceAccessoryType[]>(
+    data["accessories"]
+  );
+  const [editingAccessory, setEditingAccessory] =
+    useState<deviceAccessoryType | null>(null);
   const {
     value: accessory,
     isValid: accessoryIsValid,
@@ -664,7 +705,7 @@ const AddAccessoriesSection = () => {
     onChange: onAccessoryChange,
     onBlur: onAccessoryBlur,
     reset: resetAccessory,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput((value: string) => value?.trim() !== "");
 
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [onAccessoryBlur],
@@ -672,7 +713,7 @@ const AddAccessoriesSection = () => {
     validateOptions: () => accessoryIsValid,
   });
 
-  const editAccessory = (accessory) => {
+  const editAccessory = (accessory: deviceAccessoryType) => {
     setEditingAccessory(accessory);
     onAccessoryChange(accessory?.name);
   };
@@ -681,7 +722,7 @@ const AddAccessoriesSection = () => {
     if (!formIsValid) return executeBlurHandlers();
 
     const indexToUpdate = accessories.findIndex(
-      (accessory) => accessory._id === editingAccessory._id
+      (accessory) => accessory._id === editingAccessory?._id
     );
     const oldAccessories = [...accessories];
     oldAccessories[indexToUpdate] = {
@@ -698,14 +739,17 @@ const AddAccessoriesSection = () => {
   const addAccessory = () => {
     if (!formIsValid) return executeBlurHandlers();
 
-    const newAccessory = { id: accessories.length + 1, name: accessory };
+    const newAccessory = {
+      _id: (accessories.length + 1)?.toString(),
+      name: accessory,
+    };
     setAccessories((prev) => [...prev, newAccessory]);
 
     setEditingAccessory(null);
     reset();
   };
 
-  const deleteAccessory = (accessory) => {
+  const deleteAccessory = (accessory: deviceAccessoryType) => {
     setAccessories((prevAccessories) =>
       prevAccessories?.filter(
         (eachAccessory) => eachAccessory?._id !== accessory?._id
@@ -834,8 +878,11 @@ const AddAccessoriesSection = () => {
 };
 
 const AddAmmunitionSection = () => {
-  const [ammunition, setAmmunition] = useState(data["ammunition"]);
-  const [editingAmmunition, setEditingAmmunition] = useState(false);
+  const [ammunition, setAmmunition] = useState<deviceAmmoType[]>(
+    data["ammunition"]
+  );
+  const [editingAmmunition, setEditingAmmunition] =
+    useState<deviceAmmoType | null>(null);
   const {
     value: ammunitionValue,
     isValid: ammunitionIsValid,
@@ -843,7 +890,7 @@ const AddAmmunitionSection = () => {
     onChange: onAmmunitionChange,
     onBlur: onAmmunitionBlur,
     reset: resetAmmunition,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput((value: string) => value?.trim() !== "");
 
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [onAmmunitionBlur],
@@ -851,7 +898,7 @@ const AddAmmunitionSection = () => {
     validateOptions: () => ammunitionIsValid,
   });
 
-  const editAmmunition = (ammunition) => {
+  const editAmmunition = (ammunition: deviceAmmoType) => {
     setEditingAmmunition(ammunition);
     onAmmunitionChange(ammunition?.name);
   };
@@ -860,7 +907,7 @@ const AddAmmunitionSection = () => {
     if (!formIsValid) return executeBlurHandlers();
 
     const indexToUpdate = ammunition.findIndex(
-      (accessory) => accessory._id === editingAmmunition._id
+      (accessory) => accessory._id === editingAmmunition?._id
     );
     const oldAmmunition = [...ammunition];
     oldAmmunition[indexToUpdate] = {
@@ -877,14 +924,17 @@ const AddAmmunitionSection = () => {
   const addAmmunition = () => {
     if (!formIsValid) return executeBlurHandlers();
 
-    const newAmmunition = { id: ammunition.length + 1, name: ammunitionValue };
+    const newAmmunition = {
+      _id: (ammunition.length + 1)?.toString(),
+      name: ammunitionValue,
+    };
     setAmmunition((prev) => [...prev, newAmmunition]);
 
     setEditingAmmunition(null);
     reset();
   };
 
-  const deleteAmmunition = (ammunition) => {
+  const deleteAmmunition = (ammunition: deviceAmmoType) => {
     setAmmunition((prevAmmunition) =>
       prevAmmunition?.filter(
         (eachAmmunition) => eachAmmunition?._id !== ammunition?._id
@@ -1018,7 +1068,7 @@ export const CreateDevice = () => {
   console.log("ID", id);
   return (
     <section className={css["create-device"]}>
-      <AddDeviceSection id={id} />
+      <AddDeviceSection id={id as string} />
       <AddDeviceModelSection />
       <AddAccessoriesSection />
       <AddAmmunitionSection />
@@ -1033,7 +1083,7 @@ const EachTableRow = ({
   onDelete,
   approvedState,
   refreshCheckedState,
-}) => {
+}: eachTableRowPropsType<selectedDeviceType>) => {
   const [checked, setChecked] = useState(approvedState);
   const [editingRow, setEditingRow] = useState(false);
 
@@ -1044,7 +1094,7 @@ const EachTableRow = ({
     onChange: onIMEIChange,
     onBlur: onIMEIBlur,
     reset: resetIMEI,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput((value: string) => value?.trim() !== "");
 
   const {
     value: serialNumber,
@@ -1053,7 +1103,7 @@ const EachTableRow = ({
     onChange: onSerialNumberChange,
     onBlur: onSerialNumberBlur,
     reset: resetSerialNumber,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput((value: string) => value?.trim() !== "");
 
   const {
     value: deviceModel,
@@ -1062,7 +1112,7 @@ const EachTableRow = ({
     onChange: onDeviceModelChange,
     onBlur: onDeviceModelBlur,
     reset: resetDeviceModel,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput((value: string) => value?.trim() !== "");
 
   const { executeBlurHandlers, formIsValid } = useForm({
     blurHandlers: [onIMEIBlur, onSerialNumberBlur, onDeviceModelBlur],
@@ -1164,7 +1214,7 @@ const EachTableRow = ({
           checked={checked}
           onChange={(e, { checked }) => {
             onCheckedHandler(deviceData, checked);
-            setChecked((prev) => !prev);
+            setChecked((prev: boolean) => !prev);
           }}
         />
       </Table.Cell>
@@ -1189,12 +1239,14 @@ const EachTableRow = ({
 };
 
 export const UploadBulkDevices = () => {
-  const [uploadedData, setUploadedData] = useState([]);
-  const [selectedDevices, setSelectedDevices] = useState({});
+  const [uploadedData, setUploadedData] = useState<uploadedDeviceFileType>([]);
+  const [selectedDevices, setSelectedDevices] = useState<
+    selectedDevicesType | object
+  >({});
   const [approvedState, setApprovedState] = useState(false);
   const [refreshCheckedState, setRefreshCheckedState] = useState(false);
   const [noUploadedDevices, setNoUploadedDevices] = useState(false);
-  const [errorLogs, setErrorLogs] = useState([]);
+  const [errorLogs, setErrorLogs] = useState<deviceErrorLogsType>([]);
   const [uploadedSuccessfuly, setUploadedSuccessfuly] = useState(false);
   const {
     sendRequest: postDevices,
@@ -1206,20 +1258,15 @@ export const UploadBulkDevices = () => {
     options: {
       url: `${process.env.REACT_APP_API_DOMAIN}/api/device/bulk`,
       method: "POST",
-      data: Object.entries(selectedDevices)?.map(([key, eachDevice]) => ({
-        imei: eachDevice["IMEI number"],
-        serialNumber: eachDevice["Serial number"],
-        deviceModel: eachDevice["Device model"],
-      })),
+      data: Object.entries(selectedDevices)?.map(
+        ([key, eachDevice]: [string, selectedDeviceType]) => ({
+          imei: eachDevice["IMEI number"],
+          serialNumber: eachDevice["Serial number"],
+          deviceModel: eachDevice["Device model"],
+        })
+      ),
     },
   });
-
-  const getExention = (/**@type String */ string) => {
-    const arr = string?.split(".");
-    if (Array.isArray(arr)) return arr[arr?.length - 1];
-
-    return "";
-  };
 
   const {
     value: file,
@@ -1229,69 +1276,19 @@ export const UploadBulkDevices = () => {
     onBlur: onFileBlur,
     reset: resetFIle,
   } = useInput(
-    (/**@type File */ file) =>
+    (file: File) =>
       getExention(file?.name) === "xlsx" || getExention(file?.name) === "json"
   );
 
-  const onFileReaderLoad = (e, resolve) => {
-    const bufferArray = e.target.result;
-
-    const wb = XLSX.read(bufferArray, { type: "buffer" });
-
-    const wsname = wb.SheetNames[0];
-
-    const ws = wb.Sheets[wsname];
-
-    const data = XLSX.utils.sheet_to_json(ws);
-
-    resolve(data);
-  };
-
-  const onFileReaderError = (error, reject) => {
-    reject(error);
-  };
-
-  const onFileReaderSuccess = (data) => {
+  const onFileReaderSuccess = (data: any) => {
     setUploadedData(clearSimilarArrayObjects(data, "IMEI number"));
   };
 
-  const readExcel = (file) => {
-    const promise = new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsArrayBuffer(file);
-
-      fileReader.onload = (e) => onFileReaderLoad(e, resolve);
-
-      fileReader.onerror = (error) => onFileReaderError(error, reject);
-    });
-
-    promise.then(onFileReaderSuccess);
+  const onReadJSONSuccess = (data: any) => {
+    setUploadedData(clearSimilarArrayObjects(data, "IMEI number"));
   };
 
-  const readJSON = (file) => {
-    const fileReader = new FileReader();
-    fileReader.readAsText(file, "UTF-8");
-    fileReader.onload = (e) => {
-      const data = JSON.parse(e.target.result);
-      setUploadedData(clearSimilarArrayObjects(data, "IMEI number"));
-    };
-  };
-
-  const fileUploadValidator = (/**@type Event */ e) => {
-    const file = e.target.files[0];
-
-    const ext = getExention(file?.name);
-
-    if (ext === "xlsx") {
-      readExcel(file);
-    } else if (ext === "json") {
-      readJSON(file);
-    }
-    onFileChange(file);
-    onFileBlur();
-  };
-
-  const onCheckedHandler = (data, checked) => {
+  const onCheckedHandler = (data: selectedDeviceType, checked: boolean) => {
     if (checked === true) {
       setSelectedDevices((preDevices) => ({
         ...preDevices,
@@ -1318,10 +1315,10 @@ export const UploadBulkDevices = () => {
     }, 1000 * 10);
   };
 
-  const onUploadSuccess = ({ data }) => {
+  const onUploadSuccess = ({ data }: uploadedDevicesResponseDataType) => {
     const { uploadedDevices, errorLogs } = data;
     console.info(data);
-    const currentDevices = {};
+    const currentDevices: selectedDevicesType = {};
     uploadedData.forEach((eachDevice) => {
       currentDevices[eachDevice["IMEI number"]] = eachDevice;
     });
@@ -1360,7 +1357,7 @@ export const UploadBulkDevices = () => {
   };
 
   const selectAllDevices = () => {
-    const addedDevices = {};
+    const addedDevices: selectedDevicesType = {};
 
     for (const data of uploadedData) {
       addedDevices[data["IMEI number"]] = data;
@@ -1380,7 +1377,7 @@ export const UploadBulkDevices = () => {
     setRefreshCheckedState((prev) => !prev);
   };
 
-  const onEdit = (device) => {
+  const onEdit = (device: selectedDeviceType) => {
     const allDevice = [...uploadedData];
 
     allDevice.forEach((eachDevice, i, arr) => {
@@ -1394,7 +1391,7 @@ export const UploadBulkDevices = () => {
 
   const clearErrors = () => setErrorLogs([]);
 
-  const onDelete = (device) => {
+  const onDelete = (device: selectedDeviceType) => {
     setUploadedData((prevData) =>
       prevData?.filter(
         (eachDevice) => eachDevice["IMEI number"] !== device["IMEI number"]
@@ -1408,7 +1405,15 @@ export const UploadBulkDevices = () => {
         <div className={css["upload-container"]}>
           <FileUpload
             label={"Upload excel/json files only"}
-            onChange={fileUploadValidator}
+            onChange={(e: any) =>
+              fileUploadValidator({
+                e,
+                onFileChange,
+                onFileBlur,
+                onFileReaderSuccess,
+                onReadJSONSuccess,
+              })
+            }
             className={css.upload}
           />
           {file && <h4>FIle name: {file?.name}</h4>}

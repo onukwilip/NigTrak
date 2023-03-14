@@ -2,8 +2,15 @@ import React from "react";
 import { Icon } from "semantic-ui-react";
 import css from "../styles/profileContainer/ProfileContainer.module.scss";
 import dummy from "../assets/img/dummy_profile_pic.png";
+import { profileContainerPropsType } from "src/types/types";
 
-const ProfileContainer = ({ profilePic, name, phone, email, className }) => {
+const ProfileContainer = ({
+  profilePic,
+  name,
+  phone,
+  email,
+  className,
+}: profileContainerPropsType) => {
   return (
     <div className={`${css["profile-container"]} ${className}`}>
       <div className={css.bg}></div>

@@ -4,14 +4,14 @@ import { Button, Form, Icon } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 import { SelectClass } from "../utils";
 
-const Login = ({ toogleForce }) => {
+const Login = ({ toogleForce }: { toogleForce: Function }) => {
   const navigate = useNavigate();
   const forceOptions = [
-    new SelectClass(4, "", "Select your force"),
-    new SelectClass(0, "Army", "Army"),
-    new SelectClass(1, "Air force", "Air force"),
-    new SelectClass(2, "Navy", "Navy"),
-    new SelectClass(3, "Police", "Police"),
+    new SelectClass("4", "", "Select your force"),
+    new SelectClass("0", "Army", "Army"),
+    new SelectClass("1", "Air force", "Air force"),
+    new SelectClass("2", "Navy", "Navy"),
+    new SelectClass("3", "Police", "Police"),
   ];
   const {
     value: id,
@@ -20,7 +20,7 @@ const Login = ({ toogleForce }) => {
     onChange: onIdChange,
     onBlur: onIdBlur,
     reset: resetId,
-  } = useInput((/**@type String */ value) => value?.trim() !== "");
+  } = useInput((value: string) => value?.trim() !== "");
 
   const {
     value: force,
@@ -29,7 +29,7 @@ const Login = ({ toogleForce }) => {
     onChange: onForceChange,
     onBlur: onForceBlur,
     reset: resetForce,
-  } = useInput((/**@type String */ value) => value?.trim() !== "");
+  } = useInput((value: string) => value?.trim() !== "");
 
   const {
     value: password,
@@ -38,7 +38,7 @@ const Login = ({ toogleForce }) => {
     onChange: onPasswordChange,
     onBlur: onPasswordBlur,
     reset: resetPassword,
-  } = useInput((/**@type String */ value) => value?.trim() !== "");
+  } = useInput((value: string) => value?.trim() !== "");
 
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [onPasswordBlur, onIdBlur, onForceBlur],

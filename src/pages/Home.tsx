@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { LegacyRef, useEffect, useRef, useState } from "react";
 import { Icon, Message } from "semantic-ui-react";
 import Map from "../components/Map";
 import css from "../styles/home/Home.module.scss";
@@ -29,25 +29,33 @@ import { manageMqttEvents, mapCenter, mqttConfig } from "../utils";
 import { getDeviceAction } from "../store/devicesReducer";
 import dummy from "../assets/img/dummy_profile_pic.png";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  forceType,
+  latLngType,
+  positionType,
+  selectorState,
+} from "src/types/types";
+import { AnyAction } from "redux";
 
-// const ws = new WebSocket(process.env.REACT_APP_WS_DOMAIN);
 export const client = window.mqtt?.connect(
   process.env.REACT_APP_MQTT_DOMAIN,
   mqttConfig
 );
 
-const MapTab = ({ position }) => {
-  const [showInfo, setShowInfo] = useState(/**@type data.users[0] */ null);
-  const socketDevices = useSelector((state) => state?.socketDevices);
-  const devices = useSelector((state) => state.devices.devices);
+const MapTab = ({ position }: { position: latLngType | null }) => {
+  const [showInfo, setShowInfo] = useState<any>(null);
+  const socketDevices = useSelector(
+    (state: selectorState) => state?.socketDevices
+  );
+  const devices = useSelector((state: selectorState) => state.devices.devices);
   const dispatch = useDispatch();
-  const mapRef = useRef();
+  const mapRef = useRef<{ setZoom: Function }>();
 
-  // manageSocketDevicesConnection({ ws, dispatch });
   manageMqttEvents({ client, dispatch });
 
   useEffect(() => {
-    if (!devices) dispatch(getDeviceAction());
+    if (!devices)
+      dispatch<AnyAction>(getDeviceAction() as unknown as AnyAction);
   }, []);
 
   useEffect(() => {
@@ -75,20 +83,21 @@ const MapTab = ({ position }) => {
               return (
                 <Marker
                   position={{
-                    lat: parseFloat(socketDevice?.lat),
-                    lng: parseFloat(socketDevice?.lng),
+                    lat: parseFloat(socketDevice?.lat as unknown as string),
+                    lng: parseFloat(socketDevice?.lng as unknown as string),
                   }}
                   icon={
-                    window.google && {
+                    window.google &&
+                    ({
                       url: device?.RankImage,
                       scaledSize: new window.google.maps.Size(35, 35),
-                    }
+                    } as google.maps.Icon)
                   }
                   onClick={() =>
                     setShowInfo({
                       ...device,
-                      lat: parseFloat(socketDevice?.lat),
-                      lng: parseFloat(socketDevice?.lng),
+                      lat: parseFloat(socketDevice?.lat as unknown as string),
+                      lng: parseFloat(socketDevice?.lng as unknown as string),
                     })
                   }
                 />
@@ -152,21 +161,23 @@ const MapTab = ({ position }) => {
 React.memo(MapTab);
 
 const Home = () => {
-  const [position, setPosition] = useState(null);
+  const [position, setPosition] = useState<latLngType | null>(null);
   const [showProfile, setShowProfile] = useState(true);
   const [showMenu, setShowMenu] = useState(true);
-  const force = sessionStorage.getItem("force");
+  const force: forceType | null = sessionStorage.getItem("force") as forceType;
   const profileRef = useRef();
-  const isOffline = useSelector((state) => state.offline.isOffline);
+  const isOffline = useSelector(
+    (state: selectorState) => state.offline.isOffline
+  );
 
-  const onSuccess = (pos) => {
+  const onSuccess = (pos: positionType) => {
     const crd = pos.coords;
 
     console.log("POSITION", crd);
-    setPosition({ lat: crd.latitude, lng: crd.longitude });
+    setPosition({ lat: crd.latitude!, lng: crd.longitude! });
   };
 
-  const chooseForce = (force) => {
+  const chooseForce = (force: forceType) => {
     if (force === "Army") {
       return armyLogo;
     } else if (force === "Air force") {
@@ -316,7 +327,11 @@ const Home = () => {
             appearActive: css["profile-animate-appear-active"],
             appearDone: css["profile-animate-appear-done"],
           }}
-          ref={profileRef}
+          ref={
+            profileRef as unknown as LegacyRef<
+              CSSTransition<HTMLElement | undefined>
+            >
+          }
         >
           <Profile />
         </CSSTransition>

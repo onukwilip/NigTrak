@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import css from "../styles/home/Home.module.scss";
 import logo from "../assets/img/logo.png";
 import { AnimatePresence, motion } from "framer-motion";
 
 class MenuClass {
-  constructor(name, tab, icon, subMenus = []) {
-    this.name = name;
-    this.tab = tab;
-    this.icon = icon;
-    this.subMenus = subMenus;
-  }
+  constructor(
+    public name: string,
+    public tab: string,
+    public icon: string,
+    public subMenus?: MenuClass[]
+  ) {}
 }
 
 const menus = [
@@ -19,7 +19,6 @@ const menus = [
   new MenuClass("Users", "/home/users", "fa-solid fa-person-military-rifle", [
     new MenuClass("Get Users", "/home/users/", ""),
     new MenuClass("Create User", "/home/users/add", ""),
-    // new MenuClass("Edit User", "/home/users/edit", ""),
     new MenuClass("Bulk upload", "/home/users/bulk", ""),
   ]),
   new MenuClass("Devices", "/home/devices", "fa-solid fa-walkie-talkie", [
@@ -45,7 +44,7 @@ const menus = [
   new MenuClass("Log out", "/", "fa-solid fa-right-from-bracket"),
 ];
 
-const MenuListItem = ({ eachMenu, i }) => {
+const MenuListItem = ({ eachMenu, i }: { eachMenu: MenuClass; i: number }) => {
   const [showSubMenu, setShowSubMenu] = useState(false);
   const variants = {
     // noHeight: { minHeight: 0, height: 0 },
@@ -77,7 +76,7 @@ const MenuListItem = ({ eachMenu, i }) => {
           <em>{eachMenu.name}</em>
         </li>
         <AnimatePresence>
-          {showSubMenu && eachMenu.subMenus?.length > 0 && (
+          {showSubMenu && eachMenu?.subMenus!?.length > 0 && (
             <motion.ul
               className={css["submenu"]}
               variants={variants}
@@ -85,7 +84,7 @@ const MenuListItem = ({ eachMenu, i }) => {
               animate="normal"
               exit="exit"
             >
-              {eachMenu.subMenus.map((eachMenu, i) => (
+              {eachMenu?.subMenus?.map((eachMenu, i) => (
                 <Link to={eachMenu?.tab || "/home/"} key={i}>
                   <li>
                     <i className={`fa-regular fa-circle-dot ${css.dot}`}></i>
@@ -105,7 +104,7 @@ const Menu = () => {
   return (
     <div className={css.menu}>
       <div className={css["logo-container"]}>
-        <img src={logo} />
+        <img src={logo} alt="logo" />
         <em>NigTrak</em>
       </div>
       <ul>

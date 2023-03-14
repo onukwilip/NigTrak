@@ -11,16 +11,16 @@ const deviceSlice = createSlice({
   name: "device",
   initialState: initialState,
   reducers: {
-    addDevice(state, { payload }) {
-      const newDevicesObject = Array.isArray(payload)
-        ? clearSimilarArrayObjects(payload, "IMEI_Number")
+    addDevice(state: any, { payload: device }) {
+      const newDevicesObject = Array.isArray(device)
+        ? clearSimilarArrayObjects(device, "IMEI_Number")
         : {};
       const oldDevicesObject = Array.isArray(state.devices)
         ? clearSimilarArrayObjects(state.devices, "IMEI_Number")
         : {};
       const combinedDevices = { ...oldDevicesObject, ...newDevicesObject };
       const devicesToArray = [
-        ...Object.entries(combinedDevices).map(([key, device]) => device),
+        ...Object.entries(combinedDevices).map((deviceArr) => deviceArr[1]),
       ];
       state.devices = [...devicesToArray];
       console.log("DEVICE", state.devices);
@@ -29,7 +29,7 @@ const deviceSlice = createSlice({
 });
 
 export const getDeviceAction = () => {
-  return async (dispatch) => {
+  return async (dispatch: Function) => {
     const response = await axios.get(
       `${process.env.REACT_APP_API_DOMAIN}/api/device`
     );
