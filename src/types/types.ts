@@ -15,13 +15,14 @@ export type socketDeviceType = {
   lng: number;
 };
 
-export type socketDevicesType = {
-  imei: {
+export type socketDevicesType = Record<
+  string,
+  {
     imei: string;
     lat: number;
     lng: number;
-  };
-};
+  }
+>;
 
 export type socketDeviceState = {
   imei: string;
@@ -111,7 +112,7 @@ export type rankOptionsType = {
 };
 
 export type selectType = {
-  key: string;
+  key: string | number;
   value: string;
   text: string;
 };
@@ -248,10 +249,10 @@ export type fileUploadPropsType = {
 export type imgUploadPropsType = {
   onChange: (a: any) => any;
   value?: string | any;
-  label: string;
+  label?: string;
   className?: string | any;
-  triggerReset: Function;
-  initialImage: string;
+  triggerReset: boolean;
+  initialImage?: string | null;
   removeInitialImage: Function;
 };
 
@@ -260,5 +261,150 @@ export type profileContainerPropsType = {
   name: string;
   phone: string;
   email: string;
-  className: string;
+  className?: string;
 };
+
+export type rankCardPropsType = {
+  rank: rankType;
+  onView: Function;
+  socketDevices: socketDevicesType;
+  index?: number;
+};
+
+export type onlineRankMembersType = {
+  UserId: string;
+  Name: string;
+  Email: string;
+  Address: string;
+  Phone: string;
+  Image: string;
+  Devices: string[];
+  IMEI_Number: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  rankImage?: string;
+  Station?: string;
+};
+
+export type uploadedRankFileType = eachUploadedRankFileType[];
+
+export type eachUploadedRankFileType = { id: string; name: string };
+
+export type selectedRankType = Record<string, eachUploadedRankFileType>;
+
+export type postBulkRanksReturnType = {
+  uploadedRanks: Record<string, { name: string }>;
+  errorLogs: postBulkRanksErrorType[];
+};
+
+export type postBulkRanksErrorType = { name: string; error: string };
+
+export type stationCardPropsType = {
+  station: any;
+  onView: Function;
+  index?: number;
+};
+
+export type uploadedStationsFileType = eachUploadedStationsFileType[];
+
+export type eachUploadedStationsFileType = {
+  Address: string;
+  LGA: string;
+  Name: string;
+  State: string;
+  id: number;
+};
+
+export type selectedStationsType = Record<string, eachUploadedStationsFileType>;
+
+export type cardPropsType = { item: string; onCancel: Function; src?: string };
+
+export type userCardPropsType = {
+  user: userType;
+  onViewMore: Function;
+  index?: number;
+};
+
+export type userType = {
+  Id: string | number;
+  Name: string;
+  UserId: string;
+  Email: string;
+  Address: string;
+  Phone: string;
+  Station: string;
+  Rank: string;
+  Accessories: string[];
+  Ammunition: string[];
+  Image: string;
+  RankName: string;
+  RankId: string;
+  RankImage: string;
+  Devices: userDeviceType[];
+};
+
+export type userDeviceType = {
+  Id: string | number;
+  IMEI_Number: string;
+  Serial_Number: string;
+  Device_Model: string;
+  Accessories: string;
+  Address: string;
+  Ammunition: string;
+  Email: string;
+  Name: string;
+  Phone: string;
+  Rank: string;
+  Station: string;
+  UserId: string;
+};
+
+export type usersListType = {
+  users: userType[];
+  onViewMore: Function;
+  className?: string;
+};
+
+export type selectInputOnChangePropsType<T> = (
+  e: any,
+  { value }: { value: T | string }
+) => any;
+
+export type uploadedUserFileType = eachUploadedUserFileType[];
+
+export type selectedUsers = Record<string, eachUploadedUserFileType>;
+
+export type eachUploadedUserFileType = {
+  accessories: string;
+  address: string;
+  ammunition: string;
+  devices: string;
+  email: string;
+  gender: string;
+  id: string | number;
+  joined: string | number;
+  name: string | number;
+  phoneNumber: string | number;
+  rank: string;
+  state: string;
+  station: string;
+};
+
+export type postBulkUsersReturnType = {
+  uploadUsers: {
+    name: string;
+    email: string;
+    address: string;
+    phone: string;
+    rank: string;
+    station: string;
+    ammos: string[];
+    accessories: string[];
+    devices: string[];
+  }[];
+  errorLogs: postBulkUsersErrorType[];
+};
+
+export type postBulkUsersErrorType = { error: string; name: string };

@@ -1,5 +1,5 @@
 import { useAnimation, motion, AnimatePresence } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useInput, useForm } from "use-manage-form";
 import {
@@ -12,30 +12,44 @@ import {
   Checkbox,
 } from "semantic-ui-react";
 import css from "../styles/ranks/Ranks.module.scss";
-import data from "../data.json";
 import Map from "./Map";
 import { Marker, InfoWindow } from "@react-google-maps/api";
 import Main from "./Main";
 import { FileUpload, ImgUpload } from "./FileUpload";
-import * as XLSX from "xlsx";
 import {
   clearSimilarArrayObjects,
   mapCenter,
-  manageMqttEvents,
+  // manageMqttEvents,
+  fileUploadValidator,
+  getExention,
 } from "../utils";
 import useAjaxHook from "use-ajax-request";
 import axios from "axios";
 import CustomLoader from "./CustomLoader";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import dummy from "../assets/img/dummy_profile_pic.png";
 import { useNavigate, useParams } from "react-router-dom";
-import { client } from "../pages/Home";
+// import { client } from "../pages/Home";
+import {
+  eachTableRowPropsType,
+  eachUploadedRankFileType,
+  onlineRankMembersType,
+  postBulkRanksErrorType,
+  postBulkRanksReturnType,
+  rankCardPropsType,
+  rankMemberType,
+  rankType,
+  selectedRankType,
+  selectorState,
+  socketDevicesType,
+  uploadedRankFileType,
+} from "src/types/types";
 
 const getDevicesToShowOnMap = (
-  /**@type  Array*/ mappedMembers,
-  /**@type Object */ socketDevices
+  mappedMembers: rankMemberType[],
+  socketDevices: socketDevicesType
 ) => {
-  const onlineDevices = {};
+  const onlineDevices: Record<string, onlineRankMembersType> = {};
   for (const member of mappedMembers) {
     if (member?.Devices?.length < 1) continue;
     for (const device of member?.Devices) {
@@ -54,7 +68,12 @@ const getDevicesToShowOnMap = (
   return Object.entries(onlineDevices)?.map(([key, device]) => device);
 };
 
-export const RankCard = ({ rank, onView = () => {}, index, socketDevices }) => {
+export const RankCard = ({
+  rank,
+  onView = () => {},
+  index,
+  socketDevices,
+}: rankCardPropsType) => {
   const [ref, inView] = useInView();
   const [onlineMembers, setOnlineMembers] = useState(0);
   const control = useAnimation();
@@ -69,11 +88,12 @@ export const RankCard = ({ rank, onView = () => {}, index, socketDevices }) => {
   }));
 
   const getOnlineMembers = () => {
-    const onlineMembers = {};
+    const onlineMembers: Record<string, rankMemberType> = {};
     for (const member of mappedMembers) {
       if (member?.Devices?.length < 1) continue;
       for (const device of member?.Devices) {
-        if (socketDevices[device]) onlineMembers[member?.UserId] = { member };
+        if (socketDevices[device])
+          onlineMembers[member?.UserId] = { ...member };
       }
     }
 
@@ -104,7 +124,7 @@ export const RankCard = ({ rank, onView = () => {}, index, socketDevices }) => {
       initial="far"
       animate={control}
       transition={{
-        delay: index / 50,
+        delay: index ? index / 50 : 0,
       }}
       className={css["rank-card"]}
       ref={ref}
@@ -154,20 +174,24 @@ export const RankCard = ({ rank, onView = () => {}, index, socketDevices }) => {
 };
 
 export const Ranks = () => {
-  const [ranks, setRanks] = useState(/**@type data.ranks */ []);
-  const [onlineDevices, setOnlineDevices] = useState([]);
-  const [rankMembers, setRankMembers] = useState([]);
-  const socketDevices = useSelector((state) => state?.socketDevices);
-  const [showInfo, setShowInfo] = useState(false);
-  const map = useRef();
-  const dispatch = useDispatch();
+  const [ranks, setRanks] = useState<rankType[]>([]);
+  const [onlineDevices, setOnlineDevices] = useState<onlineRankMembersType[]>(
+    []
+  );
+  const [rankMembers, setRankMembers] = useState<rankMemberType[]>([]);
+  const socketDevices = useSelector(
+    (state: selectorState) => state?.socketDevices
+  );
+  const [showInfo, setShowInfo] = useState<onlineRankMembersType | null>(null);
+  const map = useRef<{ setZoom: Function }>();
+  // const dispatch = useDispatch();
 
   const {
     sendRequest: getRanks,
     error: getRanksError,
     loading: gettingRanks,
     data: allRanks,
-  } = useAjaxHook({
+  } = useAjaxHook<rankType[]>({
     instance: axios,
     options: {
       url: `${process.env.REACT_APP_API_DOMAIN}/api/ranks`,
@@ -176,24 +200,21 @@ export const Ranks = () => {
   });
 
   // manageSocketDevicesConnection({ ws, dispatch });
-  manageMqttEvents({ client, dispatch });
+  // manageMqttEvents({ client, dispatch });
 
-  const onSearch = (value) => {
-    const filtered = allRanks.filter((rank) =>
+  const onSearch = (value: string) => {
+    const filtered = allRanks?.filter((rank) =>
       rank?.RankName?.toLowerCase()?.includes(value?.toLowerCase())
     );
     setRanks(filtered);
   };
-  const onViewClick = (
-    /**@type Array */ onlineDevices,
-    /**@type Array */ members
-  ) => {
+  const onViewClick = (onlineDevices: [], members: []) => {
     map.current?.setZoom(6.3);
     setOnlineDevices(onlineDevices);
     setRankMembers(members);
   };
 
-  const onGetRanksSuccess = ({ data }) => {
+  const onGetRanksSuccess = ({ data }: { data: rankType[] }) => {
     setRanks(data);
     if (rankMembers?.length < 1) {
       const members = [];
@@ -276,12 +297,16 @@ export const Ranks = () => {
             reference={map}
             showMarker={false}
           >
-            {onlineDevices.map((/**@type data.ranks.members */ member) => (
+            {onlineDevices.map((member) => (
               <Marker
-                icon={{
-                  url: member?.rankImage,
-                  scaledSize: new window.google.maps.Size(40, 40),
-                }}
+                icon={
+                  window.google.maps
+                    ? {
+                        url: member?.rankImage as string,
+                        scaledSize: new window.google.maps.Size(40, 40),
+                      }
+                    : member?.rankImage
+                }
                 position={member?.location}
                 onClick={() => {
                   setShowInfo({ ...member });
@@ -297,7 +322,7 @@ export const Ranks = () => {
               >
                 <div className={css.info}>
                   <div className={css["img-container"]}>
-                    <img src={showInfo?.UserImage || dummy} alt="Militant" />
+                    <img src={showInfo?.Image || dummy} alt="Militant" />
                   </div>
                   <div className={css.details}>
                     <em>
@@ -325,7 +350,7 @@ export const Ranks = () => {
 
 const AddEditRankSection = () => {
   const [resetFileImage, setResetFileImage] = useState(false);
-  const [previousImage, setPreviousImage] = useState(null);
+  const [previousImage, setPreviousImage] = useState<string | null>(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const params = useParams();
   const id = params.id;
@@ -336,7 +361,7 @@ const AddEditRankSection = () => {
     onChange: onNameChange,
     onBlur: onNameBlur,
     reset: resetName,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: file,
@@ -345,7 +370,9 @@ const AddEditRankSection = () => {
     onChange: onFileChange,
     onBlur: onFileBlur,
     reset: resetFile,
-  } = useInput((value) => previousImage || typeof value === "object");
+  } = useInput<File>(
+    (value) => (previousImage || typeof value === "object") as boolean
+  );
 
   const formData = new FormData();
   formData.append("name", name);
@@ -390,7 +417,7 @@ const AddEditRankSection = () => {
     validateOptions: () => nameIsValid && fileIsValid,
   });
 
-  const onPostSuccess = ({ data }) => {
+  const onPostSuccess = ({ data }: { data: object }) => {
     if (!id) reset();
     setShowSuccessMessage(true);
 
@@ -407,7 +434,7 @@ const AddEditRankSection = () => {
 
   useEffect(() => {
     if (id) {
-      const onRankSuccess = ({ data }) => {
+      const onRankSuccess = ({ data }: { data: rankType }) => {
         onNameChange(data?.RankName);
         setPreviousImage(data?.Image);
       };
@@ -483,13 +510,13 @@ const AddEditRankSection = () => {
 };
 
 const EachTableRow = ({
-  data: rankData /**@type data.users[0] */,
+  data: rankData,
   onCheckedHandler,
   onEdit,
   onDelete,
   approvedState,
   refreshCheckedState,
-}) => {
+}: eachTableRowPropsType<eachUploadedRankFileType>) => {
   const [checked, setChecked] = useState(approvedState);
   const [editingRow, setEditingRow] = useState(false);
 
@@ -500,7 +527,7 @@ const EachTableRow = ({
     onChange: onNameChange,
     onBlur: onNameBlur,
     reset: resetName,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [onNameBlur],
@@ -581,12 +608,12 @@ const EachTableRow = ({
 };
 
 const UploadBulkRanksSection = () => {
-  const [uploadedData, setUploadedData] = useState([]);
-  const [selectedRanks, setSelectedRanks] = useState({});
+  const [uploadedData, setUploadedData] = useState<uploadedRankFileType>([]);
+  const [selectedRanks, setSelectedRanks] = useState<selectedRankType>({});
   const [approvedState, setApprovedState] = useState(false);
   const [refreshCheckedState, setRefreshCheckedState] = useState(false);
   const [noUploadedRanks, setNoUploadedRanks] = useState(false);
-  const [errorLogs, setErrorLogs] = useState([]);
+  const [errorLogs, setErrorLogs] = useState<postBulkRanksErrorType[]>([]);
   const [uploadedSuccessfuly, setUploadedSuccessfuly] = useState(false);
   const {
     sendRequest: postRanks,
@@ -604,13 +631,6 @@ const UploadBulkRanksSection = () => {
     },
   });
 
-  const getExention = (/**@type String */ string) => {
-    const arr = string?.split(".");
-    if (Array.isArray(arr)) return arr[arr?.length - 1];
-
-    return "";
-  };
-
   const {
     value: file,
     isValid: fileIsValid,
@@ -618,8 +638,8 @@ const UploadBulkRanksSection = () => {
     onChange: onFileChange,
     onBlur: onFileBlur,
     reset: resetFIle,
-  } = useInput(
-    (/**@type File */ file) =>
+  } = useInput<File>(
+    (file) =>
       getExention(file?.name) === "xlsx" || getExention(file?.name) === "json"
   );
 
@@ -631,65 +651,18 @@ const UploadBulkRanksSection = () => {
     }, 1000 * 10);
   };
 
-  const onFileReaderLoad = (e, resolve) => {
-    const bufferArray = e.target.result;
-
-    const wb = XLSX.read(bufferArray, { type: "buffer" });
-
-    const wsname = wb.SheetNames[0];
-
-    const ws = wb.Sheets[wsname];
-
-    const data = XLSX.utils.sheet_to_json(ws);
-
-    resolve(data);
-  };
-
-  const onFileReaderError = (error, reject) => {
-    reject(error);
-  };
-
-  const onFileReaderSuccess = (data) => {
+  const onFileReaderSuccess = (data: any) => {
     setUploadedData(clearSimilarArrayObjects(data, "id"));
   };
 
-  const readExcel = (file) => {
-    const promise = new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsArrayBuffer(file);
-
-      fileReader.onload = (e) => onFileReaderLoad(e, resolve);
-
-      fileReader.onerror = (error) => onFileReaderError(error, reject);
-    });
-
-    promise.then(onFileReaderSuccess);
+  const onReadJSONSuccess = (data: any) => {
+    setUploadedData(clearSimilarArrayObjects(data, "id"));
   };
 
-  const readJSON = (file) => {
-    const fileReader = new FileReader();
-    fileReader.readAsText(file, "UTF-8");
-    fileReader.onload = (e) => {
-      const data = JSON.parse(e.target.result);
-      setUploadedData(clearSimilarArrayObjects(data, "id"));
-    };
-  };
-
-  const fileUploadValidator = (/**@type Event */ e) => {
-    const file = e.target.files[0];
-
-    const ext = getExention(file?.name);
-
-    if (ext === "xlsx") {
-      readExcel(file);
-    } else if (ext === "json") {
-      readJSON(file);
-    }
-    onFileChange(file);
-    onFileBlur();
-  };
-
-  const onCheckedHandler = (data, checked) => {
+  const onCheckedHandler = (
+    data: eachUploadedRankFileType,
+    checked: boolean
+  ) => {
     if (checked === true) {
       setSelectedRanks((preRanks) => ({
         ...preRanks,
@@ -708,10 +681,10 @@ const UploadBulkRanksSection = () => {
     setTimeout(() => setNoUploadedRanks(false), 1000 * 10);
   };
 
-  const onUploadSuccess = ({ data }) => {
+  const onUploadSuccess = ({ data }: { data: postBulkRanksReturnType }) => {
     const { uploadedRanks, errorLogs } = data;
     console.info(data);
-    const currentRanks = {};
+    const currentRanks: selectedRankType = {};
     uploadedData.forEach((eachRank) => {
       currentRanks[eachRank["name"]] = eachRank;
     });
@@ -750,7 +723,7 @@ const UploadBulkRanksSection = () => {
   };
 
   const selectAllRanks = () => {
-    const addedRanks = {};
+    const addedRanks: selectedRankType = {};
 
     for (const data of uploadedData) {
       addedRanks[data["id"]] = data;
@@ -770,7 +743,7 @@ const UploadBulkRanksSection = () => {
     setRefreshCheckedState((prev) => !prev);
   };
 
-  const onEdit = (rank) => {
+  const onEdit = (rank: eachUploadedRankFileType) => {
     const allRanks = [...uploadedData];
 
     allRanks.forEach((eachRank, i, arr) => {
@@ -782,7 +755,7 @@ const UploadBulkRanksSection = () => {
     setUploadedData(allRanks);
   };
 
-  const onDelete = (rank) => {
+  const onDelete = (rank: eachUploadedRankFileType) => {
     setUploadedData((prevData) =>
       prevData?.filter((eachRank) => eachRank["id"] !== rank["id"])
     );
@@ -797,7 +770,15 @@ const UploadBulkRanksSection = () => {
       <div className="upload-container">
         <FileUpload
           label={"Upload excel/json files only"}
-          onChange={fileUploadValidator}
+          onChange={(e: any) =>
+            fileUploadValidator({
+              e,
+              onFileChange: onFileChange as any,
+              onFileBlur: onFileBlur,
+              onFileReaderSuccess,
+              onReadJSONSuccess,
+            })
+          }
           className={"upload"}
         />
         {file && <h4>FIle name: {file?.name}</h4>}

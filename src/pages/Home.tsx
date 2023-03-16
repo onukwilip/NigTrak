@@ -51,7 +51,7 @@ const MapTab = ({ position }: { position: latLngType | null }) => {
   const dispatch = useDispatch();
   const mapRef = useRef<{ setZoom: Function }>();
 
-  manageMqttEvents({ client, dispatch });
+  // manageMqttEvents({ client, dispatch });
 
   useEffect(() => {
     if (!devices)
@@ -164,11 +164,14 @@ const Home = () => {
   const [position, setPosition] = useState<latLngType | null>(null);
   const [showProfile, setShowProfile] = useState(true);
   const [showMenu, setShowMenu] = useState(true);
+  const dispatch = useDispatch();
   const force: forceType | null = sessionStorage.getItem("force") as forceType;
   const profileRef = useRef();
   const isOffline = useSelector(
     (state: selectorState) => state.offline.isOffline
   );
+
+  manageMqttEvents({ client, dispatch });
 
   const onSuccess = (pos: positionType) => {
     const crd = pos.coords;
@@ -261,7 +264,10 @@ const Home = () => {
         <Routes>
           <Route path="/" element={<MapTab position={position} />} />
           <Route path="/analytics" element={<Analytics />} />
-          <Route path="/users/" element={<AllUsers position={position} />} />
+          <Route
+            path="/users/"
+            element={<AllUsers position={position as latLngType} />}
+          />
           <Route path="users/add" element={<CreateEditUser />} />
           <Route path="users/edit/:id" element={<CreateEditUser />} />
           <Route

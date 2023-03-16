@@ -16,13 +16,30 @@ import data from "../data.json";
 import Map from "./Map";
 import { Marker } from "@react-google-maps/api";
 import Main from "./Main";
-import { SelectClass, clearSimilarArrayObjects } from "../utils";
+import {
+  SelectClass,
+  clearSimilarArrayObjects,
+  fileUploadValidator,
+  getExention,
+} from "../utils";
 import { useForm, useInput } from "use-manage-form";
 import { useNavigate } from "react-router-dom";
 import { FileUpload } from "./FileUpload";
 import * as XLSX from "xlsx";
+import {
+  eachTableRowPropsType,
+  eachUploadedStationsFileType,
+  latLngType,
+  selectedStationsType,
+  stationCardPropsType,
+  uploadedStationsFileType,
+} from "src/types/types";
 
-export const StationCard = ({ station, onView = () => {}, index }) => {
+export const StationCard = ({
+  station,
+  onView = () => {},
+  index,
+}: stationCardPropsType) => {
   const [ref, inView] = useInView();
   const control = useAnimation();
   const navigate = useNavigate();
@@ -49,7 +66,7 @@ export const StationCard = ({ station, onView = () => {}, index }) => {
       initial="far"
       animate={control}
       transition={{
-        delay: index / 50,
+        delay: index ? index / 50 : 0,
       }}
       className={css["station-card"]}
       ref={ref}
@@ -95,7 +112,7 @@ export const Stations = () => {
   );
   const [currentState, setCurrentState] = useState("");
   const [circle, setCircle] = useState({});
-  const map = useRef();
+  const map = useRef<{ setZoom: Function; panTo: Function }>();
   const states = [
     {
       key: 0,
@@ -108,7 +125,7 @@ export const Stations = () => {
       text: eachStation.state,
     })),
   ];
-  const onStateFilter = (e, { value }) => {
+  const onStateFilter = (e: any, { value }: { value: string }) => {
     setCurrentState(value);
     const filtered = data.stations.filter((station) =>
       station.state.toLowerCase().includes(value.toLowerCase())
@@ -116,7 +133,7 @@ export const Stations = () => {
     setStations(filtered);
   };
 
-  const onSearch = (value) => {
+  const onSearch = (value: string) => {
     const filteredState = data.stations.filter((station) =>
       station.state.toLowerCase().includes(currentState.toLowerCase())
     );
@@ -128,7 +145,7 @@ export const Stations = () => {
     setStations(filtered);
   };
 
-  const onViewClick = (position) => {
+  const onViewClick = (position: latLngType) => {
     map.current?.panTo(position);
     map.current?.setZoom(10);
     setCircle({ location: position, radius: 15000 });
@@ -141,7 +158,7 @@ export const Stations = () => {
           <Select
             placeholder="Select state"
             options={states}
-            onChange={onStateFilter}
+            onChange={onStateFilter as any}
           />
           <Input
             placeholder="Search stations..."
@@ -184,7 +201,7 @@ const AddEditStationSection = () => {
     onChange: onNameChange,
     onBlur: onNameBlur,
     reset: resetName,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: address,
@@ -193,7 +210,7 @@ const AddEditStationSection = () => {
     onChange: onAddressChange,
     onBlur: onAddressBlur,
     reset: resetAddress,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: state,
@@ -202,7 +219,7 @@ const AddEditStationSection = () => {
     onChange: onStateChange,
     onBlur: onStateBlur,
     reset: resetState,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: LGA,
@@ -211,7 +228,7 @@ const AddEditStationSection = () => {
     onChange: onLGAChange,
     onBlur: onLGABlur,
     reset: resetLGA,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const states = data.states.map(
     (eachState) =>
@@ -220,7 +237,9 @@ const AddEditStationSection = () => {
 
   const lgas = data.states
     .find((eachState) => eachState.name === state)
-    ?.lgas?.map((eachLga, i) => new SelectClass(i, eachLga, eachLga));
+    ?.lgas?.map(
+      (eachLga, i) => new SelectClass(i?.toString(), eachLga, eachLga)
+    );
 
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [onNameBlur, onAddressBlur, onStateBlur, onLGABlur],
@@ -276,7 +295,7 @@ const AddEditStationSection = () => {
               options={states}
               value={state}
               onChange={(e, { value }) => onStateChange(value)}
-              onBlur={onStateBlur}
+              onBlur={onStateBlur as any}
               error={
                 stateInputIsInValid && {
                   content: "Please select a state",
@@ -287,10 +306,10 @@ const AddEditStationSection = () => {
             {state && (
               <Form.Select
                 placeholder="Select L.G.A"
-                options={lgas}
+                options={lgas as SelectClass[]}
                 value={LGA}
                 onChange={(e, { value }) => onLGAChange(value)}
-                onBlur={onLGABlur}
+                onBlur={onLGABlur as any}
                 error={
                   LGAInputIsInValid && {
                     content: "Please select an L.G.A",
@@ -315,13 +334,13 @@ const AddEditStationSection = () => {
 };
 
 const EachTableRow = ({
-  data: userData /**@type data.users[0] */,
+  data: stationData,
   onCheckedHandler,
   onEdit,
   onDelete,
   approvedState,
   refreshCheckedState,
-}) => {
+}: eachTableRowPropsType<eachUploadedStationsFileType>) => {
   const [checked, setChecked] = useState(approvedState);
   const [editingRow, setEditingRow] = useState(false);
 
@@ -332,7 +351,7 @@ const EachTableRow = ({
     onChange: onNameChange,
     onBlur: onNameBlur,
     reset: resetName,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: address,
@@ -341,7 +360,7 @@ const EachTableRow = ({
     onChange: onAddressChange,
     onBlur: onAddressBlur,
     reset: resetAddress,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: state,
@@ -350,7 +369,7 @@ const EachTableRow = ({
     onChange: onStateChange,
     onBlur: onStateBlur,
     reset: resetState,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: LGA,
@@ -359,7 +378,7 @@ const EachTableRow = ({
     onChange: onLGAChange,
     onBlur: onLGABlur,
     reset: resetLGA,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [onNameBlur, onAddressBlur, onStateBlur, onLGABlur],
@@ -375,13 +394,15 @@ const EachTableRow = ({
 
   const lgas = data.states
     .find((eachState) => eachState.name === state)
-    ?.lgas?.map((eachLga, i) => new SelectClass(i, eachLga, eachLga));
+    ?.lgas?.map(
+      (eachLga, i) => new SelectClass(i?.toString(), eachLga, eachLga)
+    );
 
   const update = () => {
     if (!formIsValid) return executeBlurHandlers();
 
     const data = {
-      id: userData?.id,
+      id: stationData?.id,
       Name: name,
       Address: address,
       State: state,
@@ -397,10 +418,10 @@ const EachTableRow = ({
   }, [approvedState, refreshCheckedState]);
 
   useEffect(() => {
-    onNameChange(userData?.Name);
-    onAddressChange(userData?.Address);
-    onStateChange(userData?.State);
-    onLGAChange(userData?.LGA);
+    onNameChange(stationData?.Name);
+    onAddressChange(stationData?.Address);
+    onStateChange(stationData?.State);
+    onLGAChange(stationData?.LGA);
   }, [editingRow]);
 
   if (editingRow) {
@@ -432,7 +453,7 @@ const EachTableRow = ({
             options={states}
             value={state}
             onChange={(e, { value }) => onStateChange(value)}
-            onBlur={onStateBlur}
+            onBlur={onStateBlur as any}
             error={stateInputIsInValid}
           />
         </Table.HeaderCell>
@@ -440,10 +461,10 @@ const EachTableRow = ({
           <Select
             label="Select an LGA"
             placeholder="Select an LGA"
-            options={lgas}
+            options={lgas as SelectClass[]}
             value={LGA}
             onChange={(e, { value }) => onLGAChange(value)}
-            onBlur={onLGABlur}
+            onBlur={onLGABlur as any}
             error={LGAInputIsInValid}
           />
         </Table.HeaderCell>
@@ -462,15 +483,15 @@ const EachTableRow = ({
           slider
           checked={checked}
           onChange={(e, { checked }) => {
-            onCheckedHandler(userData, checked);
+            onCheckedHandler(stationData, checked);
             setChecked((prev) => !prev);
           }}
         />
       </Table.Cell>
-      <Table.HeaderCell>{userData?.Name}</Table.HeaderCell>
-      <Table.HeaderCell>{userData?.Address}</Table.HeaderCell>
-      <Table.HeaderCell>{userData?.State}</Table.HeaderCell>
-      <Table.HeaderCell>{userData?.LGA}</Table.HeaderCell>
+      <Table.HeaderCell>{stationData?.Name}</Table.HeaderCell>
+      <Table.HeaderCell>{stationData?.Address}</Table.HeaderCell>
+      <Table.HeaderCell>{stationData?.State}</Table.HeaderCell>
+      <Table.HeaderCell>{stationData?.LGA}</Table.HeaderCell>
       <Table.Cell collapsing>
         <Button
           color="blue"
@@ -480,7 +501,7 @@ const EachTableRow = ({
         >
           Edit
         </Button>
-        <Button color="red" onClick={() => onDelete(userData)}>
+        <Button color="red" onClick={() => onDelete(stationData)}>
           Delete
         </Button>
       </Table.Cell>
@@ -489,8 +510,11 @@ const EachTableRow = ({
 };
 
 const UploadBulkStationsSection = () => {
-  const [uploadedData, setUploadedData] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState({});
+  const [uploadedData, setUploadedData] = useState<uploadedStationsFileType>(
+    []
+  );
+  const [selectedStations, setSelectedStations] =
+    useState<selectedStationsType>({});
   const [approvedState, setApprovedState] = useState(false);
   const [refreshCheckedState, setRefreshCheckedState] = useState(false);
   const [submitState, setSubmitState] = useState({
@@ -499,13 +523,6 @@ const UploadBulkStationsSection = () => {
     error: false,
   });
 
-  const getExention = (/**@type String */ string) => {
-    const arr = string?.split(".");
-    if (Array.isArray(arr)) return arr[arr?.length - 1];
-
-    return "";
-  };
-
   const {
     value: file,
     isValid: fileIsValid,
@@ -513,8 +530,8 @@ const UploadBulkStationsSection = () => {
     onChange: onFileChange,
     onBlur: onFileBlur,
     reset: resetFIle,
-  } = useInput(
-    (/**@type File */ file) =>
+  } = useInput<File>(
+    (file) =>
       getExention(file?.name) === "xlsx" || getExention(file?.name) === "json"
   );
 
@@ -534,81 +551,34 @@ const UploadBulkStationsSection = () => {
     }, 1000 * 10);
   };
 
-  const onFileReaderLoad = (e, resolve) => {
-    const bufferArray = e.target.result;
-
-    const wb = XLSX.read(bufferArray, { type: "buffer" });
-
-    const wsname = wb.SheetNames[0];
-
-    const ws = wb.Sheets[wsname];
-
-    const data = XLSX.utils.sheet_to_json(ws);
-
-    resolve(data);
-  };
-
-  const onFileReaderError = (error, reject) => {
-    reject(error);
-  };
-
-  const onFileReaderSuccess = (data) => {
+  const onFileReaderSuccess = (data: any) => {
     setUploadedData(clearSimilarArrayObjects(data, "id"));
   };
 
-  const readExcel = (file) => {
-    const promise = new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsArrayBuffer(file);
-
-      fileReader.onload = (e) => onFileReaderLoad(e, resolve);
-
-      fileReader.onerror = (error) => onFileReaderError(error, reject);
-    });
-
-    promise.then(onFileReaderSuccess);
+  const onReadJSONSuccess = (data: any) => {
+    setUploadedData(clearSimilarArrayObjects(data, "id"));
   };
 
-  const readJSON = (file) => {
-    const fileReader = new FileReader();
-    fileReader.readAsText(file, "UTF-8");
-    fileReader.onload = (e) => {
-      const data = JSON.parse(e.target.result);
-      setUploadedData(clearSimilarArrayObjects(data, "id"));
-    };
-  };
-
-  const fileUploadValidator = (/**@type Event */ e) => {
-    const file = e.target.files[0];
-
-    const ext = getExention(file?.name);
-
-    if (ext === "xlsx") {
-      readExcel(file);
-    } else if (ext === "json") {
-      readJSON(file);
-    }
-    onFileChange(file);
-    onFileBlur();
-  };
-
-  const onCheckedHandler = (data, checked) => {
+  const onCheckedHandler = (
+    data: eachUploadedStationsFileType,
+    checked: boolean
+  ) => {
     if (checked === true) {
-      setSelectedUsers((preUsers) => ({
+      setSelectedStations((preUsers) => ({
         ...preUsers,
         [data["id"]]: data,
       }));
     } else {
-      const oldUsers = { ...selectedUsers };
+      const oldUsers = { ...selectedStations };
       delete oldUsers[data["id"]];
-      setSelectedUsers(oldUsers);
+      setSelectedStations(oldUsers);
     }
   };
 
   const uploadStations = () => {
     setSubmitState((prev) => ({ ...prev, uploading: true }));
 
-    const selectedArray = Object.entries(selectedUsers)?.map(
+    const selectedArray = Object.entries(selectedStations)?.map(
       ([key, value]) => value
     );
 
@@ -617,33 +587,33 @@ const UploadBulkStationsSection = () => {
       return;
     }
 
-    const currentUsers = {};
+    const currentStations: selectedStationsType = {};
     uploadedData.forEach((eachDevice) => {
-      currentUsers[eachDevice["id"]] = eachDevice;
+      currentStations[eachDevice["id"]] = eachDevice;
     });
 
-    for (const key in selectedUsers) {
-      delete currentUsers[key];
+    for (const key in selectedStations) {
+      delete currentStations[key];
     }
 
-    const currentUsersArray = Object.entries(currentUsers)?.map(
+    const currentUsersArray = Object.entries(currentStations)?.map(
       ([key, value]) => value
     );
 
     setUploadedData(currentUsersArray);
-    setSelectedUsers({});
+    setSelectedStations({});
     onSuccessUpload();
     console.log("SELECTED ARRAY", selectedArray);
   };
 
   const selectAllStations = () => {
-    const addedDevices = {};
+    const addedDevices: selectedStationsType = {};
 
     for (const data of uploadedData) {
       addedDevices[data["id"]] = data;
     }
 
-    setSelectedUsers(addedDevices);
+    setSelectedStations(addedDevices);
   };
 
   const approveAll = () => {
@@ -652,12 +622,12 @@ const UploadBulkStationsSection = () => {
   };
 
   const disApproveAll = () => {
-    setSelectedUsers({});
+    setSelectedStations({});
     setApprovedState(false);
     setRefreshCheckedState((prev) => !prev);
   };
 
-  const onEdit = (station) => {
+  const onEdit = (station: eachUploadedStationsFileType) => {
     const allUsers = [...uploadedData];
 
     allUsers.forEach((eachStation, i, arr) => {
@@ -669,7 +639,7 @@ const UploadBulkStationsSection = () => {
     setUploadedData(allUsers);
   };
 
-  const onDelete = (station) => {
+  const onDelete = (station: eachUploadedStationsFileType) => {
     setUploadedData((prevData) =>
       prevData?.filter((eachStation) => eachStation["id"] !== station["id"])
     );
@@ -682,7 +652,15 @@ const UploadBulkStationsSection = () => {
       <div className={css["upload-container"]}>
         <FileUpload
           label={"Upload excel/json files only"}
-          onChange={fileUploadValidator}
+          onChange={(e: any) =>
+            fileUploadValidator({
+              e,
+              onFileChange: onFileChange as any,
+              onFileBlur,
+              onFileReaderSuccess,
+              onReadJSONSuccess,
+            })
+          }
           className={css.upload}
         />
         {file && <h4>FIle name: {file?.name}</h4>}
@@ -734,7 +712,7 @@ const UploadBulkStationsSection = () => {
                     size="small"
                     onClick={uploadStations}
                     disabled={
-                      Object.keys(selectedUsers)?.length < 1 ? true : false
+                      Object.keys(selectedStations)?.length < 1 ? true : false
                     }
                     // disabled={submitState.uploading}
                   >

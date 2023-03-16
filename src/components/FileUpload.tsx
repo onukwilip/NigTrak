@@ -47,7 +47,7 @@ export const ImgUpload = ({
       {uploaded || initialImage ? (
         <div className={css["img-container"]}>
           <img
-            src={uploaded || initialImage}
+            src={uploaded || (initialImage as string)}
             alt={fileRef?.current?.files?.[0]?.name}
           />
           <Icon

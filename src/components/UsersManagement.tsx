@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import css from "../styles/userManagement/UserManagement.module.scss";
 import { useInView } from "react-intersection-observer";
-import ProfileContainer from "../components/ProfileContainer";
+import ProfileContainer from "./ProfileContainer";
 import mRank from "../assets/img/major-rank.png";
 import mgRank from "../assets/img/mg-rank.png";
 import cRank from "../assets/img/coloniel-rank.png";
 import lcRank from "../assets/img/lc-rank.png";
 import oRank from "../assets/img/officer-rank.png";
 import sRank from "../assets/img/sergent-rank.png";
-import Map from "../components/Map";
+import Map from "./Map";
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { FileUpload } from "./FileUpload";
 import {
@@ -29,6 +29,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import * as XLSX from "xlsx";
 import {
   clearSimilarArrayObjects,
+  fileUploadValidator,
+  getExention,
   manageMqttEvents,
   SelectClass,
 } from "../utils";
@@ -44,6 +46,24 @@ import { getRanksAction } from "../store/ranksReducer";
 import useDevices from "../hooks/useDevices";
 import useRanks from "../hooks/useRanks";
 import { client } from "../pages/Home";
+import {
+  cardPropsType,
+  eachTableRowPropsType,
+  eachUploadedUserFileType,
+  latLngType,
+  postBulkUsersErrorType,
+  postBulkUsersReturnType,
+  selectInputOnChangePropsType,
+  selectType,
+  selectedUsers,
+  selectorState,
+  socketDeviceType,
+  uploadedUserFileType,
+  userCardPropsType,
+  userType,
+  usersListType,
+} from "src/types/types";
+import { AnyAction } from "redux";
 
 export const ranks = {
   General: mRank,
@@ -54,7 +74,7 @@ export const ranks = {
   Sergent: sRank,
 };
 
-const Card = ({ item, onCancel, src }) => {
+const Card = ({ item, onCancel, src }: cardPropsType) => {
   return (
     <div className={css["card"]}>
       <div className={css["details-container"]}>
@@ -77,8 +97,14 @@ const Card = ({ item, onCancel, src }) => {
   );
 };
 
-export const UserCard = ({ user, onViewMore = () => {}, index }) => {
-  const socketDevices = useSelector((state) => state?.socketDevices);
+export const UserCard = ({
+  user,
+  onViewMore = () => {},
+  index,
+}: userCardPropsType) => {
+  const socketDevices = useSelector(
+    (state: selectorState) => state?.socketDevices
+  );
   const [ref, inView] = useInView();
   const control = useAnimation();
   const variants = {
@@ -87,7 +113,7 @@ export const UserCard = ({ user, onViewMore = () => {}, index }) => {
   };
 
   const userSocketDevicesToArray = () => {
-    const arr = [];
+    const arr: socketDeviceType[] = [];
     user?.Devices?.forEach((device) => {
       if (socketDevices[device?.IMEI_Number]) {
         arr.push(socketDevices[device?.IMEI_Number]);
@@ -110,7 +136,7 @@ export const UserCard = ({ user, onViewMore = () => {}, index }) => {
       initial="far"
       animate={control}
       transition={{
-        delay: index / 50,
+        delay: index ? index / 50 : 0,
       }}
       className={css["user-card"]}
       ref={ref}
@@ -127,7 +153,8 @@ export const UserCard = ({ user, onViewMore = () => {}, index }) => {
         <em>{user?.Name}</em>
         <em>
           {" "}
-          <img src={user?.RankImage} className="rank" /> {user?.RankName}
+          <img src={user?.RankImage} className="rank" alt="rank" />{" "}
+          {user?.RankName}
         </em>
       </div>
       <div className={css.actions}>
@@ -143,15 +170,14 @@ export const UserCard = ({ user, onViewMore = () => {}, index }) => {
   );
 };
 
-export const UsersList = ({ users, onViewMore, className }) => {
+export const UsersList = ({ users, onViewMore, className }: usersListType) => {
   return (
     <div className={`${css["users-list"]} ${className}`}>
       {users.map((user, i) => (
         <UserCard
           user={user}
           onViewMore={onViewMore}
-          key={user._id}
-          ranks={ranks}
+          key={user?.UserId}
           index={i}
         />
       ))}
@@ -159,10 +185,12 @@ export const UsersList = ({ users, onViewMore, className }) => {
   );
 };
 
-export const AllUsers = ({ position }) => {
-  const [militaints, setMilitaints] = useState([]);
+export const AllUsers = ({ position }: { position: latLngType }) => {
+  const [militaints, setMilitaints] = useState<userType[]>([]);
   const [userProfile, setUserProfile] = useState(militaints[0]);
-  const socketDevices = useSelector((state) => state?.socketDevices);
+  const socketDevices = useSelector(
+    (state: selectorState) => state?.socketDevices
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {
@@ -170,7 +198,7 @@ export const AllUsers = ({ position }) => {
     error: getUsersError,
     loading: gettingUsers,
     data: allUsers,
-  } = useAjaxHook({
+  } = useAjaxHook<userType[]>({
     instance: axios,
     options: {
       url: `${process.env.REACT_APP_API_DOMAIN}/api/users/`,
@@ -185,18 +213,19 @@ export const AllUsers = ({ position }) => {
   // manageSocketDevicesConnection({ ws, dispatch });
   manageMqttEvents({ client, dispatch });
 
-  const onSearch = (/**@type String */ value) => {
-    const filtered = data.users.filter(
+  const onSearch = (value: string) => {
+    const filtered = allUsers.filter(
       (eachUser) =>
-        eachUser.name.toLowerCase().includes(value.toLowerCase()) ||
-        eachUser.rank.toLowerCase().includes(value.toLowerCase())
+        eachUser?.Name?.toLowerCase()?.includes(value.toLowerCase()) ||
+        eachUser?.UserId?.toLowerCase()?.includes(value.toLowerCase()) ||
+        eachUser?.RankName?.toLowerCase()?.includes(value.toLowerCase())
     );
 
     setMilitaints(filtered);
   };
 
   const userSocketDevicesToArray = () => {
-    const arr = [];
+    const arr: socketDeviceType[] = [];
     userProfile?.Devices?.forEach((device) => {
       if (socketDevices[device?.IMEI_Number]) {
         arr.push(socketDevices[device?.IMEI_Number]);
@@ -205,12 +234,12 @@ export const AllUsers = ({ position }) => {
     return arr;
   };
 
-  const checkIfDeviceIsOnline = (imeiNumber) => {
+  const checkIfDeviceIsOnline = (imeiNumber: string) => {
     return socketDevices[imeiNumber];
   };
 
   useEffect(() => {
-    const onGetUsersSuccess = ({ data }) => {
+    const onGetUsersSuccess = ({ data }: { data: userType[] }) => {
       setMilitaints(data);
     };
     getUsers(onGetUsersSuccess);
@@ -242,10 +271,7 @@ export const AllUsers = ({ position }) => {
                 <em>Address</em>: <em> {userProfile?.Address || "Nil"}</em>
               </li>
               <li>
-                <em>Joined</em>:{" "}
-                <em>
-                  {new Date(userProfile?.DateJoined)?.toUTCString() || "Nil"}
-                </em>
+                <em>Joined</em>: <em>{new Date()?.toUTCString() || "Nil"}</em>
               </li>{" "}
               <li>
                 <em>Status</em>:{" "}
@@ -265,7 +291,11 @@ export const AllUsers = ({ position }) => {
                 <em> Rank</em>:{" "}
                 <em>
                   {" "}
-                  <img src={userProfile?.RankImage} className="rank" />{" "}
+                  <img
+                    src={userProfile?.RankImage}
+                    className="rank"
+                    alt="rank"
+                  />{" "}
                   {userProfile?.RankName || "Nil"}
                 </em>
               </li>
@@ -353,8 +383,8 @@ export const AllUsers = ({ position }) => {
                 <>
                   <Marker
                     position={{
-                      lat: parseFloat(socketDevice?.lat),
-                      lng: parseFloat(socketDevice?.lng),
+                      lat: parseFloat(socketDevice?.lat as unknown as string),
+                      lng: parseFloat(socketDevice?.lng as unknown as string),
                     }}
                   />
                 </>
@@ -407,19 +437,25 @@ export const AllUsers = ({ position }) => {
 };
 
 export const CreateEditUser = () => {
-  const [uploaded, setUploaded] = useState(null);
+  const [uploaded, setUploaded] = useState<string | null>(null);
   const params = useParams();
   const id = params.id;
-  const [rankOptions, setRankOptions] = useState();
+  const [rankOptions, setRankOptions] = useState<selectType[]>();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [selectedDevices, setSelectedDevices] = useState([]);
-  const [selectedAmmos, setSelectedAmmos] = useState([]);
-  const [selectedAccessories, setSelectedAccessories] = useState([]);
-  const [devicesOptions, setDevicesOptions] = useState();
-  useDevices({ devicesOptions, setDevicesOptions });
-  useRanks({ rankOptions, setRankOptions });
-  const [previousImage, setPreviousImage] = useState(null);
-  const [ammunition, setAmmunition] = useState([
+  const [selectedDevices, setSelectedDevices] = useState<string[]>([]);
+  const [selectedAmmos, setSelectedAmmos] = useState<string[]>([]);
+  const [selectedAccessories, setSelectedAccessories] = useState<string[]>([]);
+  const [devicesOptions, setDevicesOptions] = useState<selectType[]>();
+  useDevices({
+    devicesOptions: devicesOptions as selectType[],
+    setDevicesOptions: setDevicesOptions as any,
+  });
+  useRanks({
+    rankOptions: rankOptions as selectType[],
+    setRankOptions: setRankOptions as any,
+  });
+  const [previousImage, setPreviousImage] = useState<string | null>(null);
+  const [ammunition, setAmmunition] = useState<selectType[]>([
     {
       key: 0,
       value: "Pistol",
@@ -461,7 +497,7 @@ export const CreateEditUser = () => {
       text: "Tazer",
     },
   ]);
-  const [accessories, setAccessories] = useState([
+  const [accessories, setAccessories] = useState<selectType[]>([
     {
       key: 0,
       value: "Helmet",
@@ -483,7 +519,7 @@ export const CreateEditUser = () => {
       text: "Bulletproof",
     },
   ]);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const {
     value: name,
@@ -492,7 +528,7 @@ export const CreateEditUser = () => {
     onChange: onNameChange,
     onBlur: onNameBlur,
     reset: resetName,
-  } = useInput(
+  } = useInput<string>(
     (value) =>
       value?.trim() !== "" &&
       value?.trim() !== undefined &&
@@ -506,7 +542,7 @@ export const CreateEditUser = () => {
     onChange: onEmailChange,
     onBlur: onEmailBlur,
     reset: resetEmail,
-  } = useInput(
+  } = useInput<string>(
     (value) =>
       value?.trim() !== "" &&
       value?.trim() !== undefined &&
@@ -520,7 +556,7 @@ export const CreateEditUser = () => {
     onChange: onAddressChange,
     onBlur: onAddressBlur,
     reset: resetAddress,
-  } = useInput(
+  } = useInput<string>(
     (value) =>
       value?.trim() !== "" &&
       value?.trim() !== undefined &&
@@ -534,7 +570,7 @@ export const CreateEditUser = () => {
     onChange: onPhoneChange,
     onBlur: onPhoneBlur,
     reset: resetPhone,
-  } = useInput(
+  } = useInput<string>(
     (value) =>
       value?.trim() !== "" &&
       value?.trim() !== undefined &&
@@ -548,7 +584,7 @@ export const CreateEditUser = () => {
     onChange: onRankChange,
     onBlur: onRankBlur,
     reset: resetRank,
-  } = useInput(
+  } = useInput<string>(
     (value) =>
       value?.trim() !== "" &&
       value?.trim() !== undefined &&
@@ -562,7 +598,7 @@ export const CreateEditUser = () => {
     onChange: onStationChange,
     onBlur: onStationBlur,
     reset: resetStation,
-  } = useInput(
+  } = useInput<string>(
     (value) =>
       value?.trim() !== "" &&
       value?.trim() !== undefined &&
@@ -575,28 +611,28 @@ export const CreateEditUser = () => {
     onBlur: onDeviceBlur,
     onChange: onDeviceChange,
     reset: resetDevice,
-  } = useInput((value) => true);
+  } = useInput<string>((value) => true);
 
   const {
     value: ammo,
     onBlur: onAmmoBlur,
     onChange: onAmmoChange,
     reset: resetAmmo,
-  } = useInput((value) => true);
+  } = useInput<string>((value) => true);
 
   const {
     value: accessory,
     onBlur: onAccessoryBlur,
     onChange: onAccessoryChange,
     reset: resetAccessory,
-  } = useInput((value) => true);
+  } = useInput<string>((value) => true);
 
   const {
     value: image,
     onBlur: onImageBlur,
     onChange: onImageChange,
     reset: resetImage,
-  } = useInput((value) => true);
+  } = useInput<File>((value) => true);
 
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [
@@ -640,7 +676,7 @@ export const CreateEditUser = () => {
   formData.append("phone", phone);
   formData.append("rank", rank);
   formData.append("station", station);
-  formData.append("userId", id);
+  formData.append("userId", id || "");
   formData.append("devices", JSON.stringify(selectedDevices));
   formData.append("ammos", JSON.stringify(selectedAmmos));
   formData.append("accessories", JSON.stringify(selectedAccessories));
@@ -667,7 +703,7 @@ export const CreateEditUser = () => {
     data: fetchedUser,
     loading: gettingUser,
     error: getUserError,
-  } = useAjaxHook({
+  } = useAjaxHook<userType>({
     instance: axios,
     options: {
       url: `${process.env.REACT_APP_API_DOMAIN}/api/users/${id}`,
@@ -675,20 +711,20 @@ export const CreateEditUser = () => {
     },
   });
 
-  const onFileChange = (e) => {
+  const onFileChange = (e: any) => {
     const file = e.target.files[0];
     onImageChange(file);
     setUploaded(URL.createObjectURL(file));
   };
 
-  const addDevice = (e, { value }) => {
+  const addDevice = (e: any, { value }: { value: string }) => {
     setSelectedDevices((prev) => [...prev, value]);
     setDevicesOptions((prev) =>
-      prev.filter((prevItem) => prevItem?.key !== value)
+      prev?.filter((prevItem) => prevItem?.key !== value)
     );
   };
 
-  const removeDevice = (device) => {
+  const removeDevice = (device: string) => {
     setSelectedDevices((prev) =>
       prev.filter((prevDevice) => prevDevice !== device)
     );
@@ -696,36 +732,38 @@ export const CreateEditUser = () => {
       (eachItem) => eachItem?.value === device || eachItem?.key === device
     );
     if (option) return;
-    setDevicesOptions((prev) => [
+    setDevicesOptions((prev = []) => [
       ...prev,
       new SelectClass(device, device, device),
     ]);
   };
 
-  const addAmmo = (e, { value }) => {
+  const addAmmo = (e: any, { value }: { value: string }) => {
     setAmmunition((prev) =>
       prev.filter((prevItem) => prevItem?.value !== value)
     );
     setSelectedAmmos((prev) => [...prev, value]);
   };
 
-  const removeAmmo = (ammo) => {
+  const removeAmmo = (ammo: string) => {
     const option = ammunition?.find(
-      (eachItem) => eachItem?.value === ammo || eachItem?.key === ammo
+      (eachItem) =>
+        eachItem?.value === ammo ||
+        eachItem?.key?.toString() === ammo?.toString()
     );
     if (option) return;
-    setAmmunition((prev) => [...prev, new SelectClass(ammo, ammo, ammo)]);
+    setAmmunition((prev = []) => [...prev, new SelectClass(ammo, ammo, ammo)]);
     setSelectedAmmos((prev) => prev.filter((prevAmmo) => prevAmmo !== ammo));
   };
 
-  const addAccessories = (e, { value }) => {
+  const addAccessories = (e: any, { value }: { value: string }) => {
     setAccessories((prev) =>
       prev.filter((prevItem) => prevItem?.value !== value)
     );
     setSelectedAccessories((prev) => [...prev, value]);
   };
 
-  const removeAccessories = (accessory) => {
+  const removeAccessories = (accessory: string) => {
     const option = accessories?.find(
       (eachItem) => eachItem?.value === accessory || eachItem?.key === accessory
     );
@@ -763,40 +801,44 @@ export const CreateEditUser = () => {
     postUser(onSuccessPost);
   };
 
-  const stations = [
-    {
-      key: 0,
-      value: data.stations[0]?.name,
-      text: data.stations[0]?.name,
-    },
-    {
-      key: 1,
-      value: data.stations[1]?.name,
-      text: data.stations[1]?.name,
-    },
-    {
-      key: 2,
-      value: data.stations[2]?.name,
-      text: data.stations[2]?.name,
-    },
-    {
-      key: 3,
-      value: data.stations[5]?.name,
-      text: data.stations[5]?.name,
-    },
-    {
-      key: 4,
-      value: data.stations[3]?.name,
-      text: data.stations[3]?.name,
-    },
-    {
-      key: 5,
-      value: data.stations[4]?.name,
-      text: data.stations[4]?.name,
-    },
-  ];
+  // const stations = [
+  //   {
+  //     key: 0,
+  //     value: data.stations[0]?.name,
+  //     text: data.stations[0]?.name,
+  //   },
+  //   {
+  //     key: 1,
+  //     value: data.stations[1]?.name,
+  //     text: data.stations[1]?.name,
+  //   },
+  //   {
+  //     key: 2,
+  //     value: data.stations[2]?.name,
+  //     text: data.stations[2]?.name,
+  //   },
+  //   {
+  //     key: 3,
+  //     value: data.stations[5]?.name,
+  //     text: data.stations[5]?.name,
+  //   },
+  //   {
+  //     key: 4,
+  //     value: data.stations[3]?.name,
+  //     text: data.stations[3]?.name,
+  //   },
+  //   {
+  //     key: 5,
+  //     value: data.stations[4]?.name,
+  //     text: data.stations[4]?.name,
+  //   },
+  // ];
 
-  const onSuccessGet = ({ data }) => {
+  const stations: selectType[] = data?.stations?.map(
+    (each) => new SelectClass(each?._id, each?.name, each?.name)
+  );
+
+  const onSuccessGet = ({ data }: { data: userType }) => {
     onNameChange(data?.Name);
     onEmailChange(data?.Email);
     onAddressChange(data?.Address);
@@ -812,30 +854,6 @@ export const CreateEditUser = () => {
     );
     setPreviousImage(data?.Image);
   };
-
-  // useEffect(() => {
-  //   if (!devicesOptions || devicesOptions?.length < 1)
-  //     setDevicesOptions(
-  //       devices
-  //         ?.filter((device) => device?.UserID === null)
-  //         ?.map((device) => ({
-  //           key: device?.IMEI_Number,
-  //           value: device?.IMEI_Number,
-  //           text: device?.IMEI_Number,
-  //         }))
-  //     );
-  // }, [devices]);
-
-  // useEffect(() => {
-  //   if (!rankOptions || rankOptions?.length < 1)
-  //     setRankOptions(
-  //       ranks?.map((rank) => ({
-  //         key: rank?.RankId,
-  //         value: rank?.RankId,
-  //         text: rank?.RankName,
-  //       }))
-  //     );
-  // }, [ranks]);
 
   useEffect(() => {
     if (id) getUser(onSuccessGet);
@@ -935,10 +953,10 @@ export const CreateEditUser = () => {
                 <Form.Select
                   placeholder="Rank..."
                   label="Rank"
-                  options={rankOptions}
+                  options={rankOptions as selectType[]}
                   value={rank}
                   onChange={(e, { value }) => onRankChange(value)}
-                  onBlur={onRankBlur}
+                  onBlur={onRankBlur as any}
                   error={
                     rankInputIsInValid && {
                       content: "Select a rank",
@@ -952,7 +970,7 @@ export const CreateEditUser = () => {
                   options={stations}
                   value={station}
                   onChange={(e, { value }) => onStationChange(value)}
-                  onBlur={onStationBlur}
+                  onBlur={onStationBlur as any}
                   error={
                     stationInputIsInValid && {
                       content: "Select a station",
@@ -967,13 +985,13 @@ export const CreateEditUser = () => {
                 <Form.Select
                   label="Select a device"
                   placeholder="Select device"
-                  options={devicesOptions}
+                  options={devicesOptions as selectType[]}
                   value={device}
                   onChange={(e, { value }) => {
-                    addDevice(e, { value: value });
+                    addDevice(e, { value: value as string });
                     onDeviceChange(value);
                   }}
-                  onBlur={onDeviceBlur}
+                  onBlur={onDeviceBlur as any}
                   error={
                     deviceInputIsInValid && {
                       content: "Select at least one device",
@@ -1010,10 +1028,10 @@ export const CreateEditUser = () => {
                   options={accessories}
                   value={accessory}
                   onChange={(e, { value }) => {
-                    addAccessories(e, { value });
+                    addAccessories(e, { value: value as string });
                     onAccessoryChange(value);
                   }}
-                  onBlur={onAccessoryBlur}
+                  onBlur={onAccessoryBlur as any}
                 />
                 <div className={css.accessories}>
                   {selectedAccessories.length > 0 ? (
@@ -1044,10 +1062,10 @@ export const CreateEditUser = () => {
                   options={ammunition}
                   value={ammo}
                   onChange={(e, { value }) => {
-                    addAmmo(e, { value });
+                    addAmmo(e, { value: value as string });
                     onAmmoChange(value);
                   }}
-                  onBlur={onAmmoBlur}
+                  onBlur={onAmmoBlur as any}
                 />
                 <div className={css.ammos}>
                   {selectedAmmos.length > 0 ? (
@@ -1087,7 +1105,10 @@ export const CreateEditUser = () => {
             <div className={css["img-upload"]}>
               {uploaded || previousImage ? (
                 <div className={css["img-container"]}>
-                  <img src={uploaded || previousImage} alt={image?.filename} />
+                  <img
+                    src={(uploaded || previousImage) as string | undefined}
+                    alt={image?.name}
+                  />
                   <Icon
                     className={css.edit}
                     name="cancel"
@@ -1114,22 +1135,22 @@ export const CreateEditUser = () => {
 };
 
 const EachTableRow = ({
-  data: userData /**@type data.users[0] */,
+  data: userData,
   onCheckedHandler,
   onEdit,
   onDelete,
   approvedState,
   refreshCheckedState,
-}) => {
+}: eachTableRowPropsType<eachUploadedUserFileType>) => {
   const [checked, setChecked] = useState(approvedState);
   const [editingRow, setEditingRow] = useState(false);
-  const [selectedDevices, setSelectedDevices] = useState([]);
-  const [selectedAmmos, setSelectedAmmos] = useState([]);
-  const [selectedAccessories, setSelectedAccessories] = useState([]);
-  const devices = useSelector((state) => state.devices.devices);
-  const ranks = useSelector((state) => state.ranks.ranks);
-  const [rankOptions, setRankOptions] = useState([]);
-  const [devicesOptions, setDevicesOptions] = useState();
+  const [selectedDevices, setSelectedDevices] = useState<string[]>([]);
+  const [selectedAmmos, setSelectedAmmos] = useState<string[]>([]);
+  const [selectedAccessories, setSelectedAccessories] = useState<string[]>([]);
+  const devices = useSelector((state: selectorState) => state.devices.devices);
+  const ranks = useSelector((state: selectorState) => state.ranks.ranks);
+  const [rankOptions, setRankOptions] = useState<selectType[]>([]);
+  const [devicesOptions, setDevicesOptions] = useState<selectType[]>();
   const [ammunitionOptions, setAmmunitionOptions] = useState(
     data.ammunition?.map(
       (eachAmmo) =>
@@ -1152,7 +1173,7 @@ const EachTableRow = ({
     onChange: onNameChange,
     onBlur: onNameBlur,
     reset: resetName,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: email,
@@ -1161,7 +1182,7 @@ const EachTableRow = ({
     onChange: onEmailChange,
     onBlur: onEmailBlur,
     reset: resetEmail,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: address,
@@ -1170,7 +1191,7 @@ const EachTableRow = ({
     onChange: onAddressChange,
     onBlur: onAddressBlur,
     reset: resetAddress,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: phone,
@@ -1179,7 +1200,7 @@ const EachTableRow = ({
     onChange: onPhoneChange,
     onBlur: onPhoneBlur,
     reset: resetPhone,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: rank,
@@ -1188,7 +1209,7 @@ const EachTableRow = ({
     onChange: onRankChange,
     onBlur: onRankBlur,
     reset: resetRank,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: station,
@@ -1197,7 +1218,7 @@ const EachTableRow = ({
     onChange: onStationChange,
     onBlur: onStationBlur,
     reset: resetStation,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: gender,
@@ -1206,7 +1227,7 @@ const EachTableRow = ({
     onChange: onGenderChange,
     onBlur: onGenderBlur,
     reset: resetGender,
-  } = useInput((value) => value?.trim() !== "");
+  } = useInput<string>((value) => value?.trim() !== "");
 
   const {
     value: device,
@@ -1214,21 +1235,21 @@ const EachTableRow = ({
     onBlur: onDeviceBlur,
     onChange: onDeviceChange,
     reset: resetDevice,
-  } = useInput((value) => true);
+  } = useInput<string>((value) => true);
 
   const {
     value: ammo,
     onBlur: onAmmoBlur,
     onChange: onAmmoChange,
     reset: resetAmmo,
-  } = useInput((value) => true);
+  } = useInput<string>((value) => true);
 
   const {
     value: accessory,
     onBlur: onAccessoryBlur,
     onChange: onAccessoryChange,
     reset: resetAccessory,
-  } = useInput((value) => true);
+  } = useInput<string>((value) => true);
 
   const { executeBlurHandlers, formIsValid, reset } = useForm({
     blurHandlers: [
@@ -1265,27 +1286,27 @@ const EachTableRow = ({
       genderIsValid,
   });
 
-  if (!devices) dispatch(getDeviceAction());
-  if (!ranks) dispatch(getRanksAction());
+  if (!devices) dispatch(getDeviceAction() as unknown as AnyAction);
+  if (!ranks) dispatch(getRanksAction() as unknown as AnyAction);
 
-  const addDevice = (e, { value }) =>
+  const addDevice: selectInputOnChangePropsType<string> = (e, { value }) =>
     setSelectedDevices((prev) => [...prev, value]);
 
-  const removeDevice = (device) =>
+  const removeDevice = (device: string) =>
     setSelectedDevices((prev) =>
       prev.filter((prevDevice) => prevDevice !== device)
     );
 
-  const addAmmo = (e, { value }) =>
+  const addAmmo: selectInputOnChangePropsType<string> = (e, { value }) =>
     setSelectedAmmos((prev) => [...prev, value]);
 
-  const removeAmmo = (ammo) =>
+  const removeAmmo = (ammo: string) =>
     setSelectedAmmos((prev) => prev.filter((prevAmmo) => prevAmmo !== ammo));
 
-  const addAccessories = (e, { value }) =>
+  const addAccessories: selectInputOnChangePropsType<string> = (e, { value }) =>
     setSelectedAccessories((prev) => [...prev, value]);
 
-  const removeAccessories = (accessory) =>
+  const removeAccessories = (accessory: string) =>
     setSelectedAccessories((prev) =>
       prev.filter((prevAccessories) => prevAccessories !== accessory)
     );
@@ -1313,10 +1334,11 @@ const EachTableRow = ({
     setEditingRow(false);
   };
 
-  const mapValidate = (item) => {
+  const mapValidate = (item: string) => {
     if (item?.trim() !== "") {
       return item;
     }
+    return false;
   };
 
   useEffect(() => {
@@ -1331,9 +1353,15 @@ const EachTableRow = ({
     onRankChange(userData?.rank);
     onStationChange(userData?.station);
     onGenderChange(userData?.gender);
-    setSelectedDevices(userData?.devices?.split(",")?.map(mapValidate));
-    setSelectedAccessories(userData?.accessories?.split(",")?.map(mapValidate));
-    setSelectedAmmos(userData?.ammunition?.split(",")?.map(mapValidate));
+    setSelectedDevices(
+      userData?.devices?.split(",")?.map(mapValidate) as string[]
+    );
+    setSelectedAccessories(
+      userData?.accessories?.split(",")?.map(mapValidate) as string[]
+    );
+    setSelectedAmmos(
+      userData?.ammunition?.split(",")?.map(mapValidate) as string[]
+    );
   }, [editingRow]);
 
   useEffect(() => {
@@ -1415,7 +1443,7 @@ const EachTableRow = ({
             value={rank}
             options={rankOptions}
             onChange={(e, { value }) => onRankChange(value)}
-            onBlur={onRankBlur}
+            onBlur={onRankBlur as any}
             error={rankInputIsInValid}
           />
         </Table.HeaderCell>
@@ -1432,14 +1460,14 @@ const EachTableRow = ({
           <Select
             label="Select a device"
             placeholder="Select device"
-            options={devicesOptions}
+            options={devicesOptions as selectType[]}
             value={device}
             onChange={(e, { value }) => {
-              addDevice(e, { value: value });
+              addDevice(e, { value: value as string });
               onDeviceChange(value);
               console.log("Value", value);
             }}
-            onBlur={onDeviceBlur}
+            onBlur={onDeviceBlur as any}
             error={deviceInputIsInValid}
           />
           {selectedDevices?.length > 0 && (
@@ -1465,10 +1493,10 @@ const EachTableRow = ({
             options={accessories}
             value={accessory}
             onChange={(e, { value }) => {
-              addAccessories(e, { value: value });
-              onAccessoryChange(value);
+              addAccessories(e, { value: value as string });
+              onAccessoryChange(value as string);
             }}
-            onBlur={onAccessoryBlur}
+            onBlur={onAccessoryBlur as any}
           />
           {selectedAccessories?.length > 0 && (
             <div className={"row-select-item"}>
@@ -1493,10 +1521,10 @@ const EachTableRow = ({
             options={ammunitionOptions}
             value={ammo}
             onChange={(e, { value }) => {
-              addAmmo(e, { value: value });
+              addAmmo(e, { value: value as string });
               onAmmoChange(value);
             }}
-            onBlur={onAmmoBlur}
+            onBlur={onAmmoBlur as any}
           />
           {selectedAmmos?.length > 0 && (
             <div className={"row-select-item"}>
@@ -1583,12 +1611,12 @@ const EachTableRow = ({
 };
 
 export const UploadBulkUsers = () => {
-  const [uploadedData, setUploadedData] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState({});
+  const [uploadedData, setUploadedData] = useState<uploadedUserFileType>([]);
+  const [selectedUsers, setSelectedUsers] = useState<selectedUsers>({});
   const [approvedState, setApprovedState] = useState(false);
   const [refreshCheckedState, setRefreshCheckedState] = useState(false);
   const [noUploadedUsers, setNoUploadedUsers] = useState(false);
-  const [errorLogs, setErrorLogs] = useState([]);
+  const [errorLogs, setErrorLogs] = useState<postBulkUsersErrorType[]>([]);
   const [uploadedSuccessfuly, setUploadedSuccessfuly] = useState(false);
   const {
     sendRequest: postUsers,
@@ -1609,13 +1637,6 @@ export const UploadBulkUsers = () => {
     },
   });
 
-  const getExention = (/**@type String */ string) => {
-    const arr = string?.split(".");
-    if (Array.isArray(arr)) return arr[arr?.length - 1];
-
-    return "";
-  };
-
   const {
     value: file,
     isValid: fileIsValid,
@@ -1623,86 +1644,43 @@ export const UploadBulkUsers = () => {
     onChange: onFileChange,
     onBlur: onFileBlur,
     reset: resetFIle,
-  } = useInput(
-    (/**@type File */ file) =>
+  } = useInput<File>(
+    (file) =>
       getExention(file?.name) === "xlsx" || getExention(file?.name) === "json"
   );
 
   const onSuccessUpload = () => {
-    setUploadedSuccessfuly((prev) => ({
-      ...prev,
-      success: true,
-      uploading: false,
-    }));
+    // setUploadedSuccessfuly((prev) => ({
+    //   ...prev,
+    //   success: true,
+    //   uploading: false,
+    // }));
+
+    setUploadedSuccessfuly(true);
 
     setTimeout(() => {
-      setUploadedSuccessfuly((prev) => ({
-        ...prev,
-        success: false,
-        uploading: false,
-      }));
+      // setUploadedSuccessfuly((prev) => ({
+      //   ...prev,
+      //   success: false,
+      //   uploading: false,
+      // }));
+
+      setUploadedSuccessfuly(false);
     }, 1000 * 10);
   };
 
-  const onFileReaderLoad = (e, resolve) => {
-    const bufferArray = e.target.result;
-
-    const wb = XLSX.read(bufferArray, { type: "buffer" });
-
-    const wsname = wb.SheetNames[0];
-
-    const ws = wb.Sheets[wsname];
-
-    const data = XLSX.utils.sheet_to_json(ws);
-
-    resolve(data);
-  };
-
-  const onFileReaderError = (error, reject) => {
-    reject(error);
-  };
-
-  const onFileReaderSuccess = (data) => {
+  const onFileReaderSuccess = (data: any) => {
     setUploadedData(clearSimilarArrayObjects(data, "id"));
   };
 
-  const readExcel = (file) => {
-    const promise = new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsArrayBuffer(file);
-
-      fileReader.onload = (e) => onFileReaderLoad(e, resolve);
-
-      fileReader.onerror = (error) => onFileReaderError(error, reject);
-    });
-
-    promise.then(onFileReaderSuccess);
+  const onReadJSONSuccess = (data: any) => {
+    setUploadedData(clearSimilarArrayObjects(data, "id"));
   };
 
-  const readJSON = (file) => {
-    const fileReader = new FileReader();
-    fileReader.readAsText(file, "UTF-8");
-    fileReader.onload = (e) => {
-      const data = JSON.parse(e.target.result);
-      setUploadedData(clearSimilarArrayObjects(data, "id"));
-    };
-  };
-
-  const fileUploadValidator = (/**@type Event */ e) => {
-    const file = e.target.files[0];
-
-    const ext = getExention(file?.name);
-
-    if (ext === "xlsx") {
-      readExcel(file);
-    } else if (ext === "json") {
-      readJSON(file);
-    }
-    onFileChange(file);
-    onFileBlur();
-  };
-
-  const onCheckedHandler = (data, checked) => {
+  const onCheckedHandler = (
+    data: eachUploadedUserFileType,
+    checked: boolean
+  ) => {
     if (checked === true) {
       setSelectedUsers((preUsers) => ({
         ...preUsers,
@@ -1721,9 +1699,9 @@ export const UploadBulkUsers = () => {
     setTimeout(() => setNoUploadedUsers(false), 1000 * 10);
   };
 
-  const onUploadSuccess = ({ data }) => {
+  const onUploadSuccess = ({ data }: { data: postBulkUsersReturnType }) => {
     const { uploadUsers, errorLogs } = data;
-    const currentUsers = {};
+    const currentUsers: selectedUsers = {};
     uploadedData.forEach((eachUser) => {
       currentUsers[eachUser["id"]] = eachUser;
     });
@@ -1766,7 +1744,7 @@ export const UploadBulkUsers = () => {
   };
 
   const selectAllUsers = () => {
-    const addedDevices = {};
+    const addedDevices: selectedUsers = {};
 
     for (const data of uploadedData) {
       addedDevices[data["id"]] = data;
@@ -1786,7 +1764,7 @@ export const UploadBulkUsers = () => {
     setRefreshCheckedState((prev) => !prev);
   };
 
-  const onEdit = (user) => {
+  const onEdit = (user: eachUploadedUserFileType) => {
     const allUsers = [...uploadedData];
 
     allUsers.forEach((eachUser, i, arr) => {
@@ -1798,7 +1776,7 @@ export const UploadBulkUsers = () => {
     setUploadedData(allUsers);
   };
 
-  const onDelete = (user) => {
+  const onDelete = (user: eachUploadedUserFileType) => {
     setUploadedData((prevData) =>
       prevData?.filter((eachUser) => eachUser["id"] !== user["id"])
     );
@@ -1814,7 +1792,15 @@ export const UploadBulkUsers = () => {
         <div className={css["upload-container"]}>
           <FileUpload
             label={"Upload excel/json files only"}
-            onChange={fileUploadValidator}
+            onChange={(e: any) =>
+              fileUploadValidator({
+                e,
+                onFileChange: onFileChange as any,
+                onFileBlur: onFileBlur,
+                onFileReaderSuccess,
+                onReadJSONSuccess,
+              })
+            }
             className={css.upload}
           />
           {file && <h4>FIle name: {file?.name}</h4>}
@@ -1893,7 +1879,7 @@ export const UploadBulkUsers = () => {
           )}
         </div>
         <AnimatePresence>
-          {uploadedSuccessfuly.success && (
+          {uploadedSuccessfuly && (
             <>
               <br />
               <motion.div
@@ -1971,15 +1957,15 @@ export const UploadBulkUsers = () => {
               <Table.HeaderCell colSpan={2}>Error logs</Table.HeaderCell>
             </Table.Row>
             <Table.Row>
-              <Table.HeaderCell collapsing>Device IMEI number</Table.HeaderCell>
+              <Table.HeaderCell collapsing>User name</Table.HeaderCell>
               <Table.HeaderCell>Error message</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {errorLogs?.map((error) => (
+            {errorLogs?.map((error, i) => (
               <>
-                <Table.Row key={error?.imei}>
-                  <Table.Cell>{error?.imei}</Table.Cell>
+                <Table.Row key={i}>
+                  <Table.Cell>{error?.name}</Table.Cell>
                   <Table.Cell>{error?.error}</Table.Cell>
                 </Table.Row>
               </>

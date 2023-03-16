@@ -1,3 +1,4 @@
+import { AnyAction } from "redux";
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { clearSimilarArrayObjects } from "../utils";
@@ -29,7 +30,7 @@ const deviceSlice = createSlice({
 });
 
 export const getDeviceAction = () => {
-  return async (dispatch: Function) => {
+  return async (dispatch: any) => {
     const response = await axios.get(
       `${process.env.REACT_APP_API_DOMAIN}/api/device`
     );

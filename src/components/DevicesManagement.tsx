@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Map from "./Map";
 import {
@@ -19,7 +19,7 @@ import {
   clearSimilarArrayObjects,
   fileUploadValidator,
   getExention,
-  manageMqttEvents,
+  // manageMqttEvents,
   mapCenter,
   SelectClass,
 } from "../utils";
@@ -27,12 +27,11 @@ import { useForm, useInput } from "use-manage-form";
 import { useNavigate, useParams } from "react-router-dom";
 import Main from "./Main";
 import { FileUpload } from "./FileUpload";
-import * as XLSX from "xlsx";
 import useAjaxHook from "use-ajax-request";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CustomLoader from "./CustomLoader";
-import { client } from "../pages/Home";
+// import { client } from "../pages/Home";
 import {
   deviceAccessoryType,
   deviceAmmoType,
@@ -151,14 +150,14 @@ export const AllDevices = () => {
     null
   );
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const {
     sendRequest: getDevices,
     error: getDevicesError,
     loading: gettingDevices,
     data: allDevice,
-  } = useAjaxHook({
+  } = useAjaxHook<deviceType[]>({
     instance: axios,
     options: {
       url: `${process.env.REACT_APP_API_DOMAIN}/api/device/`,
@@ -166,7 +165,7 @@ export const AllDevices = () => {
     },
   });
 
-  manageMqttEvents({ client, dispatch });
+  // manageMqttEvents({ client, dispatch });
 
   const onSearch = (value: string) => {
     const filtered = allDevice.filter(
@@ -483,7 +482,7 @@ const AddDeviceSection = ({ id }: { id: string }) => {
                 options={models}
                 value={deviceModel}
                 onChange={(e, { value }) => onDeviceModelChange(value)}
-                onBlur={onDeviceModelBlur}
+                onBlur={onDeviceModelBlur as any}
                 error={
                   deviceModelInputIsInValid && {
                     content: "Input must NOT be empty",
@@ -1174,7 +1173,7 @@ const EachTableRow = ({
             placeholder="Select device model"
             value={deviceModel}
             onChange={(e, { value }) => onDeviceModelChange(value)}
-            onBlur={onDeviceModelBlur}
+            onBlur={onDeviceModelBlur as any}
             error={deviceModelInputIsInValid}
             options={deviceModelOptions}
           />
@@ -1275,8 +1274,8 @@ export const UploadBulkDevices = () => {
     onChange: onFileChange,
     onBlur: onFileBlur,
     reset: resetFIle,
-  } = useInput(
-    (file: File) =>
+  } = useInput<File>(
+    (file) =>
       getExention(file?.name) === "xlsx" || getExention(file?.name) === "json"
   );
 
@@ -1408,7 +1407,7 @@ export const UploadBulkDevices = () => {
             onChange={(e: any) =>
               fileUploadValidator({
                 e,
-                onFileChange,
+                onFileChange: onFileChange as any,
                 onFileBlur,
                 onFileReaderSuccess,
                 onReadJSONSuccess,

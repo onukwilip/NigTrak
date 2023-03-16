@@ -70,7 +70,7 @@ const Login = ({ toogleForce }: { toogleForce: Function }) => {
               onForceChange(value);
               toogleForce(value);
             }}
-            onBlur={onForceBlur}
+            onBlur={onForceBlur as any}
             error={
               forceInputIsInValid && {
                 content: "Please select a force",
