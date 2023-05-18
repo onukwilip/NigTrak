@@ -90,3 +90,9 @@
     width: 200px;
   }
 }
+
+.loader {
+  width: 100%;
+  height: 100%;
+  @include flex(center, center, 0, row);
+}
